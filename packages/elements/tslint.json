@@ -1,0 +1,15 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "curly": true,
+    "max-line-length": [
+      true,
+      140
+    ]
+  },
+  "jsRules": {
+    "curly": true
+  },
+  "rulesDirectory": [
+  ]
+}

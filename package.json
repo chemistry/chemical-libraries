@@ -1,39 +1,41 @@
 {
-  "name": "chem-ui-lib",
-  "version": "2.0.0",
-  "description": "Open Cheminformatics Libraries",
-  "author": {
-      "name": "Volodymyr Vreshch",
-      "url": "http://vreshch.com/"
-  },
-  "license": "MIT",
-  "private": true,
-  "keywords": [
-      "cheminformatics",
-      "chemistry",
-      "javascript"
-  ],
-  "workspaces": [
-    "packages/*"
-  ],
-  "engines": {
-      "node": ">=6.0.0"
-  },
-  "devEngines": {
-      "node": ">=6.0.0"
-  },
-  "repository": {
-      "type": "git",
-      "url": "https://github.com/chemistry/math.git"
-  },
-  "publishConfig": {
-      "registry": "https://registry.npmjs.org/"
-  },
-  "scripts": {
-  },
-  "dependencies": {
-  },
-  "devDependencies": {
-    "lerna": "3.4.3"
-  }
+    "name": "@chemistry/chem-ui-lib",
+    "version": "2.0.0",
+    "description": "Open Cheminformatics Libraries",
+    "author": {
+        "name": "Volodymyr Vreshch",
+        "url": "http://vreshch.com/"
+    },
+    "license": "MIT",
+    "private": true,
+    "keywords": [
+        "cheminformatics",
+        "chemistry",
+        "javascript"
+    ],
+    "workspaces": [
+        "packages/*"
+    ],
+    "engines": {
+        "node": ">=6.0.0"
+    },
+    "devEngines": {
+        "node": ">=6.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/chemistry/math.git"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    },
+    "scripts": {
+        "lint": "lerna run lint"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "lerna": "3.4.3",
+        "tslint": "5.11.0",
+        "typescript": "3.0.3"
+    }
 }

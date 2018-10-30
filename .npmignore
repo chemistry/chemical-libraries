@@ -1,0 +1,17 @@
+#npm node modules
+node_modules
+coverage
+build
+temp
+# Generated docs with JSDoc
+docs
+TODO
+lib/
+# Sublime text project space
+*.sublime-workspace
+*.sublime-project
+# zip file
+*.zip
+npm-debug.log
+# Mac DS_Store Files
+.DS_Store

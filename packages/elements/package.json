@@ -8,13 +8,16 @@
   },
   "license": "MIT",
   "keywords": [
-    "elements",
-    "periodic table",
-    "cheminformatics",
-    "Van der Waals radius",
-    "covalent radius",
-    "chemistry"
+      "elements",
+      "periodic table",
+      "cheminformatics",
+      "Van der Waals radius",
+      "covalent radius",
+      "chemistry"
   ],
+  "main": "dist/elements.js",
+  "typings": "dist/elements.d.ts",
+  "private": false,
   "engines": {
     "node": ">=6.0.0"
   },
@@ -24,9 +27,10 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
-  "private": false,
   "scripts": {
-    "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'"
+    "build": "webpack-cli --config etc/webpack.config.base.js --mode production",
+    "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
+    "lintfix": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts' --fix"
   },
   "dependencies": {},
   "devDependencies": {

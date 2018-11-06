@@ -21,8 +21,4 @@ let carbon = Element.getElementByName('C');
 console.log('Carbon Covalent radius:', carbon.RCow); // 0.77
 ```
 ## Commands:
-  * Run unit tests: `npm run test`
-  * Start TDD flow: `npm run tdd`
-  * Run linter verification: `npm run lint`
-  * Run linter verification & fix: `npm run lintfix`
   * Build project: `npm run build`

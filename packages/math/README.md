@@ -15,8 +15,4 @@ Simple linear algebra Math library to support [chemistry js project](http://vres
   * Quaternion
 
 ## Commands:
-  * Run unit tests: `npm run test`
-  * Start TDD flow: `npm run tdd`
-  * Run linter verification: `npm run lint`
-  * Run linter verification & fix: `npm run lintfix`
   * Build project: `npm run build`

@@ -23,12 +23,7 @@ console.log(sg.hallSymbol); // -P 1
 console.log(sg.symetryList); // [ 'x,y,z', '-x,-y,-z' ]
 console.log(sg.representativeOperations); // 1
 console.log(sg.getCrystalSystem()); // Triclinic
-
 ```
 
 ## Commands:
-  * Run unit tests: `npm run test`
-  * Start TDD flow: `npm run tdd`
-  * Run linter verification: `npm run lint`
-  * Run linter verification & fix: `npm run lintfix`
   * Build project: `npm run build`

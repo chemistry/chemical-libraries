@@ -27,18 +27,16 @@
     "main": "dist/math.js",
     "typings": "dist/math.d.ts",
     "scripts": {
-      "build": "npm run clean && npm run build:prod",
-      "build:prod": "webpack-cli --config etc/webpack.config.base.js --mode production",
-      "clean": "rimraf dist/* coverage/*",
-      "test": "rimraf coverage/* && npm run test:node && npm run test:browser && npm run coverage",
-      "test:node": "ts-node ../../node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=etc/jasmine.json",
-      "coverage": "ts-node ../../node_modules/istanbul/lib/cli.js cover -e .ts  -x \"*.d.ts\" -x \"*.spec.ts\" ../../node_modules/jasmine/bin/jasmine.js -- JASMINE_CONFIG_PATH=etc/jasmine.json",
-      "test:browser": "karma start --single-run --no-auto-watch etc/karma.conf.js",
-      "tdd": "nodemon -e ts -w ./src -x ts-node ../../node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=etc/jasmine.json",
-      "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
-      "lintfix": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts' --fix",
-      "codecov": "codecov -t f26dcfff-7278-4e11-b691-c7c5990c97d2 < coverage/lcov.info"
-    },
-    "dependencies": {},
-    "devDependencies": {}
+        "build": "npm run clean && npm run build:prod",
+        "build:prod": "webpack-cli --config etc/webpack.config.base.js --mode production",
+        "clean": "rimraf dist/* coverage/*",
+        "test": "rimraf coverage/* && npm run test:node && npm run test:browser && npm run coverage",
+        "test:node": "ts-node ../../node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=etc/jasmine.json",
+        "coverage": "ts-node ../../node_modules/istanbul/lib/cli.js cover -e .ts  -x \"*.d.ts\" -x \"*.spec.ts\" ../../node_modules/jasmine/bin/jasmine.js -- JASMINE_CONFIG_PATH=etc/jasmine.json",
+        "test:browser": "karma start --single-run --no-auto-watch etc/karma.conf.js",
+        "tdd": "nodemon -e ts -w ./src -x ts-node ../../node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=etc/jasmine.json",
+        "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
+        "lintfix": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts' --fix",
+        "codecov": "codecov -t f26dcfff-7278-4e11-b691-c7c5990c97d2 < coverage/lcov.info"
+    }
 }

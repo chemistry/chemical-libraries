@@ -32,11 +32,11 @@
     "scripts": {
         "clean": "lerna clean",
         "bootstrap": "lerna bootstrap",
-        "lint": "lerna run lint",
-        "lintfix": "lerna run linfix",
         "build": "lerna run build",
         "test": "lerna run test",
         "updated": "lerna updated",
+        "lint": "tslint -c tslint.json -p tsconfig.json 'packages/**/src/**/*.ts'",
+        "lintfix": "tslint -c tslint.json -p tsconfig.json 'packages/**/src/**/*.ts' --fix",
         "do-publish": "npm run clean && npm run bootstrap && npm run build && lerna publish"
     },
     "dependencies": {},

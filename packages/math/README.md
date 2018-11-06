@@ -1,7 +1,7 @@
 # @chemistry/math
 
 [![npm version](https://badge.fury.io/js/%40chemistry%2Fmath.svg)](https://badge.fury.io/js/%40chemistry%2Fmath)
-[![Build Status](https://travis-ci.com/chemistry/chem-js-lib.svg?branch=master)](https://travis-ci.org/chemistry/chem-js-lib)
+[![Build Status](https://travis-ci.com/chemistry/chem-ui-lib.svg?branch=master)](https://travis-ci.org/chemistry/chem-ui-lib)
 [![codecov](https://codecov.io/gh/chemistry/math/branch/master/graph/badge.svg)](https://codecov.io/gh/chemistry/math)
 
 Simple linear algebra Math library to support [chemistry js project](http://vreshch.com/chemistry-js.html)

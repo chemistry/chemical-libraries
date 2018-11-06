@@ -1,7 +1,7 @@
 # @crystallography/space-groups
 
 [![npm version](https://badge.fury.io/js/%40crystallography%2Fspace-groups.svg)](https://badge.fury.io/js/%40crystallography%2Fspace-groups)
-[![Build Status](https://travis-ci.com/chemistry/chem-js-lib.svg?branch=master)](https://travis-ci.org/chemistry/chem-js-lib)
+[![Build Status](https://travis-ci.com/chemistry/chem-ui-lib.svg?branch=master)](https://travis-ci.org/chemistry/chem-ui-lib)
 [![codecov](https://codecov.io/gh/crystallography/space-groups/branch/master/graph/badge.svg)](https://codecov.io/gh/crystallography/space-groups)
 
 Crystallography: Space Groups list;

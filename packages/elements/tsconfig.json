@@ -1,29 +1,3 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
-        "noImplicitAny": true,
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "declaration": true,
-        "types": ["jasmine"],
-        "outDir": "dist"
-    },
-
-    "rules": {
-    },
-
-    "exclude": [
-        "node_modules",
-        "dist"
-    ],
-
-    "awesomeTypescriptLoaderOptions": {
-        "forkChecker": true,
-        "useWebpackText": true
-    },
-
-    "atom": {
-        "rewriteTsconfig": false
-    }
+    "extends": "../../tsconfig.json"
 }

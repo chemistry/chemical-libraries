@@ -27,6 +27,12 @@
     "access": "public"
   },
   "private": false,
+  "files": [
+    "package-lock.json",
+    "package.json",
+    "dist",
+    "README.md"
+  ],
   "main": "dist/elements.js",
   "typings": "dist/elements.d.ts",
   "scripts": {
@@ -38,8 +44,6 @@
     "coverage": "ts-node ../../node_modules/istanbul/lib/cli.js cover -e .ts  -x \"*.d.ts\" -x \"*.spec.ts\" ../../node_modules/jasmine/bin/jasmine.js -- JASMINE_CONFIG_PATH=etc/jasmine.json",
     "test:browser": "karma start --single-run --no-auto-watch etc/karma.conf.js",
     "tdd": "nodemon -e ts -w ./src -x ts-node ../../node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=etc/jasmine.json",
-    "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
-    "lintfix": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts' --fix",
     "codecov": "codecov -t f7e73766-d8e8-406d-bc14-b15e6f26434f < coverage/lcov.info"
   }
 }

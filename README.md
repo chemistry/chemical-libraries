@@ -1,13 +1,13 @@
 # chem-js-lib
-[![Build Status](https://travis-ci.com/chemistry/chem-js-lib.svg?branch=master)](https://travis-ci.org/chemistry/chem-js-lib)
+[![Build Status](https://travis-ci.com/chemistry/chem-ui-lib.svg?branch=master)](https://travis-ci.org/chemistry/chem-ui-lib)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
 Open Cheminformatics Libraries written in JavaScript and working both in browser and server side (NodeJS)
 
 ## Solution include following libraries:
-  - [@chemistry/elements](https://github.com/chemistry/chem-js-lib/tree/master/packages/elements)
-  - [@chemistry/math](https://github.com/chemistry/chem-js-lib/tree/master/packages/math)
-  - [@crystallography/space-groups](https://github.com/chemistry/chem-js-lib/tree/master/packages/space-groups)
+  * [@chemistry/elements](https://github.com/chemistry/chem-js-lib/tree/master/packages/elements)
+  * [@chemistry/math](https://github.com/chemistry/chem-js-lib/tree/master/packages/math)
+  * [@crystallography/space-groups](https://github.com/chemistry/chem-js-lib/tree/master/packages/space-groups)
 
 
 ## Technical description :

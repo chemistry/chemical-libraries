@@ -4,6 +4,7 @@
  * Atomic weight : http://www.degruyter.com/view/j/pac.2013.85.issue-5/pac-rep-13-03-02/pac-rep-13-03-02.xml
 */
 export class Element {
+
     public static getElementById(id: number): Element {
 
         for (const elementName of Object.keys(ElementList)) {

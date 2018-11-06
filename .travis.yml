@@ -12,5 +12,8 @@ script:
   - npm run test
   - npm run build
 
+after_success:
+  - npm run codecov
+
 notifications:
   email: false

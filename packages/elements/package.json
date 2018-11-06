@@ -36,14 +36,6 @@
   "main": "dist/elements.js",
   "typings": "dist/elements.d.ts",
   "scripts": {
-    "build": "npm run clean && npm run build:prod",
-    "build:prod": "webpack-cli --config etc/webpack.config.base.js --mode production",
-    "clean": "rimraf dist/* coverage/*",
-    "test": "rimraf coverage/* && npm run test:node && npm run test:browser && npm run coverage",
-    "test:node": "ts-node ../../node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=etc/jasmine.json",
-    "coverage": "ts-node ../../node_modules/istanbul/lib/cli.js cover -e .ts  -x \"*.d.ts\" -x \"*.spec.ts\" ../../node_modules/jasmine/bin/jasmine.js -- JASMINE_CONFIG_PATH=etc/jasmine.json",
-    "test:browser": "karma start --single-run --no-auto-watch etc/karma.conf.js",
-    "tdd": "nodemon -e ts -w ./src -x ts-node ../../node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=etc/jasmine.json",
-    "codecov": "codecov -t f7e73766-d8e8-406d-bc14-b15e6f26434f < coverage/lcov.info"
+    "build": "webpack-cli --config etc/webpack.config.base.js --mode production"
   }
 }

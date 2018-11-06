@@ -2,7 +2,8 @@
 
 [![npm version](https://badge.fury.io/js/%40crystallography%2Fspace-groups.svg)](https://badge.fury.io/js/%40crystallography%2Fspace-groups)
 [![Build Status](https://travis-ci.com/chemistry/chem-ui-lib.svg?branch=master)](https://travis-ci.org/chemistry/chem-ui-lib)
-[![codecov](https://codecov.io/gh/crystallography/space-groups/branch/master/graph/badge.svg)](https://codecov.io/gh/crystallography/space-groups)
+[![codecov](https://codecov.io/gh/chemistry/chem-js-lib/branch/master/graph/badge.svg)](https://codecov.io/gh/chemistry/chem-js-lib)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Crystallography: Space Groups list;
 

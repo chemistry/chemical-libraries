@@ -1,5 +1,5 @@
 {
-    "name": "@chemistry/chem-ui-lib",
+    "name": "@chemistry/chem-js-lib",
     "version": "2.0.0",
     "description": "Open Cheminformatics Libraries",
     "author": {
@@ -24,7 +24,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/chemistry/math.git"
+        "url": "https://github.com/chemistry/chem-js-lib.git"
     },
     "publishConfig": {
         "registry": "https://registry.npmjs.org/"
@@ -34,7 +34,9 @@
         "bootstrap": "lerna bootstrap",
         "lint": "lerna run lint",
         "lintfix": "lerna run linfix",
-        "build": "lerna run build"
+        "build": "lerna run build",
+        "test": "lerna run test",
+        "updated": "lerna updated"
     },
     "dependencies": {},
     "devDependencies": {

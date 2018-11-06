@@ -76,10 +76,8 @@ export class Element {
      */
     public color2: string;
 
-    constructor(
-        elementNumber: number, symbol: string, RCow: number, RVdW: number, maxBonds: number,
-        mass: number, name: string, posX: number, posY: number, color: string, color2: string,
-    ) {
+    constructor(elementNumber: number, symbol: string, RCow: number, RVdW: number, maxBonds: number,
+                mass: number, name: string, posX: number, posY: number, color: string, color2: string) {
         this.number = elementNumber;
         this.symbol = symbol;
         this.RCow = RCow;

@@ -6,14 +6,14 @@ module.exports = {
     devtool:  'source-map',
 
     entry: {
-        'elements': path.resolve(__dirname, '../src/elements.ts')
+        'math': path.resolve(__dirname, '../src/math.ts')
     },
 
     output: {
         globalObject: 'typeof self !== \'undefined\' ? self : this',
         path: path.resolve(__dirname, '../dist'),
         libraryTarget: 'umd',
-        library: 'elements',
+        library: 'math',
         umdNamedDefine: true
     },
 

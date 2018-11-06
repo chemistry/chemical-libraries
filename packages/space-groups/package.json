@@ -1,0 +1,65 @@
+{
+    "name": "@crystallography/space-groups",
+    "version": "1.0.7",
+    "description": "List of space groups with symetry codes",
+    "author": {
+        "name": "Volodymyr Vreshch",
+        "url": "http://vreshch.com/"
+    },
+    "license": "MIT",
+    "keywords": [
+        "cheminformatics",
+        "crystallography",
+        "space groups"
+    ],
+    "engines": {
+        "node": ">=6.0.0"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/chemistry/chem-js-lib.git"
+    },
+    "private": false,
+    "main": "dist/space-groups.js",
+    "typings": "dist/space-groups.d.ts",
+    "scripts": {
+        "build": "npm run clean && npm run build:prod",
+        "build:prod": "webpack-cli --config etc/webpack.config.base.js --mode production",
+        "clean": "rimraf dist/* coverage/*",
+        "test": "rimraf coverage/* && npm run test:node && npm run test:browser && npm run coverage",
+        "test:node": "ts-node node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=etc/jasmine.json",
+        "coverage": "ts-node node_modules/istanbul/lib/cli.js cover -e .ts  -x \"*.d.ts\" -x \"*.spec.ts\" node_modules/jasmine/bin/jasmine.js -- JASMINE_CONFIG_PATH=etc/jasmine.json",
+        "test:browser": "karma start --single-run --no-auto-watch etc/karma.conf.js",
+        "tdd": "nodemon -e ts -w ./src -x ts-node node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=etc/jasmine.json",
+        "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
+        "lintfix": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts' --fix",
+        "codecov": "codecov -t 183fe4ef-1005-4afe-a497-44206ed48bd9 < coverage/lcov.info",
+        "do-publish": "npm run build && npm publish"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "ts-node": "7.0.1",
+        "typescript": "3.0.3",
+        "tslint": "5.11.0",
+        "@types/jasmine": "2.8.8",
+        "istanbul": "1.1.0-alpha.1",
+        "cross-env": "5.2.0",
+        "jasmine": "3.2.0",
+        "jasmine-core": "3.2.1",
+        "loader-utils": "1.1.0",
+        "rimraf": "2.6.2",
+        "webpack": "4.18.0",
+        "awesome-typescript-loader": "5.2.1",
+        "codecov": "3.1.0",
+        "karma": "3.0.0",
+        "karma-jasmine": "1.1.2",
+        "karma-webpack": "3.0.4",
+        "phantomjs-prebuilt": "2.1.16",
+        "karma-mocha-reporter": "2.2.5",
+        "karma-phantomjs-launcher": "1.0.4",
+        "webpack-cli": "3.1.0"
+    }
+}

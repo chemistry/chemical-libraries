@@ -31,3 +31,8 @@ npm run build
   * Run linter verification: `npm run lint`
   * Run linter verification & fix: `npm run lintfix`
   * Build project: `npm run build`
+
+
+## License
+  This project is licensed under the MIT license, Copyright (c) 2018 Volodymyr Vreshch.
+  For more information see [LICENSE.md](https://github.com/chemistry/chem-js-lib/blob/master/LICENSE.md).

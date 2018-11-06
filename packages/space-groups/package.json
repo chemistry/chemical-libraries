@@ -1,6 +1,6 @@
 {
     "name": "@crystallography/space-groups",
-    "version": "1.0.7",
+    "version": "2.2.0",
     "description": "List of space groups with symetry codes",
     "author": {
         "name": "Volodymyr Vreshch",
@@ -16,7 +16,8 @@
         "node": ">=6.0.0"
     },
     "publishConfig": {
-        "registry": "https://registry.npmjs.org/"
+        "registry": "https://registry.npmjs.org/",
+        "access": "public"
     },
     "repository": {
         "type": "git",
@@ -36,8 +37,7 @@
       "tdd": "nodemon -e ts -w ./src -x ts-node ../../node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=etc/jasmine.json",
       "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
       "lintfix": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts' --fix",
-        "codecov": "codecov -t 183fe4ef-1005-4afe-a497-44206ed48bd9 < coverage/lcov.info",
-        "do-publish": "npm run build && npm publish"
+      "codecov": "codecov -t 183fe4ef-1005-4afe-a497-44206ed48bd9 < coverage/lcov.info"
     },
     "dependencies": {},
     "devDependencies": {

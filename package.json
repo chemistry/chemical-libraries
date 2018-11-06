@@ -1,6 +1,6 @@
 {
     "name": "@chemistry/chem-js-lib",
-    "version": "2.0.0",
+    "version": "2.2.0",
     "description": "Open Cheminformatics Libraries",
     "author": {
         "name": "Volodymyr Vreshch",
@@ -36,7 +36,8 @@
         "lintfix": "lerna run linfix",
         "build": "lerna run build",
         "test": "lerna run test",
-        "updated": "lerna updated"
+        "updated": "lerna updated",
+        "do-publish": "npm run clean && npm run bootstrap && npm run build && lerna publish"
     },
     "dependencies": {},
     "devDependencies": {

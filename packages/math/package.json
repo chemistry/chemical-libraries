@@ -1,6 +1,6 @@
 {
     "name": "@chemistry/math",
-    "version": "2.1.6",
+    "version": "2.2.0",
     "description": "Math support for @chemistry project",
     "author": {
         "name": "Volodymyr Vreshch",
@@ -20,7 +20,8 @@
         "url": "https://github.com/chemistry/chem-js-lib.git"
     },
     "publishConfig": {
-        "registry": "https://registry.npmjs.org/"
+        "registry": "https://registry.npmjs.org/",
+        "access": "public"
     },
     "private": false,
     "main": "dist/math.js",
@@ -36,8 +37,7 @@
       "tdd": "nodemon -e ts -w ./src -x ts-node ../../node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=etc/jasmine.json",
       "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
       "lintfix": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts' --fix",
-        "codecov": "codecov -t f26dcfff-7278-4e11-b691-c7c5990c97d2 < coverage/lcov.info",
-        "do-publish": "npm run build && npm publish"
+      "codecov": "codecov -t f26dcfff-7278-4e11-b691-c7c5990c97d2 < coverage/lcov.info"
     },
     "dependencies": {},
     "devDependencies": {}

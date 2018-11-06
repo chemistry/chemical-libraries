@@ -1,6 +1,6 @@
 {
   "name": "@chemistry/elements",
-  "version": "1.3.3",
+  "version": "2.2.0",
   "description": "Chemical elements information",
   "author": {
     "name": "Volodymyr Vreshch",
@@ -23,7 +23,8 @@
       "url": "https://github.com/chemistry/chem-js-lib.git"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "private": false,
   "main": "dist/elements.js",
@@ -39,8 +40,7 @@
       "tdd": "nodemon -e ts -w ./src -x ts-node ../../node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=etc/jasmine.json",
       "lint": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts'",
       "lintfix": "tslint -c tslint.json -p tsconfig.json 'src/**/*.ts' --fix",
-      "codecov": "codecov -t f7e73766-d8e8-406d-bc14-b15e6f26434f < coverage/lcov.info",
-      "do-publish": "npm run build && npm publish"
+      "codecov": "codecov -t f7e73766-d8e8-406d-bc14-b15e6f26434f < coverage/lcov.info"
   },
   "dependencies": {},
   "devDependencies": {

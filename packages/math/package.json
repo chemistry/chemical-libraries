@@ -31,8 +31,8 @@
         "README.md"
     ],
     "main": "dist/math.js",
-    "typings": "dist/math.d.ts",
+    "typings": "dist/index.d.ts",
     "scripts": {
-        "build": "webpack-cli --config etc/webpack.config.base.js --mode production"
+        "build": "webpack-cli --config webpack.config.js --mode production"
     }
 }

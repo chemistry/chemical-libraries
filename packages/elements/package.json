@@ -34,8 +34,8 @@
     "README.md"
   ],
   "main": "dist/elements.js",
-  "typings": "dist/elements.d.ts",
+  "typings": "dist/index.d.ts",
   "scripts": {
-    "build": "webpack-cli --config etc/webpack.config.base.js --mode production"
+    "build": "webpack-cli --config webpack.config.js --mode production"
   }
 }

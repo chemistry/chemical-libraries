@@ -25,10 +25,10 @@
     },
     "private": false,
     "files": [
-      "package-lock.json",
-      "package.json",
-      "dist",
-      "README.md"
+        "package-lock.json",
+        "package.json",
+        "dist",
+        "README.md"
     ],
     "main": "dist/space-groups.js",
     "typings": "dist/space-groups.d.ts",

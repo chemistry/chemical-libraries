@@ -25,10 +25,10 @@
     },
     "private": false,
     "files": [
-      "package-lock.json",
-      "package.json",
-      "dist",
-      "README.md"
+        "package-lock.json",
+        "package.json",
+        "dist",
+        "README.md"
     ],
     "main": "dist/math.js",
     "typings": "dist/math.d.ts",

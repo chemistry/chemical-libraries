@@ -1,0 +1,40 @@
+{
+  "name": "@chemistry/common",
+  "version": "2.2.0",
+  "description": "Chemical data formats",
+  "author": {
+    "name": "Volodymyr Vreshch",
+    "url": "http://vreshch.com/"
+  },
+  "license": "MIT",
+  "keywords": [
+    "cheminformatics",
+    "jnmol",
+    "jmol",
+    "chemistry",
+    "data formats"
+  ],
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chemistry/chem-js-lib.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "private": false,
+  "files": [
+    "package-lock.json",
+    "package.json",
+    "dist",
+    "README.md"
+  ],
+  "main": "dist/common.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build": "webpack-cli --config webpack.config.js --mode production"
+  }
+}

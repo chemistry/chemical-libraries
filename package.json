@@ -13,9 +13,6 @@
         "chemistry",
         "javascript"
     ],
-    "workspaces": [
-        "packages/*"
-    ],
     "engines": {
         "node": ">=6.0.0"
     },

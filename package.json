@@ -28,7 +28,7 @@
     },
     "scripts": {
         "clean": "lerna clean && rimraf dist/* coverage/*",
-        "bootstrap": "lerna bootstrap --no-ci",
+        "bootstrap": "lerna bootstrap --hoist",
         "build": "lerna run build",
         "updated": "lerna updated",
         "test": "jest",

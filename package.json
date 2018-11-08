@@ -27,7 +27,6 @@
         "registry": "https://registry.npmjs.org/"
     },
     "scripts": {
-        "postinstall": "lerna bootstrap",
         "clean": "lerna clean && rimraf dist/* coverage/*",
         "bootstrap": "lerna bootstrap",
         "build": "lerna run build",

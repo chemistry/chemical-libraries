@@ -1,6 +1,6 @@
 {
     "name": "@chemistry/math",
-    "version": "2.2.1",
+    "version": "2.2.2",
     "description": "Math support for @chemistry project",
     "author": {
         "name": "Volodymyr Vreshch",

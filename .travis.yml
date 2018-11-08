@@ -5,11 +5,9 @@ node_js:
   - "9"
   - "8"
 
-install:
+script:
   - npm install
   - npm run bootstrap
-
-script:
   - npm run lint
   - npm run test
   - npm run build

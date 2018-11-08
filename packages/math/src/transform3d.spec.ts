@@ -139,7 +139,7 @@ describe("Transform3D", () => {
         const ab =  Transform3D.fromMultiplication(a, b);
         const E = new Transform3D();
 
-        expect(E.equal(ab)).toBeTruthy();
+        expect(E.equals(ab)).toBeTruthy();
     });
 
     it("should define determinant method", () => {
@@ -152,6 +152,6 @@ describe("Transform3D", () => {
         const b = a.clone();
 
         expect(a === b).toBeFalsy();
-        expect(a.equal(b)).toBeTruthy();
+        expect(a.equals(b)).toBeTruthy();
     });
 });

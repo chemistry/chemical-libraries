@@ -1,4 +1,4 @@
-import { EPSILON,  IClonable, IEquatable } from "./common";
+import { EPSILON,  ICloneable, IEquatable } from "@chemistry/common";
 import { Quaternion } from "./quaternion";
 import { Vec3 } from "./vec3";
 
@@ -10,9 +10,9 @@ import { Vec3 } from "./vec3";
  * |  2  6  10 14  | = |  R  R  RS T  |
  * |  3  7  11 15  |   |  0  0  0  1  |
  */
-export class Transform3D implements IClonable<Transform3D> {
+export class Transform3D implements ICloneable<Transform3D> {
 
-    public static equal(matrix1: Transform3D, matrix2: Transform3D): boolean {
+    public static equals(matrix1: Transform3D, matrix2: Transform3D): boolean {
         return (Math.abs(matrix1.elements[0] - matrix2.elements[0]) < EPSILON)
             && (Math.abs(matrix1.elements[1] - matrix2.elements[1]) < EPSILON)
             && (Math.abs(matrix1.elements[2] - matrix2.elements[2]) < EPSILON)
@@ -275,7 +275,7 @@ export class Transform3D implements IClonable<Transform3D> {
         return new Transform3D(this.elements);
     }
 
-    public equal(transform: Transform3D): boolean {
-        return Transform3D.equal(this, transform);
+    public equals(transform: Transform3D): boolean {
+        return Transform3D.equals(this, transform);
     }
 }

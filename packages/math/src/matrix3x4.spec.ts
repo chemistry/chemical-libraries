@@ -101,7 +101,7 @@ describe("Matrix3x4", () => {
         const b = a.clone();
 
         expect(a === b).toBeFalsy();
-        expect(a.equal(b)).toBeTruthy();
+        expect(a.equals(b)).toBeTruthy();
     });
 
     it("should define translate method", () => {
@@ -109,10 +109,10 @@ describe("Matrix3x4", () => {
         const mat2 = mat1.translate(new Vec3(1, 2, 3));
 
         expect(mat1 === mat2).toBeFalsy();
-        expect(mat1.equal(mat2)).toBeFalsy();
+        expect(mat1.equals(mat2)).toBeFalsy();
 
         const mat3 = mat2.translate(new Vec3(-1, -2, -3));
-        expect(mat1.equal(mat3)).toBeTruthy();
+        expect(mat1.equals(mat3)).toBeTruthy();
     });
 
     it("should define isE method", () => {

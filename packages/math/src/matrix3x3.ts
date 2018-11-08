@@ -1,9 +1,9 @@
-import { EPSILON,  IClonable, IEquatable } from "./common";
+import { EPSILON,  ICloneable, IEquatable } from "@chemistry/common";
 import { Vec3 } from "./vec3";
 
-export class Matrix3x3 implements IClonable<Matrix3x3>, IEquatable<Matrix3x3> {
+export class Matrix3x3 implements ICloneable<Matrix3x3>, IEquatable<Matrix3x3> {
 
-    public static equal(m1: Matrix3x3, m2: Matrix3x3): boolean {
+    public static equals(m1: Matrix3x3, m2: Matrix3x3): boolean {
         return (Math.abs(m1.elements[0] - m2.elements[0]) < EPSILON)
             && (Math.abs(m1.elements[1] - m2.elements[1]) < EPSILON)
             && (Math.abs(m1.elements[2] - m2.elements[2]) < EPSILON)
@@ -123,8 +123,8 @@ export class Matrix3x3 implements IClonable<Matrix3x3>, IEquatable<Matrix3x3> {
     /**
      * Compare 2 matrixes
      */
-    public equal(matrix: Matrix3x3): boolean {
-        return Matrix3x3.equal(this, matrix);
+    public equals(matrix: Matrix3x3): boolean {
+        return Matrix3x3.equals(this, matrix);
     }
 
     /**

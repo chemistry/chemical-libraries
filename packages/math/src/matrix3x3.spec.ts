@@ -106,7 +106,7 @@ describe("Matrix3x3", () => {
         const ab = a.multiply(b);
         const E = new Matrix3x3();
 
-        expect(E.equal(ab)).toBeTruthy();
+        expect(E.equals(ab)).toBeTruthy();
     });
 
     it("should define clone method", () => {
@@ -115,7 +115,7 @@ describe("Matrix3x3", () => {
         const b = a.clone();
 
         expect(a === b).toBeFalsy();
-        expect(a.equal(b)).toBeTruthy();
+        expect(a.equals(b)).toBeTruthy();
     });
 
 });

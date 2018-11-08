@@ -1,6 +1,6 @@
-import { EPSILON,  IClonable, IEquatable } from "./common";
+import { EPSILON,  ICloneable, IEquatable } from "@chemistry/common";
 
-export class Vec3 implements IClonable<Vec3>, IEquatable<Vec3> {
+export class Vec3 implements ICloneable<Vec3>, IEquatable<Vec3> {
 
     public static add(v1: Vec3, v2: Vec3): Vec3 {
         return new Vec3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
@@ -18,7 +18,7 @@ export class Vec3 implements IClonable<Vec3>, IEquatable<Vec3> {
         return new Vec3(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x);
     }
 
-    public static equal(v1: Vec3, v2: Vec3): boolean {
+    public static equals(v1: Vec3, v2: Vec3): boolean {
         return (Math.abs(v1.x - v2.x) < EPSILON)
             && (Math.abs(v1.y - v2.y) < EPSILON)
             && (Math.abs(v1.z - v2.z) < EPSILON);
@@ -78,8 +78,8 @@ export class Vec3 implements IClonable<Vec3>, IEquatable<Vec3> {
         return Vec3.add(this, vector);
     }
 
-    public equal(vec: Vec3) {
-        return Vec3.equal(this, vec);
+    public equals(vec: Vec3) {
+        return Vec3.equals(this, vec);
     }
 
     public clone() {

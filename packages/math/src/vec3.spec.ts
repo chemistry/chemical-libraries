@@ -84,18 +84,18 @@ describe("Vec3", () => {
         expect(res.toString()).toEqual("(0.000,0.000,0.000)");
     });
 
-    it("should define: equal", () => {
+    it("should define: equals", () => {
         const vec1 = new Vec3(1, 2, 3);
         const vec2 = new Vec3(1, (1 / 3) * 6, 3);
-        const res = vec1.equal(vec2);
+        const res = vec1.equals(vec2);
 
         expect(res).toBeTruthy();
     });
 
-    it("should define: static equal", () => {
+    it("should define: static equals", () => {
         const vec1 = new Vec3(1, 2, 3);
         const vec2 = new Vec3(1, (1 / 3) * 6, 3);
-        const res = Vec3.equal(vec1, vec2);
+        const res = Vec3.equals(vec1, vec2);
 
         expect(res).toBeTruthy();
     });
@@ -104,7 +104,7 @@ describe("Vec3", () => {
         const vec1 = new Vec3(1, 2, 3);
         const vec2 = vec1.clone();
 
-        expect(Vec3.equal(vec1, vec2)).toBeTruthy();
+        expect(Vec3.equals(vec1, vec2)).toBeTruthy();
         expect(vec1 === vec2).toBeFalsy();
     });
 

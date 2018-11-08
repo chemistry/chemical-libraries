@@ -1,4 +1,4 @@
-import { EPSILON,  IClonable, IEquatable } from "./common";
+import { EPSILON,  ICloneable, IEquatable } from "@chemistry/common";
 import { Vec3 } from "./vec3";
 
 /**
@@ -8,7 +8,7 @@ import { Vec3 } from "./vec3";
  * | x8 x10 x11 x12|
  * | 0  0   0   1  |
  */
-export class Matrix3x4 implements IClonable<Matrix3x4>, IEquatable<Matrix3x4>  {
+export class Matrix3x4 implements ICloneable<Matrix3x4>, IEquatable<Matrix3x4>  {
 
     public static add(matrix1: Matrix3x4, matrix2: Matrix3x4): Matrix3x4 {
         const m1 = matrix1.elements;
@@ -128,7 +128,7 @@ export class Matrix3x4 implements IClonable<Matrix3x4>, IEquatable<Matrix3x4>  {
             && (Math.abs(matrix.elements[11] - 0) < EPSILON);
     }
 
-    public static equal(matrix1: Matrix3x4, matrix2: Matrix3x4): boolean {
+    public static equals(matrix1: Matrix3x4, matrix2: Matrix3x4): boolean {
         return (Math.abs(matrix1.elements[0] - matrix2.elements[0]) < EPSILON)
             && (Math.abs(matrix1.elements[1] - matrix2.elements[1]) < EPSILON)
             && (Math.abs(matrix1.elements[2] - matrix2.elements[2]) < EPSILON)
@@ -243,8 +243,8 @@ export class Matrix3x4 implements IClonable<Matrix3x4>, IEquatable<Matrix3x4>  {
         return Matrix3x4.isE(this);
     }
 
-    public equal(matrix: Matrix3x4): boolean {
-        return Matrix3x4.equal(this, matrix);
+    public equals(matrix: Matrix3x4): boolean {
+        return Matrix3x4.equals(this, matrix);
     }
 
     public clone(): Matrix3x4 {

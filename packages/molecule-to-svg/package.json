@@ -35,8 +35,7 @@
   "main": "dist/molecule.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "build": "webpack-cli --config webpack.config.js --mode production",
-    "serve": "webpack-serve  --config ./etc/webpack.config.demo.js"
+    "build": "webpack-cli --config webpack.config.js --mode production"
   },
   "dependencies": {
       "@chemistry/common": "^2.2.0"

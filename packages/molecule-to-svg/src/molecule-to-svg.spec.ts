@@ -7,8 +7,8 @@ describe("MoleculeToSVG", () => {
 
     it("should return empty string", () => {
         const res = MoleculeToSVG({
-            molecule: {id: 'id', title: 'title', atoms: {}, bonds: {}},
-            options: {}
+            molecule: {id: "id", title: "title", atoms: {}, bonds: {}},
+            options: {},
         });
         expect(res).toBeDefined();
     });

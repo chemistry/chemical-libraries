@@ -37,21 +37,29 @@
         "lint": "tslint -c tslint.json -p tsconfig.json 'packages/**/src/**/*.ts'",
         "lintfix": "tslint -c tslint.json -p tsconfig.json 'packages/**/src/**/*.ts' --fix",
         "do-publish": "npm run clean && npm run bootstrap && npm run build && lerna publish",
-        "codecov": "codecov -t c0c5b758-349c-49bd-8c63-58fdc724e474 < coverage/lcov.info"
+        "codecov": "codecov -t c0c5b758-349c-49bd-8c63-58fdc724e474 < coverage/lcov.info",
+        "start": "webpack-serve  --config ./webpack.demo.config.js"
     },
-    "dependencies": {},
+    "dependencies": {
+    },
     "devDependencies": {
         "@types/jest": "23.3.9",
+        "@types/react": "^16.7.3",
+        "@types/react-dom": "^16.0.9",
         "awesome-typescript-loader": "5.2.1",
+        "html-webpack-plugin": "3.2.0",
         "codecov": "3.1.0",
         "jest": "23.6.0",
         "lerna": "3.4.3",
         "rimraf": "2.6.2",
+        "react": "16.6.1",
+        "react-dom": "16.6.1",
         "ts-jest": "23.10.4",
         "ts-node": "7.0.1",
         "tslint": "5.11.0",
         "typescript": "3.1.6",
         "webpack": "4.25.1",
-        "webpack-cli": "3.1.2"
+        "webpack-cli": "3.1.2",
+        "webpack-serve": "2.0.2"
     }
 }

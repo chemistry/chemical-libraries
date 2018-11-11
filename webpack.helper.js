@@ -28,7 +28,7 @@ module.exports = function(libraryName, dirname) {
         },
 
         resolve: {
-            extensions: ['.ts']
+            extensions: ['.ts', '.tsx', ".js", ".jsx"]
         }
     };
 

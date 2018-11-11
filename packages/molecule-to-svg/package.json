@@ -1,0 +1,44 @@
+{
+  "name": "@chemistry/molecule-to-svg",
+  "version": "2.2.1",
+  "description": "Molecule To SVG :: molecule conversion",
+  "author": {
+    "name": "Volodymyr Vreshch",
+    "url": "http://vreshch.com/"
+  },
+  "license": "MIT",
+  "keywords": [
+    "cheminformatics",
+    "molecule",
+    "svg",
+    "mol",
+    "conversion"
+  ],
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chemistry/chem-js-lib.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "private": false,
+  "files": [
+    "package-lock.json",
+    "package.json",
+    "dist",
+    "README.md"
+  ],
+  "main": "dist/molecule.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build": "webpack-cli --config webpack.config.js --mode production",
+    "serve": "webpack-serve  --config ./etc/webpack.config.demo.js"
+  },
+  "dependencies": {
+      "@chemistry/common": "^2.2.0"
+  }
+}

@@ -8,8 +8,10 @@
 Open Cheminformatics Libraries written in JavaScript and working both in browser and server side (NodeJS)
 
 ## Solution include following libraries:
+  * [@chemistry/common](https://github.com/chemistry/chem-js-lib/tree/master/packages/common)
   * [@chemistry/elements](https://github.com/chemistry/chem-js-lib/tree/master/packages/elements)
   * [@chemistry/math](https://github.com/chemistry/chem-js-lib/tree/master/packages/math)
+  * [@chemistry/molecule](https://github.com/chemistry/chem-js-lib/tree/master/packages/molecule)
   * [@crystallography/space-groups](https://github.com/chemistry/chem-js-lib/tree/master/packages/space-groups)
 
 ## Technical description (all libraries):

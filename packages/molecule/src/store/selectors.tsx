@@ -64,10 +64,11 @@ function project(camera: ProjectInfo, { x, y }: IVec2): IVec2 {
         y: y * camera.scale + camera.translation.y,
     };
 }
-
+/*
 function unproject(camera: ProjectInfo, { x, y }: IVec2): IVec2 {
     return {
         x: (x - camera.translation.x) / camera.scale,
         y: (y - camera.translation.y) / camera.scale,
     };
 }
+*/

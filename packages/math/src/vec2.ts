@@ -24,12 +24,6 @@ export class Vec2 implements IVec2, ICloneable<Vec2>, IEquatable<Vec2> {
             && (Math.abs(v1.y - v2.y) < EPSILON);
     }
 
-    public static getDecimal(v1: Vec2): Vec2 {
-        const x: number = v1.x - Math.floor(v1.x);
-        const y: number = v1.y - Math.floor(v1.y);
-        return new Vec2(x, y);
-    }
-
     public x: number;
     public y: number;
 

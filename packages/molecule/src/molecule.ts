@@ -1,6 +1,13 @@
 import { JNMol } from "@chemistry/common";
 import { createStore } from "redux";
-import { IMoleculeState, loadMolecule, reducer } from "./store";
+import { MoleculeDataFormat } from "./models";
+import {
+    exportMolecule,
+    exportToSVG,
+    IMoleculeState,
+    loadMolecule,
+    reducer,
+} from "./store";
 
 export class Molecule {
     private store = createStore(reducer);
@@ -17,11 +24,15 @@ export class Molecule {
         return Object.keys(this.state.bonds).length;
     }
 
-    public load(data: any, format: string = "jmol") {
+    public load(data: any, format: MoleculeDataFormat = MoleculeDataFormat.jnmol) {
         this.store.dispatch(loadMolecule(data, format));
     }
 
-    public getJNMol(): JNMol {
-        return this.state;
+    public export(format: MoleculeDataFormat = MoleculeDataFormat.jnmol): any {
+        return exportMolecule(this.state, format);
+    }
+
+    public toSVG(): JSX.Element {
+        return exportToSVG(this.state);
     }
 }

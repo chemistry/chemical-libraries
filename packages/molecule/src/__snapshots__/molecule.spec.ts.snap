@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Molecule toSVG should export ACETONE 1`] = `
+<svg>
+  <g>
+    <text
+      alignmentBaseline="middle"
+      fill="black"
+      textAnchor="middle"
+      x={121.42}
+      y={33.5}
+    >
+      C
+    </text>
+    <text
+      alignmentBaseline="middle"
+      fill="black"
+      textAnchor="middle"
+      x={150}
+      y={50}
+    >
+      C
+    </text>
+    <text
+      alignmentBaseline="middle"
+      fill="black"
+      textAnchor="middle"
+      x={178.58}
+      y={33.5}
+    >
+      C
+    </text>
+    <text
+      alignmentBaseline="middle"
+      fill="black"
+      textAnchor="middle"
+      x={150}
+      y={83}
+    >
+      O
+    </text>
+  </g>
+</svg>
+`;

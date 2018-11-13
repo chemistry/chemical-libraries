@@ -1,7 +1,9 @@
 import { JNMol } from "@chemistry/common";
 import { Action, AnyAction, combineReducers, Dispatch, Reducer } from "redux";
+import { MoleculeDataFormat } from "../models";
 import { MoleculeAction } from "./actions";
 import { ActionTypes } from "./constants";
+import { isValidJnmol } from "./helpers";
 
 export interface IMoleculeState extends JNMol {
     id: string;
@@ -26,13 +28,8 @@ export const reducer: Reducer<IMoleculeState> = (state = initialState, action: M
     switch (action.type) {
         case ActionTypes.MOLECULE_LOAD:
             const { data, format} = action.payload;
-            if (format === "jnmol") {
-                if (
-                    data && typeof data === "object" &&
-                    data.atoms && data.bonds &&
-                    typeof data.id === "string" &&
-                    typeof data.title === "string"
-                ) {
+            if (format === MoleculeDataFormat.jnmol) {
+                if (isValidJnmol(data)) {
                     return data;
                 }
                 throw new Error("incorrect data JNMOL format");

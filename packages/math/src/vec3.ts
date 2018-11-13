@@ -1,6 +1,12 @@
 import { EPSILON,  ICloneable, IEquatable } from "@chemistry/common";
 
-export class Vec3 implements ICloneable<Vec3>, IEquatable<Vec3> {
+export interface IVec3 {
+    x: number;
+    y: number;
+    z: number;
+}
+
+export class Vec3 implements IVec3, ICloneable<Vec3>, IEquatable<Vec3> {
 
     public static add(v1: Vec3, v2: Vec3): Vec3 {
         return new Vec3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);

@@ -40,8 +40,7 @@
         "codecov": "codecov -t c0c5b758-349c-49bd-8c63-58fdc724e474 < coverage/lcov.info",
         "start": "webpack-serve  --config ./webpack.demo.config.js"
     },
-    "dependencies": {
-    },
+    "dependencies": {},
     "devDependencies": {
         "@types/jest": "23.3.9",
         "@types/react": "^16.7.3",

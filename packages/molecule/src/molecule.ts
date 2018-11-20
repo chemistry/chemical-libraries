@@ -1,6 +1,7 @@
 import { JNMol } from "@chemistry/common";
 import { createStore } from "redux";
 import { MoleculeDataFormat } from "./models";
+import { SvgExportOptions } from "./models";
 import {
     exportMolecule,
     exportToSVG,
@@ -32,7 +33,7 @@ export class Molecule {
         return exportMolecule(this.state, format);
     }
 
-    public toSVG(): JSX.Element {
-        return exportToSVG(this.state);
+    public toSVG(options: SvgExportOptions): JSX.Element {
+        return exportToSVG(this.state, options);
     }
 }

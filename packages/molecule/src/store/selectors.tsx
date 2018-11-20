@@ -1,5 +1,9 @@
 import { JNMol } from "@chemistry/common";
+import { Element } from "@chemistry/elements";
+// import { IVec2 } from "@chemistry/math";
+
 import * as React from "react";
+import { defaultSvgOptions, SvgExportOptions } from "../models";
 import {
     IMoleculeState,
 } from "./reducer";
@@ -8,17 +12,23 @@ export const exportMolecule = (molecule: IMoleculeState, format: string): any =>
     return molecule;
 };
 
-function getAtomsSVG(molecule: IMoleculeState, projectFn: (coords: IVec2) => IVec2): JSX.Element {
+interface IVec2 {
+    x: number;
+    y: number;
+}
+
+function getAtomsSVG(molecule: IMoleculeState, options: SvgExportOptions, projectFn: (coords: IVec2) => IVec2): JSX.Element {
     const atomsView = Object.keys(molecule.atoms).map((atomId: string) => {
         const atom = molecule.atoms[atomId];
         const  { type } =  atom;
         const { x, y } = projectFn(atom);
+        const color = getAtomColor(type, options);
 
         return (<text
           key={atomId}
           x={x}
           y={y}
-          fill="black"
+          fill={color}
           textAnchor="middle"
           alignmentBaseline="middle"
         >{type}</text>);
@@ -26,13 +36,44 @@ function getAtomsSVG(molecule: IMoleculeState, projectFn: (coords: IVec2) => IVe
     return (<g>{atomsView}</g>);
 }
 
-export const exportToSVG = (molecule: IMoleculeState): JSX.Element => {
+function getAtomColor(atomType: string, options: SvgExportOptions) {
+    if (!options.colorElements) {
+        return "black";
+    }
+    const chemElementData = Element.getElementByName(atomType);
+    return chemElementData ? chemElementData.color2 : "black";
+}
+
+function getSVGStyles(drawOptions: SvgExportOptions): JSX.Element {
+    const textStyle = `
+        .c-molsvg text {
+            font-size: ${drawOptions.fontSize};
+            line-height: ${drawOptions.fontSize};
+            font-weight: normal;
+            font-family: ${drawOptions.fontFamily};
+        }
+    `;
+    return (
+        <style>{textStyle}</style>
+    );
+}
+
+export const exportToSVG = (molecule: IMoleculeState, drawOptions: SvgExportOptions): JSX.Element => {
+
+    const options = {
+        ...defaultSvgOptions,
+        ...drawOptions,
+    };
+
     const projectionInfo = getProjectionInfo();
     const projFn: (coords: IVec2) => IVec2 = project.bind(null, projectionInfo);
 
-    return (<svg>{
-      getAtomsSVG(molecule, projFn)
-    }</svg>);
+    return (
+        <svg className="c-molsvg">
+            { getSVGStyles(options) }
+            { getAtomsSVG(molecule, options, projFn) }
+        </svg>
+    );
 };
 
 function getProjectionInfo(): ProjectInfo {
@@ -43,11 +84,6 @@ function getProjectionInfo(): ProjectInfo {
             y: 50,
         },
     };
-}
-
-interface IVec2 {
-    x: number;
-    y: number;
 }
 
 interface ProjectInfo {

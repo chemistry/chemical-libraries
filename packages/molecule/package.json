@@ -39,6 +39,8 @@
   },
   "dependencies": {
     "@chemistry/common": "^2.2.0",
+    "@chemistry/math": "^2.2.0",
+    "@chemistry/elements": "^2.2.0",
     "redux": "4.0.1"
   }
 }

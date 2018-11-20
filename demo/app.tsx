@@ -11,7 +11,7 @@ export class MoleculeWrap extends React.Component {
         return (
             <div>
                 <h1>Molecule to SVG demo:</h1>
-                <div style={{ border: "1px solid" }}>{molecule.toSVG()}</div>
+                <div style={{ border: "1px solid" }}>{molecule.toSVG({})}</div>
             </div>
         );
     }

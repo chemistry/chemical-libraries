@@ -85,9 +85,15 @@ describe("Molecule", () => {
     });
 
     describe("toSVG", () => {
-        it("should export ACETONE", () => {
+        it("should export ACETONE with default settings", () => {
             sut.load(ACETONE, MoleculeDataFormat.jnmol);
-            const svg = sut.toSVG();
+            const svg = sut.toSVG({});
+            expect(svg).toMatchSnapshot();
+        });
+
+        it("should export ACETONE and take into account color settings", () => {
+            sut.load(ACETONE, MoleculeDataFormat.jnmol);
+            const svg = sut.toSVG({ colorElements: false });
             expect(svg).toMatchSnapshot();
         });
     });

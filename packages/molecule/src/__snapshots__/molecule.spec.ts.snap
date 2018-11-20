@@ -1,7 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Molecule toSVG should export ACETONE 1`] = `
-<svg>
+exports[`Molecule toSVG should export ACETONE and take into account color settings 1`] = `
+<svg
+  className="c-molsvg"
+>
+  <style>
+    
+        .c-molsvg text {
+            font-size: 14;
+            line-height: 14;
+            font-weight: normal;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+    
+  </style>
   <g>
     <text
       alignmentBaseline="middle"
@@ -33,6 +45,61 @@ exports[`Molecule toSVG should export ACETONE 1`] = `
     <text
       alignmentBaseline="middle"
       fill="black"
+      textAnchor="middle"
+      x={150}
+      y={83}
+    >
+      O
+    </text>
+  </g>
+</svg>
+`;
+
+exports[`Molecule toSVG should export ACETONE with default settings 1`] = `
+<svg
+  className="c-molsvg"
+>
+  <style>
+    
+        .c-molsvg text {
+            font-size: 14;
+            line-height: 14;
+            font-weight: normal;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+    
+  </style>
+  <g>
+    <text
+      alignmentBaseline="middle"
+      fill="#000000"
+      textAnchor="middle"
+      x={121.42}
+      y={33.5}
+    >
+      C
+    </text>
+    <text
+      alignmentBaseline="middle"
+      fill="#000000"
+      textAnchor="middle"
+      x={150}
+      y={50}
+    >
+      C
+    </text>
+    <text
+      alignmentBaseline="middle"
+      fill="#000000"
+      textAnchor="middle"
+      x={178.58}
+      y={33.5}
+    >
+      C
+    </text>
+    <text
+      alignmentBaseline="middle"
+      fill="#FF0D0D"
       textAnchor="middle"
       x={150}
       y={83}

@@ -36,7 +36,7 @@ export class SpaceGroup {
     public static getById(id: number): SpaceGroupInfo {
         for (const sg of SpaceGroupsData) {
             if (sg.id === id) {
-                return sg;
+                return { ...sg, s: sg.s.slice(0) };
             }
         }
 
@@ -58,7 +58,7 @@ export class SpaceGroup {
 
         for (const sg of SpaceGroupsData) {
             if (replaceAll(sg.hm, " ", "").toUpperCase() === hmName) {
-                return sg;
+                return { ...sg, s: sg.s.slice(0) };
             }
         }
 
@@ -78,7 +78,7 @@ export class SpaceGroup {
 
         for (const sg of SpaceGroupsData) {
             if (replaceAll(sg.hs, " ", "").toUpperCase() === hall) {
-                return sg;
+                return { ...sg, s: sg.s.slice(0) };
             }
         }
 
@@ -108,5 +108,78 @@ export class SpaceGroup {
             return CrystalSystem.Cubic;
         }
         return null;
+    }
+
+    public static getUnitCellCentring(sg: SpaceGroupInfo): UnitCellCentring {
+        const hermannMauguinName = sg.hm || "";
+        const laticeType = hermannMauguinName[0];
+
+        if (laticeType === "P") {
+            return UnitCellCentring.P;
+        }
+        if (laticeType === "A") {
+            return UnitCellCentring.A;
+        }
+        if (laticeType === "B") {
+            return UnitCellCentring.B;
+        }
+        if (laticeType === "C") {
+            return UnitCellCentring.C;
+        }
+        if (laticeType === "I") {
+            return UnitCellCentring.I;
+        }
+        if (laticeType === "F") {
+            return UnitCellCentring.F;
+        }
+        if (laticeType === "R") {
+            return UnitCellCentring.R;
+        }
+
+        return null;
+    }
+
+    public static getCentringType(sg: SpaceGroupInfo): UnitCellCentringType {
+      const ucc = SpaceGroup.getUnitCellCentring(sg);
+      if (ucc === UnitCellCentring.P) {
+          return UnitCellCentringType.Primitive;
+      }
+      if (
+          ucc === UnitCellCentring.A ||
+          ucc === UnitCellCentring.B ||
+          ucc === UnitCellCentring.C
+      ) {
+          return UnitCellCentringType.BaseCentered;
+      }
+      if (ucc === UnitCellCentring.F) {
+          return UnitCellCentringType.FaceCentered;
+      }
+      if (ucc === UnitCellCentring.I) {
+          return UnitCellCentringType.BodyCentered;
+      }
+      if (ucc === UnitCellCentring.R) {
+          return UnitCellCentringType.Primitive;
+      }
+
+      return null;
+    }
+
+    public static getUniqueSpaceGroupsList(): Array<{id: number, hm: string, hs: string}> {
+        const resList: Array<{id: number, hm: string, hs: string}>  = [];
+        const isSGPushed = new Array(230);
+
+        const lastSgId = -1;
+        for (const sgInfo of SpaceGroupsData) {
+            const sgId = sgInfo.id;
+            if (!isSGPushed[sgId]) {
+                isSGPushed[sgId] = true;
+                resList.push({
+                    id: sgInfo.id,
+                    hm: sgInfo.hm,
+                    hs: sgInfo.hs,
+                });
+            }
+        }
+        return resList;
     }
 }

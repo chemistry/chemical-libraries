@@ -1,4 +1,5 @@
 import { SpaceGroup } from "./space-group";
+import { SpaceGroupsData } from "./space-group-data";
 
 describe("SpaceGroups", () => {
     it("should export SpaceGroup class", () => {
@@ -16,6 +17,22 @@ describe("SpaceGroups", () => {
             expect(res).toEqual(jasmine.objectContaining({
                 hm: "P -1",
             }));
+        });
+
+        it("should return shallow copy of SG object", () => {
+            const res1 = SpaceGroup.getById(2);
+            res1.id = 900;
+            const res = SpaceGroup.getById(2);
+
+            expect(res.id).toEqual(2);
+        });
+
+        it("should return shallow copy of SG symetry operations", () => {
+            const res1 = SpaceGroup.getById(2);
+            res1.s = [];
+            const res2 = SpaceGroup.getById(2);
+
+            expect(res2.s.length).toEqual(2);
         });
     });
 
@@ -45,6 +62,22 @@ describe("SpaceGroups", () => {
                 hm: "P -1",
             }));
         });
+
+        it("should return shallow copy of SG object", () => {
+            const res1 = SpaceGroup.getByHMName("P  -1");
+            res1.id = 900;
+            const res = SpaceGroup.getByHMName("P  -1");
+
+            expect(res.id).toEqual(2);
+        });
+
+        it("should return shallow copy of SG symetry operations", () => {
+            const res1 = SpaceGroup.getByHMName("P  -1");
+            res1.s = [];
+            const res2 = SpaceGroup.getByHMName("P  -1");
+
+            expect(res2.s.length).toEqual(2);
+        });
     });
 
     describe("getByHallName", () => {
@@ -66,11 +99,28 @@ describe("SpaceGroups", () => {
                 hs: "-P 1",
             }));
         });
+
+        it("should return shallow copy of SG object", () => {
+            const res1 = SpaceGroup.getByHallName("-P 1");
+            res1.id = 900;
+            const res = SpaceGroup.getByHallName("-P 1");
+
+            expect(res.id).toEqual(2);
+        });
+
+        it("should return shallow copy of SG symetry operations", () => {
+            const res1 = SpaceGroup.getByHallName("-P 1");
+            res1.s = [];
+            const res2 = SpaceGroup.getByHallName("-P 1");
+
+            expect(res2.s.length).toEqual(2);
+        });
     });
 
     describe("getCrystalSystem", () => {
         it("should return null for wrorg sg id", () => {
             const v = SpaceGroup.getById(2);
+
             (v as any).id = 300;
             const res = SpaceGroup.getCrystalSystem(v);
             expect(res).toEqual(null);
@@ -123,6 +173,67 @@ describe("SpaceGroups", () => {
             const res = SpaceGroup.getCrystalSystem(sg);
 
             expect(res).toEqual("Cubic");
+        });
+    });
+
+    describe("getUnitCellCentring", () => {
+        it("should define method", () => {
+            expect(SpaceGroup.getUnitCellCentring).toBeDefined();
+        });
+
+        it("should detect centring for every of 530 settings", () => {
+            for (const sgInfo of SpaceGroupsData) {
+              expect(SpaceGroup.getUnitCellCentring(sgInfo)).not.toBe(null);
+            }
+        });
+
+        it("should detect correct centring P-1 Unitcell", () => {
+            const sg = SpaceGroup.getByHMName("P 21/c 1 1");
+            const res = SpaceGroup.getUnitCellCentring(sg);
+
+            expect(res).toEqual("P");
+        });
+
+        it("should return null for strange settings", () => {
+          const res = SpaceGroup.getUnitCellCentring({} as any);
+
+          expect(res).toEqual(null);
+        });
+    });
+
+    describe("getCentringType", () => {
+        it("should define method", () => {
+            expect(SpaceGroup.getCentringType).toBeDefined();
+        });
+
+        it("should detect centring for every of 530 settings", () => {
+            for (const sgInfo of SpaceGroupsData) {
+              expect(SpaceGroup.getCentringType(sgInfo)).not.toBe(null);
+            }
+        });
+
+        it("should detect correct centring P-1 Unitcell", () => {
+            const sg = SpaceGroup.getByHMName("P 21/c 1 1");
+            const res = SpaceGroup.getCentringType(sg);
+
+            expect(res).toEqual("Primitive");
+        });
+
+        it("should return null for strange settings", () => {
+          const res = SpaceGroup.getCentringType({} as any);
+
+          expect(res).toEqual(null);
+        });
+    });
+
+    describe("getUniqueSpaceGroupsList", () => {
+        it("should define method", () => {
+            expect(SpaceGroup.getUniqueSpaceGroupsList).toBeDefined();
+        });
+
+        it("should return array with 230 unique space groups", () => {
+            const res = SpaceGroup.getUniqueSpaceGroupsList();
+            expect(res.length).toEqual(230);
         });
     });
 });

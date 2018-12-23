@@ -5,9 +5,9 @@
 [![codecov](https://codecov.io/gh/chemistry/chem-js-lib/branch/master/graph/badge.svg)](https://codecov.io/gh/chemistry/chem-js-lib)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Crystallography: Space Groups list;
+Crystallography: Space Groups Dictionary
 
-## Include following clases:
+## Include following parts:
   * SpaceGroup
   * SpaceGroupData (data in json format)
 
@@ -23,8 +23,8 @@ import { SpaceGroupData }  from 'space-groups';
   s: Symetry List
 */
 const sg = SpaceGroupData[2];
-console.log(sg); // {id: 2, hm: "P -1", hs: "-P 1", o: 1, s: ["x,y,z", "-x,-y,-z"]}
-
+// -> {id: 2, hm: "P -1", hs: "-P 1", o: 1, s: ["x,y,z", "-x,-y,-z"]}
+console.log(sg);
 ```
 ### SpaceGroup
 
@@ -33,8 +33,10 @@ import { SpaceGroup }  from 'space-groups';
 
 const sg = SpaceGroup.getByHMName('P -1');
 
-console.log(sg); // {id: 2, hm: 'P -1', hs: '-P 1',  o: 1, s: [ 'x,y,z', '-x,-y,-z' ] }
-console.log(SpaceGroup.getCrystalSystem(sg)); // Triclinic
+console.log(sg);
+// -> {id: 2, hm: "P -1", hs: "-P 1", o: 1, s: ["x,y,z", "-x,-y,-z"]}
+console.log(SpaceGroup.getCrystalSystem(sg));
+// -> Triclinic
 ```
 
 ## Commands:

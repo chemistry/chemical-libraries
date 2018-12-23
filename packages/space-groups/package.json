@@ -1,5 +1,5 @@
 {
-    "name": "@crystallography/space-groups",
+    "name": "@chemistry/space-groups",
     "version": "2.2.1",
     "description": "List of space groups with symetry codes",
     "author": {
@@ -8,9 +8,12 @@
     },
     "license": "MIT",
     "keywords": [
-        "cheminformatics",
+        "space groups",
         "crystallography",
-        "space groups"
+        "International table of crystallography",
+        "Hermann Mauguin",
+        "Hall Symbol",
+        "Symetry Operations"
     ],
     "engines": {
         "node": ">=6.0.0"
@@ -19,10 +22,7 @@
         "registry": "https://registry.npmjs.org/",
         "access": "public"
     },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/chemistry/chem-js-lib.git"
-    },
+    "repository": "https://github.com/chemistry/chem-js-lib/tree/master/packages/space-groups",
     "private": false,
     "files": [
         "package-lock.json",

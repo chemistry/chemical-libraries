@@ -12,7 +12,7 @@ Open Cheminformatics Libraries written in JavaScript and working both in browser
   * [@chemistry/elements](https://github.com/chemistry/chem-js-lib/tree/master/packages/elements)
   * [@chemistry/math](https://github.com/chemistry/chem-js-lib/tree/master/packages/math)
   * [@chemistry/molecule](https://github.com/chemistry/chem-js-lib/tree/master/packages/molecule)
-  * [@crystallography/space-groups](https://github.com/chemistry/chem-js-lib/tree/master/packages/space-groups)
+  * [@chemistry/space-groups](https://github.com/chemistry/chem-js-lib/tree/master/packages/space-groups)
 
 ## Technical description (all libraries):
   * Typescript 3.1 (export typings)

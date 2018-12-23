@@ -1,23 +1,49 @@
-import { SpaceGroupsData } from "./space-group-data";
+import { SpaceGroupInfo, SpaceGroupsData } from "./space-group-data";
+
+export enum CrystalSystem {
+    Triclinic = "Triclinic",
+    Monoclinic = "Monoclinic",
+    Orthorhombic = "Orthorhombic",
+    Tetragonal = "Tetragonal",
+    Trigonal = "Trigonal",
+    Hexagonal = "Hexagonal",
+    Cubic = "Cubic",
+}
+
+export enum UnitCellCentring {
+    P = "P", // Primitive
+    A = "A", // Base Centered on A faces only
+    B = "B", // Base Centered on B faces only
+    C = "C", // Base Centered on C faces only
+    I = "I", // Body Centered
+    F = "F", // Face Centered
+    R = "R", // Rhombohedral
+}
+
+export enum UnitCellCentringType {
+    Primitive = "Primitive",
+    BaseCentered = "BaseCentered",
+    BodyCentered = "BodyCentered",
+    FaceCentered = " FaceCentered",
+}
+
+function replaceAll(str: string, find: string, replace: string): string {
+    return str.replace(new RegExp(find.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"), "g"), replace);
+}
 
 export class SpaceGroup {
 
-    public static getById(id: number): SpaceGroup {
-
+    public static getById(id: number): SpaceGroupInfo {
         for (const sg of SpaceGroupsData) {
-            if (parseInt(sg.id, 10) === id) {
-                return new SpaceGroup(sg);
+            if (sg.id === id) {
+                return sg;
             }
         }
 
         return null;
     }
 
-    public static getByHMName(hmName: string): SpaceGroup {
-
-        const replaceAll = (str: string, find: string, replace: string) => {
-            return str.replace(new RegExp(find.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"), "g"), replace);
-        };
+    public static getByHMName(hmName: string): SpaceGroupInfo {
 
         hmName = replaceAll(hmName, " ", "");
         // -P 1 (1/2*x+1/2*y,1/2*x-1/2*y,-z)
@@ -28,22 +54,19 @@ export class SpaceGroup {
             hmName = match[1];
         }
 
-        hmName = hmName.trim();
+        hmName = hmName.trim().toUpperCase();
 
         for (const sg of SpaceGroupsData) {
-            if (replaceAll(sg.hm, " ", "").toUpperCase() === hmName.toUpperCase()) {
-                return new SpaceGroup(sg);
+            if (replaceAll(sg.hm, " ", "").toUpperCase() === hmName) {
+                return sg;
             }
         }
 
         return null;
     }
 
-    public static getByHallName(hallName: string): SpaceGroup {
+    public static getByHallName(hallName: string): SpaceGroupInfo {
 
-        const replaceAll = (str: string, find: string, replace: string) => {
-            return str.replace(new RegExp(find.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"), "g"), replace);
-        };
         let hall = replaceAll(hallName, " ", "");
 
         const regEx = /^([^\(\)]+)\(.+\).*$/;
@@ -51,59 +74,39 @@ export class SpaceGroup {
         if (match) {
             hall = match[1];
         }
+        hall = hall.toUpperCase();
 
         for (const sg of SpaceGroupsData) {
-            if (replaceAll(sg.hs, " ", "").toUpperCase() === hall.toUpperCase()) {
-                return new SpaceGroup(sg);
+            if (replaceAll(sg.hs, " ", "").toUpperCase() === hall) {
+                return sg;
             }
         }
 
         return null;
     }
 
-    public readonly id: number;
-
-    public readonly hermannMauguin: string;
-
-    public readonly hallSymbol: string;
-
-    public readonly symetryList: string[];
-
-    public readonly representativeOperations: number;
-
-    constructor(data: {
-        id: string, hm: string, hs: string, s: string[], o: string,
-    }) {
-        this.id = parseInt(data.id, 10);
-        this.hermannMauguin = data.hm;
-        this.hallSymbol = data.hs;
-        this.symetryList = data.s;
-        this.representativeOperations = parseInt(data.o, 10);
-    }
-
-    public getCrystalSystem() {
-
-        if (this.id >= 1 && this.id <= 2) {
-            return "Triclinic";
+    public static getCrystalSystem(sg: SpaceGroupInfo): CrystalSystem {
+        if (sg.id >= 1 && sg.id <= 2) {
+            return CrystalSystem.Triclinic;
         }
-        if (this.id >= 3 && this.id <= 15) {
-            return "Monoclinic";
+        if (sg.id >= 3 && sg.id <= 15) {
+            return CrystalSystem.Monoclinic;
         }
-        if (this.id >= 16 && this.id <= 74) {
-            return "Orthorhombic";
+        if (sg.id >= 16 && sg.id <= 74) {
+            return CrystalSystem.Orthorhombic;
         }
-        if (this.id >= 75 && this.id <= 142) {
-            return "Tetragonal";
+        if (sg.id >= 75 && sg.id <= 142) {
+            return CrystalSystem.Tetragonal;
         }
-        if (this.id >= 143 && this.id <= 167) {
-            return "Trigonal";
+        if (sg.id >= 143 && sg.id <= 167) {
+            return CrystalSystem.Trigonal;
         }
-        if (this.id >= 168 && this.id <= 194) {
-            return "Hexagonal";
+        if (sg.id >= 168 && sg.id <= 194) {
+            return CrystalSystem.Hexagonal;
         }
-        if (this.id >= 195 && this.id <= 230) {
-            return "Cubic";
+        if (sg.id >= 195 && sg.id <= 230) {
+            return CrystalSystem.Cubic;
         }
-        throw new Error("Error in Space Group id");
+        return null;
     }
 }

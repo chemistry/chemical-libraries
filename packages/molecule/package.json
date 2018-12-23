@@ -14,12 +14,9 @@
     "atoms",
     "bonds"
   ],
+  "repository": "https://github.com/chemistry/chem-js-lib/tree/master/packages/molecule",
   "engines": {
     "node": ">=6.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/chemistry/chem-js-lib.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",

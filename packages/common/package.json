@@ -1,6 +1,6 @@
 {
   "name": "@chemistry/common",
-  "version": "2.2.1",
+  "version": "2.2.3",
   "description": "Chemical data formats",
   "author": {
     "name": "Volodymyr Vreshch",

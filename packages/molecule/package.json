@@ -1,6 +1,6 @@
 {
   "name": "@chemistry/molecule-to-svg",
-  "version": "2.2.1",
+  "version": "2.2.3",
   "description": "Molecule",
   "author": {
     "name": "Volodymyr Vreshch",
@@ -35,9 +35,9 @@
     "build": "webpack-cli --config webpack.config.js --mode production"
   },
   "dependencies": {
-    "@chemistry/common": "^2.2.0",
-    "@chemistry/math": "^2.2.0",
-    "@chemistry/elements": "^2.2.0",
+    "@chemistry/common": "^2.2.3",
+    "@chemistry/elements": "^2.2.3",
+    "@chemistry/math": "^2.2.3",
     "redux": "4.0.1"
   }
 }

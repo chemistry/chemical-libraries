@@ -27,10 +27,6 @@ export enum UnitCellCentringType {
     FaceCentered = " FaceCentered",
 }
 
-function replaceAll(str: string, find: string, replace: string): string {
-    return str.replace(new RegExp(find.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"), "g"), replace);
-}
-
 export class SpaceGroup {
 
     public static getById(id: number): SpaceGroupInfo {
@@ -45,44 +41,28 @@ export class SpaceGroup {
 
     public static getByHMName(hmName: string): SpaceGroupInfo {
 
-        hmName = replaceAll(hmName, " ", "");
-        // -P 1 (1/2*x+1/2*y,1/2*x-1/2*y,-z)
+      const hm = ((hmName || "").split(":")[0]).trim();
 
-        const regEx = /^([^\(\)]+)\(.+\).*$/;
-        const match = regEx.exec(hmName);
-        if (match) {
-            hmName = match[1];
-        }
+      for (const sg of SpaceGroupsData) {
+          if (sg.hm === hm) {
+              return { ...sg, s: sg.s.slice(0) };
+          }
+      }
 
-        hmName = hmName.trim().toUpperCase();
-
-        for (const sg of SpaceGroupsData) {
-            if (replaceAll(sg.hm, " ", "").toUpperCase() === hmName) {
-                return { ...sg, s: sg.s.slice(0) };
-            }
-        }
-
-        return null;
+      return null;
     }
 
     public static getByHallName(hallName: string): SpaceGroupInfo {
 
-        let hall = replaceAll(hallName, " ", "");
+      const hs = hallName || "";
 
-        const regEx = /^([^\(\)]+)\(.+\).*$/;
-        const match = regEx.exec(hall);
-        if (match) {
-            hall = match[1];
-        }
-        hall = hall.toUpperCase();
+      for (const sg of SpaceGroupsData) {
+          if (sg.hs === hs) {
+              return { ...sg, s: sg.s.slice(0) };
+          }
+      }
 
-        for (const sg of SpaceGroupsData) {
-            if (replaceAll(sg.hs, " ", "").toUpperCase() === hall) {
-                return { ...sg, s: sg.s.slice(0) };
-            }
-        }
-
-        return null;
+      return null;
     }
 
     public static getCrystalSystem(sg: SpaceGroupInfo): CrystalSystem {

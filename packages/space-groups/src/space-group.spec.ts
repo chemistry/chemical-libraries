@@ -49,32 +49,25 @@ describe("SpaceGroups", () => {
             }));
         });
 
-        it("should ignore additional information", () => {
-            const res = SpaceGroup.getByHMName("P -1 (1/2*x+1/2*y,1/2*x-1/2*y,-z)");
-            expect(res).toEqual(jasmine.objectContaining({
-                hm: "P -1",
-            }));
-        });
-
-        it("should find sg with when spaces removed", () => {
-            const res = SpaceGroup.getByHMName("P  -1");
+        it("should return recognize sg notation with double dot", () => {
+            const res = SpaceGroup.getByHMName("P -1 :2");
             expect(res).toEqual(jasmine.objectContaining({
                 hm: "P -1",
             }));
         });
 
         it("should return shallow copy of SG object", () => {
-            const res1 = SpaceGroup.getByHMName("P  -1");
+            const res1 = SpaceGroup.getByHMName("P -1");
             res1.id = 900;
-            const res = SpaceGroup.getByHMName("P  -1");
+            const res = SpaceGroup.getByHMName("P -1");
 
             expect(res.id).toEqual(2);
         });
 
         it("should return shallow copy of SG symetry operations", () => {
-            const res1 = SpaceGroup.getByHMName("P  -1");
+            const res1 = SpaceGroup.getByHMName("P -1");
             res1.s = [];
-            const res2 = SpaceGroup.getByHMName("P  -1");
+            const res2 = SpaceGroup.getByHMName("P -1");
 
             expect(res2.s.length).toEqual(2);
         });
@@ -88,13 +81,6 @@ describe("SpaceGroups", () => {
 
         it("should return sg based on Hall name", () => {
             const res = SpaceGroup.getByHallName("-P 1");
-            expect(res).toEqual(jasmine.objectContaining({
-                hs: "-P 1",
-            }));
-        });
-
-        it("should process sg info with additional information", () => {
-            const res = SpaceGroup.getByHallName("-P 1(1/2*x+1/2*y,1/2*x-1/2*y,-z)");
             expect(res).toEqual(jasmine.objectContaining({
                 hs: "-P 1",
             }));

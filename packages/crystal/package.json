@@ -1,0 +1,37 @@
+{
+    "name": "@chemistry/crystal",
+    "version": "2.3.2",
+    "description": "Periodic molecule representation for Crystal Structure View support",
+    "author": {
+        "name": "Volodymyr Vreshch",
+        "url": "http://vreshch.com/"
+    },
+    "license": "MIT",
+    "keywords": [
+        "crystallography",
+        "cheminformatics",
+        "molecule"
+    ],
+    "engines": {
+        "node": ">=6.0.0"
+    },
+    "repository": "https://github.com/chemistry/chem-js-lib/tree/master/packages/crystal",
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/",
+        "access": "public"
+    },
+    "private": false,
+    "files": [
+        "package-lock.json",
+        "package.json",
+        "dist",
+        "README.md"
+    ],
+    "main": "dist/math.js",
+    "typings": "dist/index.d.ts",
+    "scripts": {
+        "build": "webpack-cli --config webpack.config.js --mode production"
+    },
+    "dependencies": {
+    }
+}

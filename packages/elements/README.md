@@ -11,19 +11,6 @@ Library that contains information about elements In periodic table: Number, Symb
   * ChemElement
   * ChemElementData
 
-## Contain following info about chemical element (Carbon example):
-  * Number in periodic table: 6
-  * Symbol of Element: C
-  * Element name: Carbon
-  * Element mass: 12.0107
-  * Covalent Radius of element: 0.77
-  * van der Waals radius of the element: 1.7
-  * Element max Bonds: 4
-  * Element color: 909090
-  * Element color dark: 000000
-  * Position X in periodic Table: 2
-  * Position Y in periodic Table: 14
-
 ## How to use:
 ```javascript
 import { ChemElement, ChemElementData } from '@chemistry/elements';
@@ -45,5 +32,18 @@ console.log(ChemElementData[9]);
 // { id: 7, symbol: "N", RCow: 0.75, RVdW: 1.6, maxBonds: 4, mass: 14.0067, name: "Nitrogen", posX: 2, posY: 15, color: "#3050F8", color2: "#304FF7" }
 ```
 
+## Contain following info about Carbon:
+  * Number in periodic table: 6
+  * Symbol of Element: C
+  * Element name: Carbon
+  * Element mass: 12.0107
+  * Covalent Radius of element: 0.77
+  * van der Waals radius of the element: 1.7
+  * Element max Bonds: 4
+  * Element color: 909090
+  * Element color dark: 000000
+  * Position X in periodic Table: 2
+  * Position Y in periodic Table: 14
+  *
 ## Commands:
   * Build project: `npm run build`

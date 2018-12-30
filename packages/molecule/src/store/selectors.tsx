@@ -1,5 +1,4 @@
 import { JNMol } from "@chemistry/common";
-import { Element } from "@chemistry/elements";
 import { defaultSvgOptions, SvgExportOptions } from "../models";
 import {
     IMoleculeState,

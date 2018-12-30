@@ -1,3 +1,3 @@
 var webpackConfigFn = require('../../webpack.helper');
 
-module.exports = webpackConfigFn('elements', __dirname);
+module.exports = webpackConfigFn('chem-elements', __dirname);

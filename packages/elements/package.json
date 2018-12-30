@@ -8,12 +8,10 @@
   },
   "license": "MIT",
   "keywords": [
-    "elements",
-    "periodic table",
-    "cheminformatics",
+    "List of chemical elements",
     "Van der Waals radius",
     "covalent radius",
-    "chemistry"
+    "elements color"
   ],
   "engines": {
     "node": ">=6.0.0"
@@ -30,7 +28,7 @@
     "dist",
     "README.md"
   ],
-  "main": "dist/elements.js",
+  "main": "dist/chem-elements.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "webpack-cli --config webpack.config.js --mode production"

@@ -1,4 +1,4 @@
-import { Element } from "@chemistry/elements";
+import { ChemElements } from "@chemistry/elements";
 import * as React from "react";
 import { SvgExportOptions } from "../../models";
 import {
@@ -27,7 +27,7 @@ function getAtomColor(atomType: string, options: SvgExportOptions) {
     if (!options.colorElements) {
         return "black";
     }
-    const chemElementData = Element.getElementByName(atomType);
+    const chemElementData = ChemElements.getBySymbol(atomType);
     return chemElementData ? chemElementData.color2 : "black";
 }
 

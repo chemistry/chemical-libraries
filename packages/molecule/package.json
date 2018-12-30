@@ -1,6 +1,6 @@
 {
   "name": "@chemistry/molecule",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "Molecule",
   "author": {
     "name": "Volodymyr Vreshch",
@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@chemistry/common": "^2.2.3",
-    "@chemistry/elements": "^2.2.3",
+    "@chemistry/elements": "^2.5.0",
     "@chemistry/math": "^2.2.3",
     "redux": "4.0.1"
   }

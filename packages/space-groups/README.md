@@ -7,14 +7,16 @@
 
 Crystallography: Space Groups Dictionary
 
-## Include following parts:
-  * SpaceGroup
-  * SpaceGroupData (data in json format)
 
-## How to use:
+## Install
+```bash
+npm install @chemistry/space-groups
+```
+
+## Getting started:
 ### SpaceGroupData
 ```javascript
-import { SpaceGroupData }  from 'space-groups';
+import { SpaceGroupData }  from '@chemistry/space-groups';
 /*
   id: Space Group number
   hm: Hermann Mauguin Symbol
@@ -29,7 +31,7 @@ console.log(sg);
 ### SpaceGroup
 
 ```javascript
-import { SpaceGroup }  from 'space-groups';
+import { SpaceGroup }  from '@chemistry/space-groups';
 
 const sg = SpaceGroup.getByHMName('P -1');
 

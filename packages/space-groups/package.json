@@ -1,6 +1,6 @@
 {
     "name": "@chemistry/space-groups",
-    "version": "2.3.2",
+    "version": "2.5.1",
     "description": "List of space groups with symetry codes",
     "author": {
         "name": "Volodymyr Vreshch",

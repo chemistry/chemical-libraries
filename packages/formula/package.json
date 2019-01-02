@@ -1,0 +1,38 @@
+{
+    "name": "@chemistry/formula",
+    "version": "2.4.1",
+    "description": "Chemical formula parser",
+    "author": {
+        "name": "Volodymyr Vreshch",
+        "url": "http://vreshch.com/"
+    },
+    "license": "MIT",
+    "keywords": [
+        "formula",
+        "chemical composition",
+        "cheminformatics"
+    ],
+    "engines": {
+        "node": ">=6.0.0"
+    },
+    "repository": "https://github.com/chemistry/chem-js-lib/tree/master/packages/formula",
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/",
+        "access": "public"
+    },
+    "private": false,
+    "files": [
+        "package-lock.json",
+        "package.json",
+        "dist",
+        "README.md"
+    ],
+    "main": "dist/formula.js",
+    "typings": "dist/index.d.ts",
+    "scripts": {
+        "build": "webpack-cli --config webpack.config.js --mode production"
+    },
+    "dependencies": {
+      "@chemistry/elements": "^2.5.0"
+    }
+}

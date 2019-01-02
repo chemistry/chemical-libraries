@@ -10,6 +10,7 @@ Open Cheminformatics Libraries written in JavaScript and working both in browser
 ## Solution include following libraries:
   * [@chemistry/common](https://github.com/chemistry/chem-js-lib/tree/master/packages/common) - common interfaces
   * [@chemistry/elements](https://github.com/chemistry/chem-js-lib/tree/master/packages/elements) - chemical elements table information
+  * [@chemistry/formula](https://github.com/chemistry/chem-js-lib/tree/master/packages/formula) - utils for parsing chemical formula
   * [@chemistry/math](https://github.com/chemistry/chem-js-lib/tree/master/packages/math) - linear algebra support
   * [@chemistry/molecule](https://github.com/chemistry/chem-js-lib/tree/master/packages/molecule) - molecule basic class
   * [@chemistry/crystal](https://github.com/chemistry/chem-js-lib/tree/master/packages/crystal) - crystal structure support library

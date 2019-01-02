@@ -7,8 +7,23 @@
 
 Library for working with crystal structure (periodic molecule)
 
+## Install
+```bash
+npm install @chemistry/crystal
+```
+
 ## Include following clases:
   * UnitCell
+
+## Getting started:
+```javascript
+import { UnitCell } from "@chemistry/crystal";
+
+const v = UnitCell.getVolume({ a: 2, b: 3, c: 4, alpha: 90, beta: 90, gamma: 90 });
+
+// 24
+console.log(v);
+```
 
 ## Commands:
   * Build project: `npm run build`

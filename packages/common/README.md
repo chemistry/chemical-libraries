@@ -7,6 +7,11 @@
 
 Common data format and interfaces used by the library
 
+## Install
+```bash
+npm install @chemistry/common
+```
+
 ## Data Formats
   * JMol
   * JNMol

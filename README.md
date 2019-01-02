@@ -8,11 +8,26 @@
 Open Cheminformatics Libraries written in JavaScript and working both in browser and server side (NodeJS)
 
 ## Solution include following libraries:
-  * [@chemistry/common](https://github.com/chemistry/chem-js-lib/tree/master/packages/common)
-  * [@chemistry/elements](https://github.com/chemistry/chem-js-lib/tree/master/packages/elements)
-  * [@chemistry/math](https://github.com/chemistry/chem-js-lib/tree/master/packages/math)
-  * [@chemistry/molecule](https://github.com/chemistry/chem-js-lib/tree/master/packages/molecule)
-  * [@chemistry/space-groups](https://github.com/chemistry/chem-js-lib/tree/master/packages/space-groups)
+  * [@chemistry/common](https://github.com/chemistry/chem-js-lib/tree/master/packages/common) - common interfaces
+  * [@chemistry/elements](https://github.com/chemistry/chem-js-lib/tree/master/packages/elements) - chemical elements table information
+  * [@chemistry/math](https://github.com/chemistry/chem-js-lib/tree/master/packages/math) - linear algebra support
+  * [@chemistry/molecule](https://github.com/chemistry/chem-js-lib/tree/master/packages/molecule) - molecule basic class
+  * [@chemistry/crystal](https://github.com/chemistry/chem-js-lib/tree/master/packages/crystal) - crystal structure support library
+  * [@chemistry/space-groups](https://github.com/chemistry/chem-js-lib/tree/master/packages/space-groups) - space groups list
+
+  ## Getting started:
+Example of @chemistry/elements usecase;
+```javascript
+import { ChemElement, ChemElementData } from '@chemistry/elements';
+
+const hydrogen = ChemElement.getById(1);
+console.log(hydrogen);
+//   { id: 1, symbol: "H", RCow: 0.37, RVdW: 1.2, maxBonds: 1, mass: 1.00794, name: "Hydrogen", posX: 1, posY: 1, color: "#FFFFFF", color2: "#808080" }
+
+const carbon = ChemElement.getBySymbol('C');
+console.log(carbon);
+//   { id: 6, symbol: "C", RCow: 0.77, RVdW: 1.7, maxBonds: 4, mass: 12.0107, name: "Carbon", posX: 2, posY: 14, color: "#909090", color2: "#000000" }
+```
 
 ## Technical description (all libraries):
   * Typescript 3.1 (export typings)
@@ -26,6 +41,7 @@ Open Cheminformatics Libraries written in JavaScript and working both in browser
 npm install
 npm run build
 ```
+
 ## Commands:
   * Run unit tests: `npm run test`
   * Start TDD flow: `npm run tdd`

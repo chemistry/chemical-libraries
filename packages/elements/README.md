@@ -7,11 +7,12 @@
 
 Library that contains information about elements In periodic table: Number, Symbol, Name, Mass, max Bonds Count, Covalent & van der Waals Radius, typical color;
 
-## Include following clases:
-  * ChemElement
-  * ChemElementData
+## Install
+```bash
+npm install @chemistry/elements
+```
 
-## How to use:
+## Getting started:
 ```javascript
 import { ChemElement, ChemElementData } from '@chemistry/elements';
 
@@ -44,6 +45,6 @@ console.log(ChemElementData[9]);
   * Element color dark: 000000
   * Position X in periodic Table: 2
   * Position Y in periodic Table: 14
-  *
+
 ## Commands:
   * Build project: `npm run build`

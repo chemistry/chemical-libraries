@@ -166,6 +166,6 @@ export const ChemElementData: ChemElementInfo[] = [
   { id: 109, symbol: "Mt", RCow: 1.6, RVdW: 2, maxBonds: 6, mass: 268, name: "Meitnerium", posX: 7, posY: 9, color: "#EB0026", color2: "#175487" },
   { id: 110, symbol: "Ds", RCow: 1.6, RVdW: 2, maxBonds: 6, mass: 281, name: "Darmstadtium", posX: 7, posY: 10, color: "#FF1493", color2: "#9595A0" },
   { id: 111, symbol: "Rg", RCow: 1.6, RVdW: 2, maxBonds: 6, mass: 272, name: "Roentgenium", posX: 7, posY: 11, color: "#FF1494", color2: "#B9981A" },
-  { id: 112, symbol: "Cb", RCow: 1.6, RVdW: 2, maxBonds: 6, mass: 277, name: "Copernicium", posX: 7, posY: 12, color: "#FF1495", color2: "#9595A9" },
+  { id: 112, symbol: "Cn", RCow: 1.6, RVdW: 2, maxBonds: 6, mass: 277, name: "Copernicium", posX: 7, posY: 12, color: "#FF1495", color2: "#9595A9" },
 ];
 /* tslint:enable:max-line-length */

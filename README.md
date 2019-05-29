@@ -16,7 +16,7 @@ Open Cheminformatics Libraries written in JavaScript and working both in browser
   * [@chemistry/crystal](https://github.com/chemistry/chem-js-lib/tree/master/packages/crystal) - crystal structure support library
   * [@chemistry/space-groups](https://github.com/chemistry/chem-js-lib/tree/master/packages/space-groups) - space groups list
 
-  ## Getting started:
+## Getting started:
 Example of @chemistry/elements usecase;
 ```javascript
 import { ChemElement, ChemElementData } from '@chemistry/elements';
@@ -40,6 +40,7 @@ console.log(carbon);
 ## Development Quick Start
 ```bash
 npm install
+npm run bootstrap
 npm run build
 ```
 
@@ -49,6 +50,7 @@ npm run build
   * Run linter verification: `npm run lint`
   * Run linter verification & fix: `npm run lintfix`
   * Build project: `npm run build`
+  * Publish new version: `npm run do-publish`
 
 ## License
   This project is licensed under the MIT license, Copyright (c) 2018 Volodymyr Vreshch.

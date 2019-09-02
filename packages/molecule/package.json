@@ -1,6 +1,6 @@
 {
   "name": "@chemistry/molecule",
-  "version": "2.5.1",
+  "version": "2.6.0",
   "description": "Molecule",
   "author": {
     "name": "Volodymyr Vreshch",
@@ -35,9 +35,9 @@
     "build": "webpack-cli --config webpack.config.js --mode production"
   },
   "dependencies": {
-    "@chemistry/common": "^2.5.1",
-    "@chemistry/elements": "^2.5.1",
-    "@chemistry/math": "^2.5.1",
+    "@chemistry/common": "^2.6.0",
+    "@chemistry/elements": "^2.6.0",
+    "@chemistry/math": "^2.6.0",
     "redux": "4.0.1"
   }
 }

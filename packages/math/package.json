@@ -1,6 +1,6 @@
 {
     "name": "@chemistry/math",
-    "version": "2.5.1",
+    "version": "2.6.0",
     "description": "Math support for @chemistry project",
     "author": {
         "name": "Volodymyr Vreshch",
@@ -33,6 +33,6 @@
         "build": "webpack-cli --config webpack.config.js --mode production"
     },
     "dependencies": {
-        "@chemistry/common": "^2.5.1"
+        "@chemistry/common": "^2.6.0"
     }
 }

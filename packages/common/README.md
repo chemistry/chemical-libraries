@@ -16,7 +16,7 @@ npm install @chemistry/common
   * JMol
   * JNMol
 
-###  Jmol data format example
+### Jmol data format example
 ```javascript
   {
       id: '1',

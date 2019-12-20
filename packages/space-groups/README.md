@@ -7,7 +7,6 @@
 
 Crystallography: Space Groups Dictionary
 
-
 ## Install
 ```bash
 npm install @chemistry/space-groups

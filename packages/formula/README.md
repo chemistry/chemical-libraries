@@ -1,5 +1,4 @@
 # @chemistry/formula
-
 [![npm version](https://badge.fury.io/js/%40chemistry%2Fcrystal.svg)](https://badge.fury.io/js/%40chemistry%2Fformula)
 [![Build Status](https://travis-ci.com/chemistry/chem-js-lib.svg?branch=master)](https://travis-ci.org/chemistry/chem-js-lib)
 [![codecov](https://codecov.io/gh/chemistry/chem-js-lib/branch/master/graph/badge.svg)](https://codecov.io/gh/chemistry/chem-js-lib)

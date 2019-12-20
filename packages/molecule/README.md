@@ -8,6 +8,5 @@
 ## Molecule
 Simple library that allows working with molecule (add atom, bonds, etc.) & preforming substructure search;
 
-
 ## Commands:
   * Build project: `npm run build`

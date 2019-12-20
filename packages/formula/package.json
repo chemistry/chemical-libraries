@@ -1,6 +1,6 @@
 {
     "name": "@chemistry/formula",
-    "version": "2.6.0",
+    "version": "2.7.0",
     "description": "Chemical formula parser",
     "author": {
         "name": "Volodymyr Vreshch",
@@ -33,6 +33,6 @@
         "build": "webpack-cli --config webpack.config.js --mode production"
     },
     "dependencies": {
-        "@chemistry/elements": "^2.6.0"
+        "@chemistry/elements": "^2.7.0"
     }
 }

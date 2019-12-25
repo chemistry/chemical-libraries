@@ -5,6 +5,7 @@ build
 temp
 # Generated docs with JSDoc
 docs
+lerna-debug.log
 .npmrc
 TODO
 dist/

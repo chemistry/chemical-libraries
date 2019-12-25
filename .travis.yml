@@ -18,8 +18,6 @@ script:
   - npm run lint
   - npm run test
   - npm run build
-  - if [[ $(git tag -l --contains HEAD | wc -c) -ne 0 ]]; then npm run do-publish; fi
-
 
 after_success:
   - npm run codecov

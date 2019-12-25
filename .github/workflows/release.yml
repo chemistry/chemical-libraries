@@ -73,6 +73,16 @@ jobs: # Jobs List
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Update dependencies
+      run: npm run update-lock-files && git add **/package-lock.json && git commit --amend --no-edit
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    - name: Push To Github
+      run: git push --follow-tags
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Create Github Release
       id: create_release
       uses: actions/create-release@v1

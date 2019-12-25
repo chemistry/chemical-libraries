@@ -6,7 +6,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-gren.svg)](https://opensource.org/licenses/MIT)
 
 Common data format and interfaces used by the library
-
 ## Install
 ```bash
 npm install @chemistry/common

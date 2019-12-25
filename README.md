@@ -1,19 +1,20 @@
-# chem-js-lib
-[![npm version](https://badge.fury.io/js/%40chemistry%2Felements.svg)](https://badge.fury.io/js/%40chemistry%2Felements)
-[![Build Status](https://travis-ci.com/chemistry/chem-js-lib.svg?branch=master)](https://travis-ci.org/chemistry/chem-js-lib)
-[![codecov](https://codecov.io/gh/chemistry/chem-js-lib/branch/master/graph/badge.svg)](https://codecov.io/gh/chemistry/chem-js-lib)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# Common Chemical Libraries
+[![release version](https://img.shields.io/github/v/release/chemistry/chemical-libraries?color=green.svg)](https://github.com/chemistry/chemical-libraries/releases)
+[![Travis Build Status](https://travis-ci.com/chemistry/chemical-libraries.svg?branch=master)](https://travis-ci.org/chemistry/chemical-libraries)
+[![GitHub Build Status](https://github.com/chemistry/chemical-libraries/workflows/CI/badge.svg)](https://github.com/chemistry/chemical-libraries/actions?query=workflow%3ACI)
+[![codecov](https://codecov.io/gh/chemistry/chemical-libraries/branch/master/graph/badge.svg)](https://codecov.io/gh/chemistry/chemical-libraries)
+[![License: MIT](https://img.shields.io/badge/License-MIT-gren.svg)](https://opensource.org/licenses/MIT)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
 Open Cheminformatics Libraries written in JavaScript and working both in browser and server side (NodeJS)
 
 ## Solution include following libraries:
-  * [@chemistry/common](https://github.com/chemistry/chem-js-lib/tree/master/packages/common) - common interfaces
-  * [@chemistry/elements](https://github.com/chemistry/chem-js-lib/tree/master/packages/elements) - chemical elements table information
-  * [@chemistry/formula](https://github.com/chemistry/chem-js-lib/tree/master/packages/formula) - utils for parsing chemical formula
-  * [@chemistry/math](https://github.com/chemistry/chem-js-lib/tree/master/packages/math) - linear algebra support
-  * [@chemistry/molecule](https://github.com/chemistry/chem-js-lib/tree/master/packages/molecule) - molecule basic class
-  * [@chemistry/space-groups](https://github.com/chemistry/chem-js-lib/tree/master/packages/space-groups) - space groups list
+  * [@chemistry/common](https://github.com/chemistry/chemical-libraries/tree/master/packages/common) - common interfaces
+  * [@chemistry/elements](https://github.com/chemistry/chemical-libraries/tree/master/packages/elements) - chemical elements table information
+  * [@chemistry/formula](https://github.com/chemistry/chemical-libraries/tree/master/packages/formula) - utils for parsing chemical formula
+  * [@chemistry/math](https://github.com/chemistry/chemical-libraries/tree/master/packages/math) - linear algebra support
+  * [@chemistry/molecule](https://github.com/chemistry/chemical-libraries/tree/master/packages/molecule) - molecule basic class
+  * [@chemistry/space-groups](https://github.com/chemistry/chemical-libraries/tree/master/packages/space-groups) - space groups list
 
 ## Getting started:
 Example of @chemistry/elements usecase;
@@ -30,11 +31,12 @@ console.log(carbon);
 ```
 
 ## Technical description (all libraries):
-  * Typescript 3.1 (export typings)
-  * Isomorphic (can be used with node & with browsers)
-  * Compiled as UMD module (can be used as CommonJS, AMD & direct module include syntax)
-  * Build with TDD in mind (tests with jest)
-  * 100% code coverage
+  * MonoRepo build with lerna
+  * Auto Release Script
+  * Typescript 3.7
+  * Isomorphic (for Node & browsers)
+  * Auto tests with JEST
+  * ~100% code coverage
 
 ## Development Quick Start
 ```bash
@@ -49,8 +51,13 @@ npm run build
   * Run linter verification: `npm run lint`
   * Run linter verification & fix: `npm run lintfix`
   * Build project: `npm run build`
-  * Publish new version: `npm run do-publish`
+
+## Release
+```bash
+git tag v2.8.0
+git push --tags
+```
 
 ## License
-  This project is licensed under the MIT license, Copyright (c) 2018 Volodymyr Vreshch.
-  For more information see [LICENSE.md](https://github.com/chemistry/chem-js-lib/blob/master/LICENSE.md).
+  This project is licensed under the MIT license, Copyright (c) 2019 Volodymyr Vreshch.
+  For more information see [LICENSE.md](https://github.com/chemistry/chemical-libraries/blob/master/LICENSE.md).

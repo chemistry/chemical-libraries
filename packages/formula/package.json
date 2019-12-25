@@ -15,7 +15,7 @@
     "engines": {
         "node": ">=6.0.0"
     },
-    "repository": "https://github.com/chemistry/chem-js-lib/tree/master/packages/formula",
+    "repository": "https://github.com/chemistry/chemical-libraries/tree/master/packages/formula",
     "publishConfig": {
         "registry": "https://registry.npmjs.org/",
         "access": "public"

@@ -1,5 +1,5 @@
 {
-    "name": "@chemistry/chem-js-lib",
+    "name": "@chemistry/chemical-libraries",
     "version": "2.2.0",
     "description": "Open Cheminformatics Libraries",
     "author": {
@@ -21,7 +21,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/chemistry/chem-js-lib.git"
+        "url": "https://github.com/chemistry/chemical-libraries.git"
     },
     "publishConfig": {
         "registry": "https://registry.npmjs.org/"
@@ -29,37 +29,38 @@
     "scripts": {
         "clean": "lerna clean && rimraf dist/* coverage/*",
         "bootstrap": "lerna bootstrap --hoist",
-        "bootstrap:ci": "lerna exec npm install",
+        "bootstrap:ci": "lerna exec npm ci",
         "build": "lerna run build",
         "updated": "lerna updated",
         "test": "jest",
         "tdd": "jest --watch",
         "lint": "tslint -c tslint.json -p tsconfig.json 'packages/**/src/**/*.ts{,x}'",
         "lintfix": "tslint -c tslint.json -p tsconfig.json 'packages/**/src/**/*.ts{,x}' --fix",
-        "do-publish": "npm run clean && npm run bootstrap && npm run build && lerna publish",
+        "release": "lerna publish --yes ",
+        "do-manual-publish": "npm run clean && npm run bootstrap && npm run build && lerna publish",
         "codecov": "codecov -t c0c5b758-349c-49bd-8c63-58fdc724e474 < coverage/lcov.info",
         "start": "webpack-serve  --config ./webpack.demo.config.js",
         "serve": "npm run start"
     },
     "dependencies": {},
     "devDependencies": {
-        "@types/jest": "24.0.13",
-        "@types/react": "16.8.19",
-        "@types/react-dom": "16.8.4",
+        "@types/jest": "24.0.24",
+        "@types/react": "16.9.17",
+        "@types/react-dom": "16.9.4",
         "awesome-typescript-loader": "5.2.1",
-        "codecov": "3.5.0",
+        "codecov": "3.6.1",
         "html-webpack-plugin": "3.2.0",
-        "jest": "24.8.0",
-        "lerna": "3.14.1",
-        "react": "16.8.6",
-        "react-dom": "16.8.6",
-        "rimraf": "2.6.3",
-        "ts-jest": "24.0.2",
-        "ts-node": "8.2.0",
-        "tslint": "5.17.0",
-        "typescript": "3.5.1",
-        "webpack": "4.32.2",
-        "webpack-cli": "3.3.2",
-        "webpack-serve": "3.1.0"
+        "jest": "24.9.0",
+        "lerna": "3.19.0",
+        "react": "16.12.0",
+        "react-dom": "16.12.0",
+        "rimraf": "3.0.0",
+        "ts-jest": "24.2.0",
+        "ts-node": "8.5.4",
+        "tslint": "5.20.1",
+        "typescript": "3.7.3",
+        "webpack": "4.41.4",
+        "webpack-cli": "3.3.10",
+        "webpack-serve": "3.2.0"
     }
 }

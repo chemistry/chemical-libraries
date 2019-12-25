@@ -17,7 +17,7 @@
   "engines": {
     "node": ">=6.0.0"
   },
-  "repository": "https://github.com/chemistry/chem-js-lib/tree/master/packages/common",
+  "repository": "https://github.com/chemistry/chemical-libraries/tree/master/packages/common",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"

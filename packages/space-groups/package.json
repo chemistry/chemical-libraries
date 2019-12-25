@@ -22,7 +22,7 @@
         "registry": "https://registry.npmjs.org/",
         "access": "public"
     },
-    "repository": "https://github.com/chemistry/chem-js-lib/tree/master/packages/space-groups",
+    "repository": "https://github.com/chemistry/chemical-libraries/tree/master/packages/space-groups",
     "private": false,
     "files": [
         "package-lock.json",

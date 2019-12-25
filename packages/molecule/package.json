@@ -14,7 +14,7 @@
     "atoms",
     "bonds"
   ],
-  "repository": "https://github.com/chemistry/chem-js-lib/tree/master/packages/molecule",
+  "repository": "https://github.com/chemistry/chemical-libraries/tree/master/packages/molecule",
   "engines": {
     "node": ">=6.0.0"
   },

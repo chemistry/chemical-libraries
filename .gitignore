@@ -5,6 +5,7 @@ build
 temp
 # Generated docs with JSDoc
 docs
+.npmrc
 TODO
 dist/
 lib/

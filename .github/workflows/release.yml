@@ -1,0 +1,87 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs: # Jobs List
+  verify-build:
+    name: Verify Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Checkout
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - name: Install dependencies
+      run: npm ci && npm run bootstrap:ci
+    - name: Lint
+      run: npm run lint
+    - name: Test
+      run: npm run test
+    - name: Build
+      run: npm run build
+      env:
+        CI: true
+
+  release-on-push-tag:
+    needs: verify-build
+    name: Release
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v1.0.0
+      with:
+        node-version: 12
+
+    - name: Set Release Version
+      run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})
+
+    - name: Get Release version
+      run: echo $RELEASE_VERSION
+
+    - name: Update Git Identity
+      run: git config --global user.name '@vreshch' && git config --global user.email 'vreshch@gmail.com' && git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Reattach HEAD to Head Ref
+      run: git checkout "$(echo ${{ github.head_ref }} | sed -E 's|refs/[a-zA-Z]+/||')"
+      if: github.head_ref != ''
+    - name: Reattach HEAD to Ref
+      run: git checkout "$(echo ${{ github.ref }} | sed -E 's|refs/[a-zA-Z]+/||')"
+      if: github.head_ref == ''
+    - name: Remove Tag
+      run:  git push --delete origin $RELEASE_VERSION && git tag -d $RELEASE_VERSION
+    - name: Checkout to master
+      run: git checkout master && git reset --hard
+
+    - name: Install dependencies
+      run: npm ci && npm run bootstrap:ci
+    - name: Build
+      run: npm run build
+
+    - name: Setup npmrc File
+      run: echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+
+    - name: Publish with Lerna
+      run: npm run release -- $RELEASE_VERSION
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Github Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: ${{ github.ref }}
+        body: |
+          Release Changes
+        draft: false
+        prerelease: false

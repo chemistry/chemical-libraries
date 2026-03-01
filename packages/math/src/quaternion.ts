@@ -6,7 +6,7 @@ export class Quaternion {
   /**
    * Get Quaternion from Axis angle
    */
-  public static fromAxisAngle(axis: Vec3, angle: number) {
+  public static fromAxisAngle(axis: Vec3, angle: number): Quaternion {
     const f = angle * 0.5;
     const pt = axis.scale(Math.sin(f));
     return new Quaternion(pt.x, pt.y, pt.z, Math.cos(f));

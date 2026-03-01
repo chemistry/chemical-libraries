@@ -367,7 +367,7 @@ export class Matrix3x4 implements ICloneable<Matrix3x4>, IEquatable<Matrix3x4> {
     return Matrix3x4.inverse(this);
   }
 
-  public isE() {
+  public isE(): boolean {
     return Matrix3x4.isE(this);
   }
 

@@ -1,0 +1,42 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'friday'
+      time: '18:00'
+      timezone: 'Europe/Prague'
+    open-pull-requests-limit: 10
+    groups:
+      dev-dependencies:
+        patterns:
+          - '@types/*'
+          - 'typescript'
+          - 'eslint*'
+          - '@eslint/*'
+          - 'typescript-eslint'
+          - 'prettier'
+          - 'vitest*'
+          - '@vitest/*'
+        update-types:
+          - 'minor'
+          - 'patch'
+      react:
+        patterns:
+          - 'react'
+          - '@types/react'
+      redux:
+        patterns:
+          - 'redux'
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'friday'
+      time: '18:00'
+      timezone: 'Europe/Prague'

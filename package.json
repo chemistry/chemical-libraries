@@ -39,7 +39,7 @@
     "clean": "rm -rf packages/*/dist coverage"
   },
   "devDependencies": {
-    "@anthropic-ai/sdk": "^0.39.0",
+    "@anthropic-ai/sdk": "^0.78.0",
     "@eslint/js": "^10.0.0",
     "@types/react": "^19.2.14",
     "@vitest/coverage-v8": "^4.0.18",

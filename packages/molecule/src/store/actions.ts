@@ -1,5 +1,5 @@
-import type { MoleculeDataFormat } from '../models';
-import { ActionTypes } from './constants';
+import type { MoleculeDataFormat } from '../models.js';
+import { ActionTypes } from './constants.js';
 
 export function loadMolecule(data: unknown, format: MoleculeDataFormat): LoadAction {
   return {

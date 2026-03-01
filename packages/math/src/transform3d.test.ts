@@ -1,5 +1,5 @@
-import { Transform3D } from './transform3d';
-import { Vec3 } from './vec3';
+import { Transform3D } from './transform3d.js';
+import { Vec3 } from './vec3.js';
 
 describe('Transform3D', () => {
   it('should create instance', () => {

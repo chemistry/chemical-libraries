@@ -1,5 +1,5 @@
 import { EPSILON, ICloneable, IEquatable } from '@chemistry/common';
-import { Vec3 } from './vec3';
+import { Vec3 } from './vec3.js';
 
 /**
  * Simple Class to work with special type of matrix.

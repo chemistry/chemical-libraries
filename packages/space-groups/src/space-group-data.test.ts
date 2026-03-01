@@ -1,4 +1,4 @@
-import { SpaceGroupsData } from './space-group-data';
+import { SpaceGroupsData } from './space-group-data.js';
 
 describe('SpaceGroupsData', () => {
   it('should export SpaceGroupsData', () => {

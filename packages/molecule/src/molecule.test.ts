@@ -1,5 +1,5 @@
-import { MoleculeDataFormat } from './models';
-import { Molecule } from './molecule';
+import { MoleculeDataFormat } from './models.js';
+import { Molecule } from './molecule.js';
 
 const ACETONE = {
   id: '3',

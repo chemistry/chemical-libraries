@@ -1,4 +1,4 @@
-import { Vec3 } from './vec3';
+import { Vec3 } from './vec3.js';
 
 describe('Vec3', () => {
   it('should create instance', () => {

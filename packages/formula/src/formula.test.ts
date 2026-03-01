@@ -1,4 +1,4 @@
-import { Formula } from './formula';
+import { Formula } from './formula.js';
 
 describe('Formula', () => {
   it('should be defined', () => {

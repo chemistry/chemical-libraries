@@ -1,4 +1,4 @@
-import { ChemElements } from './chem-elements';
+import { ChemElements } from './chem-elements.js';
 
 describe('ChemElements', () => {
   it('should export class', () => {

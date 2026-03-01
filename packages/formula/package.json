@@ -1,38 +1,46 @@
 {
-    "name": "@chemistry/formula",
-    "version": "2.9.0",
-    "description": "Chemical formula parser",
-    "author": {
-        "name": "Volodymyr Vreshch",
-        "url": "http://vreshch.com/"
-    },
-    "license": "MIT",
-    "keywords": [
-        "formula",
-        "chemical composition",
-        "cheminformatics"
-    ],
-    "engines": {
-        "node": ">=6.0.0"
-    },
-    "repository": "https://github.com/chemistry/chemical-libraries/tree/master/packages/formula",
-    "publishConfig": {
-        "registry": "https://registry.npmjs.org/",
-        "access": "public"
-    },
-    "private": false,
-    "files": [
-        "package-lock.json",
-        "package.json",
-        "dist",
-        "README.md"
-    ],
-    "main": "dist/formula.js",
-    "typings": "dist/index.d.ts",
-    "scripts": {
-        "build": "webpack-cli --config webpack.config.js --mode production"
-    },
-    "dependencies": {
-        "@chemistry/elements": "^2.9.0"
+  "name": "@chemistry/formula",
+  "version": "3.0.0",
+  "description": "Chemical formula parser",
+  "type": "module",
+  "author": {
+    "name": "Volodymyr Vreshch",
+    "url": "https://vreshch.com/"
+  },
+  "license": "MIT",
+  "keywords": [
+    "formula",
+    "chemical composition",
+    "cheminformatics"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "repository": "https://github.com/chemistry/chemical-libraries/tree/master/packages/formula",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "private": false,
+  "sideEffects": false,
+  "files": [
+    "package.json",
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
+  },
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@chemistry/elements": "^3.0.0"
+  }
 }

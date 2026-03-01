@@ -1,10 +1,11 @@
 {
   "name": "@chemistry/molecule",
-  "version": "2.9.0",
+  "version": "3.0.0",
   "description": "Molecule",
+  "type": "module",
   "author": {
     "name": "Volodymyr Vreshch",
-    "url": "http://vreshch.com/"
+    "url": "https://vreshch.com/"
   },
   "license": "MIT",
   "keywords": [
@@ -16,28 +17,43 @@
   ],
   "repository": "https://github.com/chemistry/chemical-libraries/tree/master/packages/molecule",
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=20.0.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
   "private": false,
+  "sideEffects": false,
   "files": [
-    "package-lock.json",
     "package.json",
     "dist",
     "README.md"
   ],
-  "main": "dist/molecule.js",
-  "typings": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
-    "build": "webpack-cli --config webpack.config.js --mode production"
+    "build": "tsc",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@chemistry/common": "^2.9.0",
-    "@chemistry/elements": "^2.9.0",
-    "@chemistry/math": "^2.9.0",
-    "redux": "4.0.1"
+    "@chemistry/common": "^3.0.0",
+    "@chemistry/elements": "^3.0.0",
+    "@chemistry/math": "^3.0.0",
+    "redux": "^5.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
   }
 }

@@ -1,20 +1,19 @@
-#npm node modules
 node_modules
 coverage
-build
-temp
-# Generated docs with JSDoc
-docs
-lerna-debug.log
-.npmrc
-TODO
 dist/
-lib/
-# Sublime text project space
+temp
+
+# Editor files
 *.sublime-workspace
 *.sublime-project
-# zip file
-*.zip
-npm-debug.log
-# Mac DS_Store Files
 .DS_Store
+
+# Debug logs
+npm-debug.log
+
+# Build artifacts
+*.tsbuildinfo
+.eslintcache
+
+# Archives
+*.zip

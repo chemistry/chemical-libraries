@@ -1,12 +1,16 @@
-export function isValidJnmol(data: any): boolean {
-    if (
-      !data || typeof data !== "object" ||
-      !data.atoms || !data.bonds ||
-      typeof data.id !== "string" ||
-      typeof data.title !== "string"
-    )  {
-       return false;
-    }
+export function isValidJnmol(data: unknown): boolean {
+  if (
+    !data ||
+    typeof data !== 'object' ||
+    !('atoms' in data) ||
+    !('bonds' in data) ||
+    !('id' in data) ||
+    typeof (data as Record<string, unknown>).id !== 'string' ||
+    !('title' in data) ||
+    typeof (data as Record<string, unknown>).title !== 'string'
+  ) {
+    return false;
+  }
 
-    return true;
+  return true;
 }

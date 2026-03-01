@@ -1,0 +1,146 @@
+name: Release Prepare
+
+on:
+  schedule:
+    - cron: '0 17 * * 5' # Weekly on Friday at 18:00 Prague (CET=UTC+1; 19:00 during CEST)
+  workflow_dispatch:
+    inputs:
+      bump_type:
+        description: 'Version bump type'
+        required: false
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check master CI status
+        run: |
+          STATUS=$(gh api repos/${{ github.repository }}/commits/master/status --jq '.state')
+          if [ "$STATUS" = "failure" ]; then
+            echo "Master CI is failing, skipping release"
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for existing release PR
+        id: check-pr
+        run: |
+          EXISTING_PR=$(gh pr list --repo ${{ github.repository }} --head "release/" --state open --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING_PR" ]; then
+            echo "Release PR #$EXISTING_PR already exists, skipping"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/checkout@v4
+        if: steps.check-pr.outputs.skip != 'true'
+        with:
+          fetch-depth: 0
+
+      - name: Check for commits since last tag
+        if: steps.check-pr.outputs.skip != 'true'
+        id: check-commits
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -n "$LAST_TAG" ]; then
+            COMMIT_COUNT=$(git rev-list ${LAST_TAG}..HEAD --count)
+          else
+            COMMIT_COUNT=$(git rev-list HEAD --count)
+          fi
+          echo "commit_count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
+          if [ "$COMMIT_COUNT" -eq "0" ]; then
+            echo "No commits since last tag, skipping"
+          fi
+
+      - name: Use Node.js 22.x
+        if: steps.check-pr.outputs.skip != 'true' && steps.check-commits.outputs.commit_count != '0'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.check-pr.outputs.skip != 'true' && steps.check-commits.outputs.commit_count != '0'
+        run: npm ci
+
+      - name: Bump versions
+        if: steps.check-pr.outputs.skip != 'true' && steps.check-commits.outputs.commit_count != '0'
+        id: bump
+        run: |
+          BUMP_TYPE="${{ github.event.inputs.bump_type || 'patch' }}"
+          OUTPUT=$(node scripts/bump-versions.js $BUMP_TYPE)
+          echo "$OUTPUT"
+          NEW_VERSION=$(echo "$OUTPUT" | grep "^NEW_VERSION=" | cut -d= -f2)
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update package-lock.json
+        if: steps.check-pr.outputs.skip != 'true' && steps.check-commits.outputs.commit_count != '0'
+        run: npm install --package-lock-only
+
+      - name: Generate changelog
+        if: steps.check-pr.outputs.skip != 'true' && steps.check-commits.outputs.commit_count != '0'
+        id: changelog
+        run: |
+          CHANGELOG=$(node scripts/generate-changelog.js ${{ steps.bump.outputs.version }})
+          echo "$CHANGELOG" > /tmp/changelog.md
+          {
+            echo "content<<CHANGELOG_EOF"
+            echo "$CHANGELOG"
+            echo "CHANGELOG_EOF"
+          } >> $GITHUB_OUTPUT
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Update CHANGELOG.md
+        if: steps.check-pr.outputs.skip != 'true' && steps.check-commits.outputs.commit_count != '0'
+        run: |
+          cat /tmp/changelog.md | node scripts/update-changelog.js ${{ steps.bump.outputs.version }}
+
+      - name: Create release branch and PR
+        if: steps.check-pr.outputs.skip != 'true' && steps.check-commits.outputs.commit_count != '0'
+        run: |
+          VERSION="${{ steps.bump.outputs.version }}"
+          BRANCH="release/auto-v${VERSION}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git checkout -b "$BRANCH"
+          git add -A
+          git commit -m "chore: release v${VERSION}"
+          git push origin "$BRANCH"
+
+          gh pr create \
+            --title "Release v${VERSION}" \
+            --body "$(cat <<EOF
+          ## Release v${VERSION}
+
+          ${{ steps.changelog.outputs.content }}
+
+          ---
+
+          ### Checklist
+          - [ ] Changelog looks correct
+          - [ ] Version bumps are correct
+          - [ ] CI passes
+          EOF
+          )" \
+            --base master \
+            --head "$BRANCH"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

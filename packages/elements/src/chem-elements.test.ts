@@ -66,4 +66,35 @@ describe('ChemElements', () => {
       expect(elements[0].symbol).toEqual('H');
     });
   });
+
+  describe('elements 113-118', () => {
+    it('should include Nihonium (113)', () => {
+      const el = ChemElements.getById(113);
+      expect(el).not.toBeNull();
+      expect(el!.symbol).toEqual('Nh');
+      expect(el!.name).toEqual('Nihonium');
+      expect(el!.mass).toEqual(286);
+    });
+
+    it('should include Flerovium (114)', () => {
+      const el = ChemElements.getById(114);
+      expect(el).not.toBeNull();
+      expect(el!.symbol).toEqual('Fl');
+      expect(el!.name).toEqual('Flerovium');
+    });
+
+    it('should include Oganesson (118)', () => {
+      const el = ChemElements.getById(118);
+      expect(el).not.toBeNull();
+      expect(el!.symbol).toEqual('Og');
+      expect(el!.name).toEqual('Oganesson');
+      expect(el!.mass).toEqual(294);
+    });
+
+    it('should find superheavy elements by symbol', () => {
+      expect(ChemElements.getBySymbol('Mc')!.name).toEqual('Moscovium');
+      expect(ChemElements.getBySymbol('Lv')!.name).toEqual('Livermorium');
+      expect(ChemElements.getBySymbol('Ts')!.name).toEqual('Tennessine');
+    });
+  });
 });

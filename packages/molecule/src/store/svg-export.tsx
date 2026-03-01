@@ -7,10 +7,6 @@ import {
   projectMolecule,
 } from './services/index.js';
 
-export const exportMolecule = (molecule: IMoleculeState, _format: string): IMoleculeState => {
-  return molecule;
-};
-
 export const exportToSVG = (
   molecule: IMoleculeState,
   drawOptions: SvgExportOptions

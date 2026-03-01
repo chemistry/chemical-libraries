@@ -1,69 +1,69 @@
-import { ChemElements } from "./chem-elements";
+import { ChemElements } from './chem-elements';
 
-describe("ChemElements", () => {
-    it("should export class", () => {
-        expect(ChemElements).toBeDefined();
+describe('ChemElements', () => {
+  it('should export class', () => {
+    expect(ChemElements).toBeDefined();
+  });
+
+  describe('getById', () => {
+    it('should return information by element ID', () => {
+      const element = ChemElements.getById(1);
+
+      expect(element!.symbol).toEqual('H');
     });
 
-    describe("getById", () => {
-        it("should return information by element ID", () => {
-            const element = ChemElements.getById(1);
+    it('should return null for wrong id', () => {
+      const element = ChemElements.getById(201);
 
-            expect(element.symbol).toEqual("H");
-        });
+      expect(element).toBeNull();
+    });
+  });
 
-        it("should return null for wrong id", () => {
-            const element = ChemElements.getById(201);
+  describe('getBySymbol', () => {
+    it('should return information by element Name', () => {
+      const element = ChemElements.getBySymbol('C');
 
-            expect(element).toBeNull();
-        });
+      expect(element!.name).toEqual('Carbon');
     });
 
-    describe("getBySymbol", () => {
-        it("should return information by element Name", () => {
-            const element = ChemElements.getBySymbol("C");
+    it('should return null for wrong name', () => {
+      const element = ChemElements.getBySymbol('WrongName');
 
-            expect(element.name).toEqual("Carbon");
-        });
-
-        it("should return null for wrong name", () => {
-            const element = ChemElements.getBySymbol("WrongName");
-
-            expect(element).toBeNull();
-        });
-
-        it("should work correctly with empty string", () => {
-            expect(() => {
-                const element = ChemElements.getBySymbol(undefined);
-            }).not.toThrow();
-        });
-
-        it("Should find element even it was incorrectly capitalized", () => {
-            const element = ChemElements.getBySymbol("CA");
-
-            expect(element).not.toBeNull();
-        });
+      expect(element).toBeNull();
     });
 
-    describe("getAllSymbols", () => {
-        it("should return list with > 100 items", () => {
-            const elements = ChemElements.getAllSymbols();
-            expect(elements.length).toBeGreaterThan(100);
-        });
-        it("hydrogen should be first in a list", () => {
-            const elements = ChemElements.getAllSymbols();
-            expect(elements[0]).toEqual("H");
-        });
+    it('should work correctly with empty string', () => {
+      expect(() => {
+        const _element = ChemElements.getBySymbol(undefined as unknown as string);
+      }).not.toThrow();
     });
 
-    describe("getAll", () => {
-        it("should return list with > 100 items", () => {
-            const elements = ChemElements.getAll();
-            expect(elements.length).toBeGreaterThan(100);
-        });
-        it("hydrogen should be first in a list", () => {
-            const elements = ChemElements.getAll();
-            expect(elements[0].symbol).toEqual("H");
-        });
+    it('Should find element even it was incorrectly capitalized', () => {
+      const element = ChemElements.getBySymbol('CA');
+
+      expect(element).not.toBeNull();
     });
+  });
+
+  describe('getAllSymbols', () => {
+    it('should return list with > 100 items', () => {
+      const elements = ChemElements.getAllSymbols();
+      expect(elements.length).toBeGreaterThan(100);
+    });
+    it('hydrogen should be first in a list', () => {
+      const elements = ChemElements.getAllSymbols();
+      expect(elements[0]).toEqual('H');
+    });
+  });
+
+  describe('getAll', () => {
+    it('should return list with > 100 items', () => {
+      const elements = ChemElements.getAll();
+      expect(elements.length).toBeGreaterThan(100);
+    });
+    it('hydrogen should be first in a list', () => {
+      const elements = ChemElements.getAll();
+      expect(elements[0].symbol).toEqual('H');
+    });
+  });
 });

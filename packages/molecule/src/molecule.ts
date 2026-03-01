@@ -1,39 +1,33 @@
-import { JNMol } from "@chemistry/common";
-import { createStore } from "redux";
-import { MoleculeDataFormat } from "./models";
-import { SvgExportOptions } from "./models";
-import {
-    exportMolecule,
-    exportToSVG,
-    IMoleculeState,
-    loadMolecule,
-    reducer,
-} from "./store";
+import type React from 'react';
+import { legacy_createStore as createStore } from 'redux';
+import { MoleculeDataFormat } from './models';
+import type { SvgExportOptions } from './models';
+import { exportMolecule, exportToSVG, type IMoleculeState, loadMolecule, reducer } from './store';
 
 export class Molecule {
-    private store = createStore(reducer);
+  private store = createStore(reducer);
 
-    private get state(): IMoleculeState {
-        return this.store.getState();
-    }
+  private get state(): IMoleculeState {
+    return this.store.getState();
+  }
 
-    public getAtomCount(): number {
-        return Object.keys(this.state.atoms).length;
-    }
+  public getAtomCount(): number {
+    return Object.keys(this.state.atoms).length;
+  }
 
-    public getBondCount(): number {
-        return Object.keys(this.state.bonds).length;
-    }
+  public getBondCount(): number {
+    return Object.keys(this.state.bonds).length;
+  }
 
-    public load(data: any, format: MoleculeDataFormat = MoleculeDataFormat.jnmol) {
-        this.store.dispatch(loadMolecule(data, format));
-    }
+  public load(data: unknown, format: MoleculeDataFormat = MoleculeDataFormat.jnmol): void {
+    this.store.dispatch(loadMolecule(data, format));
+  }
 
-    public export(format: MoleculeDataFormat = MoleculeDataFormat.jnmol): any {
-        return exportMolecule(this.state, format);
-    }
+  public export(format: MoleculeDataFormat = MoleculeDataFormat.jnmol): IMoleculeState {
+    return exportMolecule(this.state, format);
+  }
 
-    public toSVG(options: SvgExportOptions): JSX.Element {
-        return exportToSVG(this.state, options);
-    }
+  public toSVG(options: SvgExportOptions): React.JSX.Element {
+    return exportToSVG(this.state, options);
+  }
 }

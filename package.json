@@ -1,67 +1,53 @@
 {
-    "name": "@chemistry/chemical-libraries",
-    "version": "2.2.0",
-    "description": "Open Cheminformatics Libraries",
-    "author": {
-        "name": "Volodymyr Vreshch",
-        "url": "http://vreshch.com/"
-    },
-    "license": "MIT",
-    "private": true,
-    "keywords": [
-        "cheminformatics",
-        "chemistry",
-        "javascript"
-    ],
-    "engines": {
-        "node": ">=6.0.0"
-    },
-    "devEngines": {
-        "node": ">=8.0.0"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/chemistry/chemical-libraries.git"
-    },
-    "publishConfig": {
-        "registry": "https://registry.npmjs.org/"
-    },
-    "scripts": {
-        "clean": "lerna clean && rimraf dist/* coverage/*",
-        "bootstrap": "lerna bootstrap --hoist",
-        "bootstrap:ci": "lerna exec npm ci",
-        "build": "lerna run build",
-        "updated": "lerna updated",
-        "test": "jest",
-        "tdd": "jest --watch",
-        "lint": "tslint -c tslint.json -p tsconfig.json 'packages/**/src/**/*.ts{,x}'",
-        "lintfix": "tslint -c tslint.json -p tsconfig.json 'packages/**/src/**/*.ts{,x}' --fix",
-        "update-lock-files": "lerna exec \"npm install --ignore-scripts --package-lock-only --no-audit\"",
-        "release": "lerna publish --no-push --yes ",
-        "do-manual-publish": "npm run clean && npm run bootstrap && npm run build && lerna publish",
-        "codecov": "codecov -t c0c5b758-349c-49bd-8c63-58fdc724e474 < coverage/lcov.info",
-        "start": "webpack-serve  --config ./webpack.demo.config.js",
-        "serve": "npm run start"
-    },
-    "dependencies": {},
-    "devDependencies": {
-        "@types/jest": "24.0.25",
-        "@types/react": "16.9.17",
-        "@types/react-dom": "16.9.4",
-        "awesome-typescript-loader": "5.2.1",
-        "codecov": "3.6.1",
-        "html-webpack-plugin": "3.2.0",
-        "jest": "24.9.0",
-        "lerna": "3.20.2",
-        "react": "16.12.0",
-        "react-dom": "16.12.0",
-        "rimraf": "3.0.0",
-        "ts-jest": "24.3.0",
-        "ts-node": "8.5.4",
-        "tslint": "5.20.1",
-        "typescript": "3.7.4",
-        "webpack": "4.41.5",
-        "webpack-cli": "3.3.10",
-        "webpack-serve": "3.2.0"
-    }
+  "name": "@chemistry/chemical-libraries",
+  "version": "3.0.0",
+  "description": "Open Cheminformatics Libraries",
+  "type": "module",
+  "author": {
+    "name": "Volodymyr Vreshch",
+    "url": "https://vreshch.com/"
+  },
+  "license": "MIT",
+  "private": true,
+  "keywords": [
+    "cheminformatics",
+    "chemistry",
+    "javascript"
+  ],
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chemistry/chemical-libraries.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "build": "npm run build -w @chemistry/common -w @chemistry/elements -w @chemistry/space-groups && npm run build -w @chemistry/math -w @chemistry/formula && npm run build -w @chemistry/molecule",
+    "test": "vitest run",
+    "lint": "eslint packages/*/src/",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "tsc --noEmit",
+    "verify": "npm run type-check && npm run lint && npm run format:check && npm run test && npm run build",
+    "clean": "rm -rf packages/*/dist coverage"
+  },
+  "devDependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@eslint/js": "^10.0.0",
+    "@types/react": "^19.2.14",
+    "@vitest/coverage-v8": "^4.0.18",
+    "eslint": "^10.0.0",
+    "prettier": "^3.4.0",
+    "react": "^19.2.4",
+    "typescript": "^5.9.0",
+    "typescript-eslint": "^8.56.0",
+    "vitest": "^4.0.0"
+  }
 }

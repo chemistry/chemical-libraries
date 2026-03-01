@@ -1,0 +1,124 @@
+name: Release Build
+
+on:
+  pull_request_target:
+    types: [closed]
+    branches: [master]
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g. v3.0.1)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  create-tag:
+    if: >
+      (github.event_name == 'pull_request_target' &&
+       github.event.pull_request.merged == true &&
+       startsWith(github.event.pull_request.head.ref, 'release/'))
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.extract.outputs.version }}
+      tag: ${{ steps.extract.outputs.tag }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from branch
+        id: extract
+        run: |
+          BRANCH="${{ github.event.pull_request.head.ref }}"
+          VERSION=$(echo "$BRANCH" | sed 's|release/auto-v||')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+          echo "Extracted version: $VERSION"
+
+      - name: Create and push tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "${{ steps.extract.outputs.tag }}" -m "Release ${{ steps.extract.outputs.tag }}"
+          git push origin "${{ steps.extract.outputs.tag }}"
+
+  publish:
+    needs: [create-tag]
+    if: >
+      always() &&
+      (needs.create-tag.result == 'success' || needs.create-tag.result == 'skipped')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.create-tag.outputs.tag || github.event.inputs.tag || github.ref }}
+          fetch-depth: 0
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ -n "${{ needs.create-tag.outputs.version }}" ]; then
+            echo "version=${{ needs.create-tag.outputs.version }}" >> $GITHUB_OUTPUT
+            echo "tag=${{ needs.create-tag.outputs.tag }}" >> $GITHUB_OUTPUT
+          elif [ -n "${{ github.event.inputs.tag }}" ]; then
+            TAG="${{ github.event.inputs.tag }}"
+            VERSION=$(echo "$TAG" | sed 's/^v//')
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "tag=$TAG" >> $GITHUB_OUTPUT
+          else
+            TAG=$(echo "${{ github.ref }}" | sed 's|refs/tags/||')
+            VERSION=$(echo "$TAG" | sed 's/^v//')
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "tag=$TAG" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run type-check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish packages to npm
+        run: |
+          # Publish in dependency order
+          npm publish -w @chemistry/common --access public || true
+          npm publish -w @chemistry/elements --access public || true
+          npm publish -w @chemistry/space-groups --access public || true
+          npm publish -w @chemistry/math --access public || true
+          npm publish -w @chemistry/formula --access public || true
+          npm publish -w @chemistry/molecule --access public || true
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.tag }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

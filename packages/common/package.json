@@ -1,10 +1,11 @@
 {
   "name": "@chemistry/common",
-  "version": "2.9.0",
+  "version": "3.0.0",
   "description": "Chemical data formats",
+  "type": "module",
   "author": {
     "name": "Volodymyr Vreshch",
-    "url": "http://vreshch.com/"
+    "url": "https://vreshch.com/"
   },
   "license": "MIT",
   "keywords": [
@@ -15,7 +16,7 @@
     "data formats"
   ],
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=20.0.0"
   },
   "repository": "https://github.com/chemistry/chemical-libraries/tree/master/packages/common",
   "publishConfig": {
@@ -23,15 +24,22 @@
     "access": "public"
   },
   "private": false,
+  "sideEffects": false,
   "files": [
-    "package-lock.json",
     "package.json",
     "dist",
     "README.md"
   ],
-  "main": "dist/common.js",
-  "typings": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
-    "build": "webpack-cli --config webpack.config.js --mode production"
+    "build": "tsc",
+    "type-check": "tsc --noEmit"
   }
 }

@@ -1,31 +1,28 @@
 {
-    "compilerOptions": {
-        "jsx": "react",
-        "module": "commonjs",
-        "target": "es5",
-        "noImplicitAny": true,
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "declaration": true,
-        "types": ["jest"],
-        "outDir": "dist",
-        "lib": ["es2015", "es2016", "dom"]
-    },
-
-    "rules": {
-    },
-
-    "exclude": [
-        "node_modules",
-        "dist"
-    ],
-
-    "awesomeTypescriptLoaderOptions": {
-        "forkChecker": true,
-        "useWebpackText": true
-    },
-
-    "atom": {
-        "rewriteTsconfig": false
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "lib": ["ES2020", "DOM"],
+    "types": ["vitest/globals"],
+    "noEmit": true,
+    "paths": {
+      "@chemistry/common": ["./packages/common/src/index.ts"],
+      "@chemistry/elements": ["./packages/elements/src/index.ts"],
+      "@chemistry/math": ["./packages/math/src/index.ts"],
+      "@chemistry/formula": ["./packages/formula/src/index.ts"],
+      "@chemistry/molecule": ["./packages/molecule/src/index.ts"],
+      "@chemistry/space-groups": ["./packages/space-groups/src/index.ts"]
     }
+  },
+  "include": ["packages/*/src/**/*"]
 }

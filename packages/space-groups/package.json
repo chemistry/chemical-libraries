@@ -1,38 +1,46 @@
 {
-    "name": "@chemistry/space-groups",
-    "version": "2.9.0",
-    "description": "List of space groups with symetry codes",
-    "author": {
-        "name": "Volodymyr Vreshch",
-        "url": "http://vreshch.com/"
-    },
-    "license": "MIT",
-    "keywords": [
-        "Crystallography",
-        "Space Groups Dictionary",
-        "International table of crystallography",
-        "Hermann Mauguin",
-        "Hall Symbol",
-        "Symetry Operations"
-    ],
-    "engines": {
-        "node": ">=6.0.0"
-    },
-    "publishConfig": {
-        "registry": "https://registry.npmjs.org/",
-        "access": "public"
-    },
-    "repository": "https://github.com/chemistry/chemical-libraries/tree/master/packages/space-groups",
-    "private": false,
-    "files": [
-        "package-lock.json",
-        "package.json",
-        "dist",
-        "README.md"
-    ],
-    "main": "dist/space-groups.js",
-    "typings": "dist/index.d.ts",
-    "scripts": {
-        "build": "webpack-cli --config webpack.config.js --mode production"
+  "name": "@chemistry/space-groups",
+  "version": "3.0.0",
+  "description": "List of space groups with symmetry codes",
+  "type": "module",
+  "author": {
+    "name": "Volodymyr Vreshch",
+    "url": "https://vreshch.com/"
+  },
+  "license": "MIT",
+  "keywords": [
+    "Crystallography",
+    "Space Groups Dictionary",
+    "International table of crystallography",
+    "Hermann Mauguin",
+    "Hall Symbol",
+    "Symmetry Operations"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "repository": "https://github.com/chemistry/chemical-libraries/tree/master/packages/space-groups",
+  "private": false,
+  "sideEffects": false,
+  "files": [
+    "package.json",
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
+  },
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit"
+  }
 }

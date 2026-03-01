@@ -1,3 +1,3 @@
 export enum ActionTypes {
-    MOLECULE_LOAD = "@molecule/LOAD",
+  MOLECULE_LOAD = '@molecule/LOAD',
 }

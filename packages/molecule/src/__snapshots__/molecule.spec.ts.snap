@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Molecule toSVG should export ACETONE and take into account color settings 1`] = `
+exports[`Molecule > toSVG > should export ACETONE and take into account color settings 1`] = `
 <svg
   className="c-molsvg"
 >
@@ -55,7 +55,7 @@ exports[`Molecule toSVG should export ACETONE and take into account color settin
 </svg>
 `;
 
-exports[`Molecule toSVG should export ACETONE with default settings 1`] = `
+exports[`Molecule > toSVG > should export ACETONE with default settings 1`] = `
 <svg
   className="c-molsvg"
 >

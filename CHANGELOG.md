@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.1.0] - 2026-03-01
+
+### New Features
+
+- Add missing elements 113-118 (Nihonium, Flerovium, Moscovium, Livermorium, Tennessine, Oganesson) to @chemistry/elements
+
+### Documentation
+
+- Update README with package overview table, npm badges, and usage examples
+
 ## [3.0.3] - 2026-03-01
 
 ### Bug Fixes

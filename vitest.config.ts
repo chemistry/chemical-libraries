@@ -16,11 +16,11 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    include: ['packages/*/src/**/*.spec.{ts,tsx}'],
+    include: ['packages/*/src/**/*.test.{ts,tsx}'],
     coverage: {
       provider: 'v8',
       include: ['packages/*/src/**/*.{ts,tsx}'],
-      exclude: ['packages/*/src/**/*.spec.{ts,tsx}', 'packages/*/src/**/index.ts'],
+      exclude: ['packages/*/src/**/*.test.{ts,tsx}', 'packages/*/src/**/index.ts'],
       thresholds: {
         branches: 70,
         functions: 70,

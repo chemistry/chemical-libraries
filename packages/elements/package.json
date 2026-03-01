@@ -17,7 +17,11 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "repository": "https://github.com/chemistry/chemical-libraries/tree/master/packages/elements",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chemistry/chemical-libraries.git",
+    "directory": "packages/elements"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
@@ -33,8 +37,8 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
   },
   "scripts": {

@@ -68,7 +68,7 @@ export class Vec3 implements IVec3, ICloneable<Vec3>, IEquatable<Vec3> {
     return new Vec3(this.x * num, this.y * num, this.z * num);
   }
 
-  public normalize() {
+  public normalize(): Vec3 {
     const len = this.length;
     if (len === 0) {
       throw new Error('Can not normalize zero vector');
@@ -89,15 +89,15 @@ export class Vec3 implements IVec3, ICloneable<Vec3>, IEquatable<Vec3> {
     return Vec3.add(this, vector);
   }
 
-  public equals(vec: Vec3) {
+  public equals(vec: Vec3): boolean {
     return Vec3.equals(this, vec);
   }
 
-  public clone() {
+  public clone(): Vec3 {
     return new Vec3(this.x, this.y, this.z);
   }
 
-  public toString() {
+  public toString(): string {
     return '(' + this.x.toFixed(3) + ',' + this.y.toFixed(3) + ',' + this.z.toFixed(3) + ')';
   }
 }

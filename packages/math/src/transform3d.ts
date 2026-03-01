@@ -251,7 +251,7 @@ export class Transform3D implements ICloneable<Transform3D> {
    * Return Inverse to current transformation (by inverting matrix)
    * (allow to unproject vectors)
    */
-  public inverse() {
+  public inverse(): Transform3D {
     let i;
     const r = new Array(16);
     const m = this.elements;
@@ -378,7 +378,7 @@ export class Transform3D implements ICloneable<Transform3D> {
   /**
    * Return determinant of transformation matrix
    */
-  public determinant() {
+  public determinant(): number {
     const value =
       this.get(0, 3) * this.get(1, 2) * this.get(2, 1) * this.get(3, 0) -
       this.get(0, 1) * this.get(1, 3) * this.get(2, 1) * this.get(3, 0) -

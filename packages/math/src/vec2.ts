@@ -46,7 +46,7 @@ export class Vec2 implements IVec2, ICloneable<Vec2>, IEquatable<Vec2> {
     return new Vec2(this.x * num, this.y * num);
   }
 
-  public normalize() {
+  public normalize(): Vec2 {
     const len = this.length;
     if (len === 0) {
       throw new Error('Can not normalize zero vector');
@@ -67,15 +67,15 @@ export class Vec2 implements IVec2, ICloneable<Vec2>, IEquatable<Vec2> {
     return Vec2.add(this, vector);
   }
 
-  public equals(vec: Vec2) {
+  public equals(vec: Vec2): boolean {
     return Vec2.equals(this, vec);
   }
 
-  public clone() {
+  public clone(): Vec2 {
     return new Vec2(this.x, this.y);
   }
 
-  public toString() {
+  public toString(): string {
     return '(' + this.x.toFixed(3) + ',' + this.y.toFixed(3) + ')';
   }
 }

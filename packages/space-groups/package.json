@@ -23,7 +23,11 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "repository": "https://github.com/chemistry/chemical-libraries/tree/master/packages/space-groups",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chemistry/chemical-libraries.git",
+    "directory": "packages/space-groups"
+  },
   "private": false,
   "sideEffects": false,
   "files": [
@@ -35,8 +39,8 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
   },
   "scripts": {

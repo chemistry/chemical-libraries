@@ -2,13 +2,7 @@ import type React from 'react';
 import { legacy_createStore as createStore } from 'redux';
 import { MoleculeDataFormat } from './models.js';
 import type { SvgExportOptions } from './models.js';
-import {
-  exportMolecule,
-  exportToSVG,
-  type IMoleculeState,
-  loadMolecule,
-  reducer,
-} from './store/index.js';
+import { exportMolecule, type IMoleculeState, loadMolecule, reducer } from './store/index.js';
 
 export class Molecule {
   private store = createStore(reducer);
@@ -33,7 +27,8 @@ export class Molecule {
     return exportMolecule(this.state, format);
   }
 
-  public toSVG(options: SvgExportOptions): React.JSX.Element {
+  public async toSVG(options: SvgExportOptions): Promise<React.JSX.Element> {
+    const { exportToSVG } = await import('./store/svg-export.js');
     return exportToSVG(this.state, options);
   }
 }

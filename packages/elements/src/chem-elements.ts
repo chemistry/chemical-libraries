@@ -1,4 +1,4 @@
-import { ChemElementData, ChemElementInfo } from './chem-elements-data';
+import { ChemElementData, ChemElementInfo } from './chem-elements-data.js';
 
 export class ChemElements {
   public static getById(id: number): ChemElementInfo | null {

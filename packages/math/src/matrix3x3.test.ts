@@ -1,5 +1,5 @@
-import { Matrix3x3 } from './matrix3x3';
-import { Vec3 } from './vec3';
+import { Matrix3x3 } from './matrix3x3.js';
+import { Vec3 } from './vec3.js';
 
 describe('Matrix3x3', () => {
   it('should create instance', () => {

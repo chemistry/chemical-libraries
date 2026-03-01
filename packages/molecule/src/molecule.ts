@@ -1,8 +1,14 @@
 import type React from 'react';
 import { legacy_createStore as createStore } from 'redux';
-import { MoleculeDataFormat } from './models';
-import type { SvgExportOptions } from './models';
-import { exportMolecule, exportToSVG, type IMoleculeState, loadMolecule, reducer } from './store';
+import { MoleculeDataFormat } from './models.js';
+import type { SvgExportOptions } from './models.js';
+import {
+  exportMolecule,
+  exportToSVG,
+  type IMoleculeState,
+  loadMolecule,
+  reducer,
+} from './store/index.js';
 
 export class Molecule {
   private store = createStore(reducer);

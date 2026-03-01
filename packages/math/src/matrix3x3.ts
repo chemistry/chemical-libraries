@@ -1,5 +1,5 @@
 import { EPSILON, ICloneable, IEquatable } from '@chemistry/common';
-import { Vec3 } from './vec3';
+import { Vec3 } from './vec3.js';
 
 export class Matrix3x3 implements ICloneable<Matrix3x3>, IEquatable<Matrix3x3> {
   public static equals(m1: Matrix3x3, m2: Matrix3x3): boolean {

@@ -1,2 +1,2 @@
-export * from './projection.service';
-export * from './export-to-svg.service';
+export * from './projection.service.js';
+export * from './export-to-svg.service.js';

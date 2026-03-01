@@ -1,7 +1,11 @@
 import type React from 'react';
-import { defaultSvgOptions, type SvgExportOptions } from '../models';
-import type { IMoleculeState } from './reducer';
-import { exportMoleculeToSVG, getDefaultMoleculeCamera, projectMolecule } from './services';
+import { defaultSvgOptions, type SvgExportOptions } from '../models.js';
+import type { IMoleculeState } from './reducer.js';
+import {
+  exportMoleculeToSVG,
+  getDefaultMoleculeCamera,
+  projectMolecule,
+} from './services/index.js';
 
 export const exportMolecule = (molecule: IMoleculeState, _format: string): IMoleculeState => {
   return molecule;

@@ -1,5 +1,5 @@
-import { SpaceGroup } from './space-group';
-import { SpaceGroupsData } from './space-group-data';
+import { SpaceGroup } from './space-group.js';
+import { SpaceGroupsData } from './space-group-data.js';
 
 describe('SpaceGroups', () => {
   it('should export SpaceGroup class', () => {

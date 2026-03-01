@@ -1,4 +1,4 @@
-import { SpaceGroupInfo, SpaceGroupsData } from './space-group-data';
+import { SpaceGroupInfo, SpaceGroupsData } from './space-group-data.js';
 
 export enum CrystalSystem {
   Triclinic = 'Triclinic',

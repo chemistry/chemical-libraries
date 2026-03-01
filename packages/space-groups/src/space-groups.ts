@@ -1,2 +1,2 @@
-export * from './space-group';
-export * from './space-group-data';
+export * from './space-group.js';
+export * from './space-group-data.js';

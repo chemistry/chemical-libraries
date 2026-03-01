@@ -1,7 +1,7 @@
 import type React from 'react';
 import { ChemElements } from '@chemistry/elements';
-import type { SvgExportOptions } from '../../models';
-import type { IMoleculeState } from '../reducer';
+import type { SvgExportOptions } from '../../models.js';
+import type { IMoleculeState } from '../reducer.js';
 
 function getAtomsSVG(molecule: IMoleculeState, options: SvgExportOptions): React.JSX.Element {
   const atomsView = Object.keys(molecule.atoms).map((atomId: string) => {

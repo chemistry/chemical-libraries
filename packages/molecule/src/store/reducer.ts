@@ -1,8 +1,8 @@
 import type { JNMol } from '@chemistry/common';
-import { MoleculeDataFormat } from '../models';
-import type { MoleculeAction } from './actions';
-import { ActionTypes } from './constants';
-import { isValidJnmol } from './helpers';
+import { MoleculeDataFormat } from '../models.js';
+import type { MoleculeAction } from './actions.js';
+import { ActionTypes } from './constants.js';
+import { isValidJnmol } from './helpers/index.js';
 
 export interface IMoleculeState extends JNMol {
   id: string;

@@ -1,5 +1,5 @@
-import { Quaternion } from './quaternion';
-import { Vec3 } from './vec3';
+import { Quaternion } from './quaternion.js';
+import { Vec3 } from './vec3.js';
 
 describe('Quaternion', () => {
   it('should create instance', () => {

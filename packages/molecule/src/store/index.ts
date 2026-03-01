@@ -1,3 +1,3 @@
-export * from './reducer';
-export * from './actions';
-export * from './selectors';
+export * from './reducer.js';
+export * from './actions.js';
+export * from './selectors.js';

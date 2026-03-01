@@ -1,6 +1,6 @@
 import { EPSILON, ICloneable } from '@chemistry/common';
-import { Quaternion } from './quaternion';
-import { Vec3 } from './vec3';
+import { Quaternion } from './quaternion.js';
+import { Vec3 } from './vec3.js';
 
 /**
  * Class to work with Matrix4x4 (When normalized have proberty  A^-1 = A^t)

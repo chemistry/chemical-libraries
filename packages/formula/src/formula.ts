@@ -30,6 +30,17 @@ export class Formula {
     return formulaObj;
   }
 
+  public static convertToWeight(formula: ChemComposition): number {
+    let weight = 0;
+    for (const element of Object.keys(formula)) {
+      const info = ChemElements.getBySymbol(element);
+      if (info) {
+        weight += formula[element] * info.mass;
+      }
+    }
+    return Math.round(weight * 1000) / 1000;
+  }
+
   public static convertToString(formula: ChemComposition): string {
     const formulaDataArray = Object.keys(formula)
       .filter((key) => {

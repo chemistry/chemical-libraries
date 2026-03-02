@@ -5,6 +5,25 @@ describe('Formula', () => {
     expect(Formula).toBeDefined();
   });
 
+  describe('convertToWeight', () => {
+    it('should return 0 for empty composition', () => {
+      const res = Formula.convertToWeight({});
+      expect(res).toEqual(0);
+    });
+    it('should calculate weight for H2O', () => {
+      const res = Formula.convertToWeight({ H: 2, O: 1 });
+      expect(res).toEqual(18.015);
+    });
+    it('should calculate weight for ethanol C2H6O', () => {
+      const res = Formula.convertToWeight({ C: 2, H: 6, O: 1 });
+      expect(res).toEqual(46.068);
+    });
+    it('should ignore unknown elements', () => {
+      const res = Formula.convertToWeight({ H: 2, O: 1, X: 10 });
+      expect(res).toEqual(18.015);
+    });
+  });
+
   describe('convertToString', () => {
     it('should return empty object for empty string', () => {
       const res = Formula.convertToString({});

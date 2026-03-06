@@ -1,6 +1,6 @@
 {
   "name": "@chemistry/math",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Math support for @chemistry project",
   "type": "module",
   "author": {

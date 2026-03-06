@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.1.1] - 2026-03-06
+
+### New Features
+
+- Add complete implementations for missing chemical library functions
+
+### Infrastructure
+
+- Update TypeScript compilation target to ES2024 for modern JavaScript features
+- Require Node.js version 22 or higher for improved performance and security
+
 ## [3.1.0] - 2026-03-01
 
 ### New Features

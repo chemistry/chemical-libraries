@@ -1,36 +1,38 @@
 # @chemistry/math
 
-[![npm version](https://badge.fury.io/js/%40chemistry%2Fmath.svg)](https://badge.fury.io/js/%40chemistry%2Fmath)
-[![License: MIT](https://img.shields.io/badge/License-MIT-gren.svg)](https://opensource.org/licenses/MIT)
+[![npm](https://img.shields.io/npm/v/@chemistry/math)](https://www.npmjs.com/package/@chemistry/math)
 
-Simple linear algebra Math library to support [chemistry js project](http://vreshch.com/chemistry-js.html)
+Linear algebra library for 3D chemistry — vectors, matrices, quaternions, and transforms.
 
-## Install
+## Installation
 
 ```bash
 npm install @chemistry/math
 ```
 
-## Include following clases:
+## Usage
 
-- Vec3
-- Matrix3x3
-- Matrix3x4
-- Transform3d
-- Quaternion
+```typescript
+import { Vec3, Matrix3x3, Quaternion, Transform3D } from '@chemistry/math';
 
-## Getting started:
+const v = new Vec3(1, 2, 3);
+const normalized = v.normalize();
 
-```javascript
-import { V, ChemElementData } from '@chemistry/math';
-const matrix = new Matrix3x3([1, 0, 0, 0, 2, 0, 0, 0, 3]);
-const vector = new Vec3(2, 3, 1);
+const m = Matrix3x3.identity();
+const transformed = m.multiplyVec3(v);
 
-const res = matrix.project(vector);
-// (2.00, 6.00, 3.00)
-console.log(res);
+const q = new Quaternion(0, 0, 0, 1);
+const rotated = q.rotate(v);
 ```
 
-## Commands:
+## Features
 
-- Build project: `npm run build`
+- `Vec2` / `Vec3` — 2D and 3D vector operations
+- `Matrix3x3` / `Matrix3x4` — matrix operations and transformations
+- `Quaternion` — quaternion math for rotations
+- `Transform3D` — combined translation, rotation, and scale
+- Isomorphic — works in Node.js and browsers
+
+## License
+
+MIT

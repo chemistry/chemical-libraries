@@ -7,28 +7,32 @@ updates:
       day: 'friday'
       time: '18:00'
       timezone: 'Europe/Prague'
+    assignees:
+      - 'vreshch'
     open-pull-requests-limit: 10
     groups:
       dev-dependencies:
         patterns:
           - '@types/*'
           - 'typescript'
+          - 'typescript-eslint'
           - 'eslint*'
           - '@eslint/*'
-          - 'typescript-eslint'
           - 'prettier'
           - 'vitest*'
           - '@vitest/*'
+          - 'jest*'
+          - 'ts-jest'
+          - '@playwright/*'
+          - 'playwright*'
+          - '@testing-library/*'
+          - 'postcss'
+          - 'autoprefixer'
+          - '@tailwindcss/*'
+          - 'tailwindcss'
         update-types:
           - 'minor'
           - 'patch'
-      react:
-        patterns:
-          - 'react'
-          - '@types/react'
-      redux:
-        patterns:
-          - 'redux'
     ignore:
       - dependency-name: '*'
         update-types: ['version-update:semver-major']
@@ -40,3 +44,5 @@ updates:
       day: 'friday'
       time: '18:00'
       timezone: 'Europe/Prague'
+    assignees:
+      - 'vreshch'

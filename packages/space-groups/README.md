@@ -1,47 +1,35 @@
 # @chemistry/space-groups
 
-[![npm version](https://badge.fury.io/js/%40chemistry%2Fspace-groups.svg)](https://badge.fury.io/js/%40chemistry%2Fspace-groups)
-[![License: MIT](https://img.shields.io/badge/License-MIT-gren.svg)](https://opensource.org/licenses/MIT)
+[![npm](https://img.shields.io/npm/v/@chemistry/space-groups)](https://www.npmjs.com/package/@chemistry/space-groups)
 
-Crystallography: Space Groups Dictionary
+All 230 crystallographic space groups with symmetry operations.
 
-## Install
+## Installation
 
 ```bash
 npm install @chemistry/space-groups
 ```
 
-## Getting started:
+## Usage
 
-### SpaceGroupData
-
-```javascript
-import { SpaceGroupData } from '@chemistry/space-groups';
-/*
-  id: Space Group number
-  hm: Hermann Mauguin Symbol
-  hs: Hall Symbol
-  o: Representative Operations
-  s: Symetry List
-*/
-const sg = SpaceGroupData[2];
-// -> {id: 2, hm: "P -1", hs: "-P 1", o: 1, s: ["x,y,z", "-x,-y,-z"]}
-console.log(sg);
-```
-
-### SpaceGroup
-
-```javascript
+```typescript
 import { SpaceGroup } from '@chemistry/space-groups';
 
-const sg = SpaceGroup.getByHMName('P -1');
+const sg = SpaceGroup.getById(225);
+// { id: 225, hm: "F m -3 m", hs: "-F 4 2 3", o: 24, s: [...192 symmetry operations] }
 
-console.log(sg);
-// -> {id: 2, hm: "P -1", hs: "-P 1", o: 1, s: ["x,y,z", "-x,-y,-z"]}
-console.log(SpaceGroup.getCrystalSystem(sg));
-// -> Triclinic
+const all = SpaceGroup.getAll();
+// Array of 230 space groups
 ```
 
-## Commands:
+## Features
 
-- Build project: `npm run build`
+- All 230 space groups (ITA standard)
+- Hermann-Mauguin and Hall symbols
+- Symmetry operations for each group
+- Lookup by ID or symbol
+- Isomorphic — works in Node.js and browsers
+
+## License
+
+MIT

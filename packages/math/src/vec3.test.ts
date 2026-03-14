@@ -129,7 +129,7 @@ describe('Vec3', () => {
 
     expect(() => {
       vec1.normalize();
-    }).toThrowError('Can not normalize zero vector');
+    }).toThrow('Can not normalize zero vector');
   });
 
   it('should define static decimal', () => {

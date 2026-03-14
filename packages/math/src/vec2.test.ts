@@ -121,6 +121,6 @@ describe('Vec2', () => {
 
     expect(() => {
       vec1.normalize();
-    }).toThrowError('Can not normalize zero vector');
+    }).toThrow('Can not normalize zero vector');
   });
 });

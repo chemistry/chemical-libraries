@@ -26,7 +26,7 @@ describe('selectors', () => {
     });
 
     it('should throw for unsupported format', () => {
-      expect(() => exportMolecule(sampleState, MoleculeDataFormat.jmol)).toThrowError(
+      expect(() => exportMolecule(sampleState, MoleculeDataFormat.jmol)).toThrow(
         'jmol is not supported'
       );
     });

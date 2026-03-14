@@ -57,7 +57,7 @@ describe('Quaternion', () => {
 
     it('should throw for zero quaternion', () => {
       const q = new Quaternion(0, 0, 0, 0);
-      expect(() => q.normalize()).toThrowError('Can not normalize zero quaternion');
+      expect(() => q.normalize()).toThrow('Can not normalize zero quaternion');
     });
   });
 

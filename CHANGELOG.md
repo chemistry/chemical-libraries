@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.1.2] - 2026-03-20
+
+### Infrastructure
+
+- Update development dependencies to latest versions
+
+### Bug Fixes
+
+- Fix deprecated test matcher usage in test suites
+
 ## [3.1.1] - 2026-03-06
 
 ### New Features

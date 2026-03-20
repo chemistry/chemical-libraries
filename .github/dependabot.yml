@@ -11,28 +11,9 @@ updates:
       - 'vreshch'
     open-pull-requests-limit: 10
     groups:
-      dev-dependencies:
+      all-dependencies:
         patterns:
-          - '@types/*'
-          - 'typescript'
-          - 'typescript-eslint'
-          - 'eslint*'
-          - '@eslint/*'
-          - 'prettier'
-          - 'vitest*'
-          - '@vitest/*'
-          - 'jest*'
-          - 'ts-jest'
-          - '@playwright/*'
-          - 'playwright*'
-          - '@testing-library/*'
-          - 'postcss'
-          - 'autoprefixer'
-          - '@tailwindcss/*'
-          - 'tailwindcss'
-        update-types:
-          - 'minor'
-          - 'patch'
+          - '*'
     ignore:
       - dependency-name: '*'
         update-types: ['version-update:semver-major']
@@ -46,3 +27,9 @@ updates:
       timezone: 'Europe/Prague'
     assignees:
       - 'vreshch'
+    open-pull-requests-limit: 5
+    groups:
+      all-actions:
+        patterns:
+          - '*'
+

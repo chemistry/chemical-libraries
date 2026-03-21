@@ -5,6 +5,10 @@ on:
     branches: [master]
     types: [opened, synchronize, reopened]
 
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   pull-requests: write
@@ -26,21 +30,32 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
+        id: install
         run: npm ci
 
       - name: Type check
+        id: type-check
+        if: always() && steps.install.outcome == 'success'
         run: npm run type-check
 
       - name: Lint
+        id: lint
+        if: always() && steps.install.outcome == 'success'
         run: npm run lint
 
       - name: Format check
+        id: format
+        if: always() && steps.install.outcome == 'success'
         run: npm run format:check
 
       - name: Test
+        id: test
+        if: always() && steps.install.outcome == 'success'
         run: npm run test
 
       - name: Build
+        id: build
+        if: always() && steps.install.outcome == 'success'
         run: npm run build
 
       - name: Comment on PR
@@ -48,51 +63,61 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            const status = '${{ job.status }}' === 'success' ? '✅ PASSED' : '❌ FAILED';
-            const emoji = '${{ job.status }}' === 'success' ? '🎉' : '💥';
+            const marker = '<!-- pr-validation-bot -->';
+            const checks = [
+              { name: 'Dependencies installed', outcome: '${{ steps.install.outcome }}' },
+              { name: 'Type check passed', outcome: '${{ steps.type-check.outcome }}' },
+              { name: 'Linting passed', outcome: '${{ steps.lint.outcome }}' },
+              { name: 'Format check passed', outcome: '${{ steps.format.outcome }}' },
+              { name: 'Tests passed', outcome: '${{ steps.test.outcome }}' },
+              { name: 'Build successful', outcome: '${{ steps.build.outcome }}' },
+            ];
 
-            const body = `${emoji} **PR Validation ${status}**
+            const allPassed = checks.every(c => c.outcome === 'success');
+            const status = allPassed ? '✅ PASSED' : '❌ FAILED';
+            const emoji = allPassed ? '🎉' : '💥';
 
-            **Commit:** \`${{ github.sha }}\`
+            const checkLines = checks
+              .map(c => `- ${c.outcome === 'success' ? '✅' : c.outcome === 'skipped' ? '⏭️' : '❌'} ${c.name}`)
+              .join('\n');
+
+            const body = `${marker}
+            ${emoji} **PR Validation ${status}**
+
+            **Commit:** \`${{ github.event.pull_request.head.sha }}\`
             **Branch:** \`${{ github.head_ref }}\`
 
             **Checks:**
-            - ${'${{ job.status }}' === 'success' ? '✅' : '❌'} Dependencies installed
-            - ${'${{ job.status }}' === 'success' ? '✅' : '❌'} Type check passed
-            - ${'${{ job.status }}' === 'success' ? '✅' : '❌'} Linting passed
-            - ${'${{ job.status }}' === 'success' ? '✅' : '❌'} Format check passed
-            - ${'${{ job.status }}' === 'success' ? '✅' : '❌'} Tests passed
-            - ${'${{ job.status }}' === 'success' ? '✅' : '❌'} Build successful
+            ${checkLines}
 
-            ${status === '✅ PASSED' ? '**Ready to merge!** ✨' : '**Please fix issues before merging.**'}
+            ${allPassed ? '**Ready to merge!** ✨' : '**Please fix the failing checks.**'}
 
             ---
             🔗 [View workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
             ⏰ Generated at: \`${new Date().toISOString()}\``;
 
-            const comments = await github.rest.issues.listComments({
+            const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
             });
 
-            const botComment = comments.data.find(comment =>
-              comment.user.login === 'github-actions[bot]' &&
-              comment.body.includes('PR Validation')
+            const existing = comments.find(c =>
+              c.user.login === 'github-actions[bot]' && c.body.startsWith(marker)
             );
 
-            if (botComment) {
+            if (existing) {
               await github.rest.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                comment_id: botComment.id,
-                body: body
+                comment_id: existing.id,
+                body: body,
               });
             } else {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                body: body
+                body: body,
               });
             }

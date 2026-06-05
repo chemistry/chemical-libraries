@@ -41,13 +41,13 @@
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.100.1",
     "@eslint/js": "^10.0.0",
-    "@types/react": "^19.2.15",
-    "@vitest/coverage-v8": "^4.1.7",
-    "eslint": "^10.4.0",
+    "@types/react": "^19.2.16",
+    "@vitest/coverage-v8": "^4.1.8",
+    "eslint": "^10.4.1",
     "prettier": "^3.8.3",
-    "react": "^19.2.6",
+    "react": "^19.2.7",
     "typescript": "^5.9.0",
-    "typescript-eslint": "^8.60.0",
+    "typescript-eslint": "^8.60.1",
     "vitest": "^4.0.0"
   }
 }

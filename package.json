@@ -39,15 +39,15 @@
     "clean": "rm -rf packages/*/dist coverage"
   },
   "devDependencies": {
-    "@anthropic-ai/sdk": "^0.104.1",
+    "@anthropic-ai/sdk": "^0.105.0",
     "@eslint/js": "^10.0.0",
     "@types/react": "^19.2.17",
-    "@vitest/coverage-v8": "^4.1.8",
-    "eslint": "^10.4.1",
+    "@vitest/coverage-v8": "^4.1.9",
+    "eslint": "^10.5.0",
     "prettier": "^3.8.4",
     "react": "^19.2.7",
     "typescript": "^5.9.0",
-    "typescript-eslint": "^8.61.0",
+    "typescript-eslint": "^8.61.1",
     "vitest": "^4.0.0"
   }
 }

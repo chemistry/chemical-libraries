@@ -42,12 +42,12 @@
     "@anthropic-ai/sdk": "^0.110.0",
     "@eslint/js": "^10.0.0",
     "@types/react": "^19.2.17",
-    "@vitest/coverage-v8": "^4.1.9",
+    "@vitest/coverage-v8": "^4.1.10",
     "eslint": "^10.6.0",
-    "prettier": "^3.9.4",
+    "prettier": "^3.9.5",
     "react": "^19.2.7",
     "typescript": "^5.9.0",
-    "typescript-eslint": "^8.62.1",
+    "typescript-eslint": "^8.63.0",
     "vitest": "^4.0.0"
   }
 }

@@ -1,14 +1,24 @@
 name: Release Prepare
 
+# Fully automatic Friday MINOR release train for the six @chemistry packages.
+# No human step on the happy path: it merges green dependabot PRs, cuts a minor
+# release, auto-merges the release PR, then tags + dispatches release-build.yml.
+#
+# GITHUB_TOKEN caveats handled here: its branch pushes don't fire pr-validation
+# on the release PR (the in-workflow verify is the gate), and its merges / tag
+# pushes never fire release-build.yml - so after merge we create the tag on the
+# squash commit and dispatch release-build.yml explicitly.
 on:
   schedule:
-    - cron: '0 17 * * 5' # Weekly on Friday at 18:00 Prague (CET=UTC+1; 19:00 during CEST)
+    # Friday 20:00 Europe/Prague, both DST offsets; the gate job filters.
+    - cron: '0 18 * * 5'
+    - cron: '0 19 * * 5'
   workflow_dispatch:
     inputs:
       bump_type:
         description: 'Version bump type'
         required: false
-        default: 'patch'
+        default: 'minor'
         type: choice
         options:
           - patch
@@ -18,133 +28,232 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 jobs:
-  prepare-release:
+  prague-gate:
+    name: Friday 20:00 Prague gate
     runs-on: ubuntu-latest
-
+    timeout-minutes: 5
+    outputs:
+      go: ${{ steps.gate.outputs.go }}
     steps:
-      - name: Check master CI status
+      - name: Check local Prague hour (DST-proof)
+        id: gate
         run: |
-          STATUS=$(gh api repos/${{ github.repository }}/commits/master/status --jq '.state')
-          if [ "$STATUS" = "failure" ]; then
-            echo "Master CI is failing, skipping release"
-            exit 1
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "workflow_dispatch - bypassing hour gate."
+            echo "go=true" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Check for existing release PR
-        id: check-pr
-        run: |
-          EXISTING_PR=$(gh pr list --repo ${{ github.repository }} --head "release/" --state open --json number --jq '.[0].number // empty')
-          if [ -n "$EXISTING_PR" ]; then
-            echo "Release PR #$EXISTING_PR already exists, skipping"
-            echo "skip=true" >> $GITHUB_OUTPUT
+          HOUR=$(TZ=Europe/Prague date +%H)
+          if [ "$HOUR" = "20" ]; then
+            echo "go=true" >> "$GITHUB_OUTPUT"
           else
-            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "Prague hour is $HOUR, not 20 - wrong DST cron slot, skipping."
+            echo "go=false" >> "$GITHUB_OUTPUT"
           fi
+
+  dependabot-merge:
+    name: Merge green dependabot PRs
+    needs: prague-gate
+    if: needs.prague-gate.outputs.go == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Merge dependabot PRs whose checks are green
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          # The chemistry org is not covered by the agentage triage automation,
+          # so the train merges its own dependabot PRs before releasing.
+          PRS=$(gh pr list -R "$REPO" --author "app/dependabot" --state open --json number --jq '.[].number')
+          if [ -z "$PRS" ]; then
+            echo "No open dependabot PRs." | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          echo "## Dependabot PRs" >> "$GITHUB_STEP_SUMMARY"
+          for PR in $PRS; do
+            echo "Processing dependabot PR #$PR"
+            SETTLED=false
+            # Poll up to ~10 min for checks to settle (bucket: pass|fail|pending|skipping|cancel).
+            for i in $(seq 1 20); do
+              OUT=$(gh pr checks "$PR" -R "$REPO" --json bucket 2>/dev/null || true)
+              [ -z "$OUT" ] && OUT="[]"
+              PENDING=$(echo "$OUT" | jq '[.[] | select(.bucket=="pending")] | length')
+              if [ "$PENDING" = "0" ]; then SETTLED=true; break; fi
+              echo "poll $i: PR #$PR has $PENDING pending check(s)..."
+              sleep 30
+            done
+            OUT=$(gh pr checks "$PR" -R "$REPO" --json bucket 2>/dev/null || true)
+            [ -z "$OUT" ] && OUT="[]"
+            FAILED=$(echo "$OUT" | jq '[.[] | select(.bucket=="fail" or .bucket=="cancel")] | length')
+            if [ "$SETTLED" = "true" ] && [ "$FAILED" = "0" ]; then
+              if gh pr merge "$PR" -R "$REPO" --squash --delete-branch; then
+                echo "- Merged #$PR (checks green)" >> "$GITHUB_STEP_SUMMARY"
+              else
+                echo "- #$PR green but merge failed - left open" >> "$GITHUB_STEP_SUMMARY"
+              fi
+            else
+              echo "- #$PR left open (failed=$FAILED, settled=$SETTLED)" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
 
-      - uses: actions/checkout@v7
-        if: steps.check-pr.outputs.skip != 'true'
+  release:
+    name: Cut minor release
+    needs: [prague-gate, dependabot-merge]
+    if: needs.prague-gate.outputs.go == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - name: Check for commits since last tag
-        if: steps.check-pr.outputs.skip != 'true'
-        id: check-commits
-        run: |
-          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-          if [ -n "$LAST_TAG" ]; then
-            COMMIT_COUNT=$(git rev-list ${LAST_TAG}..HEAD --count)
-          else
-            COMMIT_COUNT=$(git rev-list HEAD --count)
-          fi
-          echo "commit_count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
-          if [ "$COMMIT_COUNT" -eq "0" ]; then
-            echo "No commits since last tag, skipping"
-          fi
-
-      - name: Use Node.js 22.x
-        if: steps.check-pr.outputs.skip != 'true' && steps.check-commits.outputs.commit_count != '0'
-        uses: actions/setup-node@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: 22.x
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
-        if: steps.check-pr.outputs.skip != 'true' && steps.check-commits.outputs.commit_count != '0'
         run: npm ci
 
-      - name: Bump versions
-        if: steps.check-pr.outputs.skip != 'true' && steps.check-commits.outputs.commit_count != '0'
-        id: bump
-        run: |
-          BUMP_TYPE="${{ github.event.inputs.bump_type || 'patch' }}"
-          OUTPUT=$(node scripts/bump-versions.js $BUMP_TYPE)
-          echo "$OUTPUT"
-          NEW_VERSION=$(echo "$OUTPUT" | grep "^NEW_VERSION=" | cut -d= -f2)
-          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
-
-      - name: Update package-lock.json
-        if: steps.check-pr.outputs.skip != 'true' && steps.check-commits.outputs.commit_count != '0'
-        run: npm install --package-lock-only
-
-      - name: Generate changelog
-        if: steps.check-pr.outputs.skip != 'true' && steps.check-commits.outputs.commit_count != '0'
-        id: changelog
-        run: |
-          CHANGELOG=$(node scripts/generate-changelog.js ${{ steps.bump.outputs.version }})
-          echo "$CHANGELOG" > /tmp/changelog.md
-          {
-            echo "content<<CHANGELOG_EOF"
-            echo "$CHANGELOG"
-            echo "CHANGELOG_EOF"
-          } >> $GITHUB_OUTPUT
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-
-      - name: Update CHANGELOG.md
-        if: steps.check-pr.outputs.skip != 'true' && steps.check-commits.outputs.commit_count != '0'
-        run: |
-          cat /tmp/changelog.md | node scripts/update-changelog.js ${{ steps.bump.outputs.version }}
-
-      - name: Format generated files
-        if: steps.check-pr.outputs.skip != 'true' && steps.check-commits.outputs.commit_count != '0'
-        run: npx prettier --write CHANGELOG.md
-
-      - name: Create release branch and PR
-        if: steps.check-pr.outputs.skip != 'true' && steps.check-commits.outputs.commit_count != '0'
-        run: |
-          VERSION="${{ steps.bump.outputs.version }}"
-          BRANCH="release/auto-v${VERSION}"
-
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          git checkout -b "$BRANCH"
-          git add -A
-          git commit -m "chore: release v${VERSION}"
-          git push origin "$BRANCH"
-
-          gh pr create \
-            --title "Release v${VERSION}" \
-            --body "$(cat <<EOF
-          ## Release v${VERSION}
-
-          ${{ steps.changelog.outputs.content }}
-
-          ---
-
-          ### Checklist
-          - [ ] Changelog looks correct
-          - [ ] Version bumps are correct
-          - [ ] CI passes
-          EOF
-          )" \
-            --base master \
-            --head "$BRANCH"
+      - name: Skip if an open release PR exists
+        id: guard
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXISTING=$(gh pr list --state open --json headRefName \
+            --jq '[.[] | select(.headRefName | startswith("release/"))] | length')
+          if [ "$EXISTING" != "0" ]; then
+            echo "Open release PR already exists - a previous train is stuck. Skipping." | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Detect releasable commits since the last tag
+        id: detect
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          set -euo pipefail
+          LAST_TAG=$(git tag --list 'v[0-9]*' --sort=-v:refname | head -1)
+          RANGE=""; [ -n "$LAST_TAG" ] && RANGE="${LAST_TAG}..HEAD"
+          echo "Last tag: ${LAST_TAG:-none}"
+          SUBJECTS=$(git log $RANGE --no-merges --pretty=%s)
+          # Releasable = anything except docs/ci/plain-chore; chore(deps) counts,
+          # chore(release) does not.
+          RELEASABLE=$(printf '%s\n' "$SUBJECTS" \
+            | grep -vE '^(docs|ci)(\([^)]*\))?!?:' \
+            | grep -vE '^chore(\([^)]*\))?!?:' || true)
+          DEPS=$(printf '%s\n' "$SUBJECTS" | grep -E '^chore\(deps' || true)
+          COUNT=$(printf '%s\n%s\n' "$RELEASABLE" "$DEPS" | grep -c . || true)
+          if [ "$COUNT" -eq 0 ]; then
+            echo "No releasable commits since ${LAST_TAG:-repo start} - no release this week." | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Found $COUNT releasable commit(s)."
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Bump versions (minor by default)
+        id: bump
+        if: steps.guard.outputs.skip != 'true' && steps.detect.outputs.release == 'true'
+        run: |
+          set -euo pipefail
+          BUMP_TYPE="${{ github.event.inputs.bump_type || 'minor' }}"
+          OUTPUT=$(node scripts/bump-versions.js "$BUMP_TYPE")
+          echo "$OUTPUT"
+          NEW_VERSION=$(echo "$OUTPUT" | grep "^NEW_VERSION=" | cut -d= -f2)
+          npm install --package-lock-only
+          echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Generate + write changelog
+        if: steps.bump.outputs.version
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -uo pipefail
+          VERSION="${{ steps.bump.outputs.version }}"
+          # AI changelog is best-effort; fall back to git subjects so the train
+          # never blocks on a missing key or API error.
+          if ! CHANGELOG=$(node scripts/generate-changelog.js "$VERSION" 2>/dev/null); then
+            CHANGELOG=""
+          fi
+          if [ -z "$CHANGELOG" ] || [ "$CHANGELOG" = "No significant changes" ]; then
+            LAST_TAG=$(git tag --list 'v[0-9]*' --sort=-v:refname | head -1)
+            RANGE=""; [ -n "$LAST_TAG" ] && RANGE="${LAST_TAG}..HEAD"
+            CHANGELOG="### Changes"$'\n'"$(git log $RANGE --no-merges --pretty='- %s')"
+          fi
+          printf '%s\n' "$CHANGELOG" | node scripts/update-changelog.js "$VERSION"
+          npx prettier --write CHANGELOG.md
+
+      - name: Verify
+        if: steps.bump.outputs.version
+        run: npm run verify
+
+      - name: Create + auto-merge release PR
+        id: pr
+        if: steps.bump.outputs.version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.bump.outputs.version }}"
+          BRANCH="release/auto-v${VERSION}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add package.json package-lock.json CHANGELOG.md packages/*/package.json
+          git commit -m "chore: release v${VERSION}"
+          git push origin "$BRANCH"
+          PR_URL=$(gh pr create --base master --head "$BRANCH" \
+            --title "Release v${VERSION}" \
+            --body "Automated weekly minor release train. Version ${VERSION} across all @chemistry packages. Publish runs via release-build.yml after merge.")
+          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+          sleep 5
+          if ! OUT=$(gh pr merge "$PR_URL" --auto --squash 2>&1); then
+            echo "$OUT"
+            echo "$OUT" | grep -q "clean status" && gh pr merge "$PR_URL" --squash || exit 1
+          fi
+
+      - name: Wait for merge, tag, dispatch release-build
+        if: steps.pr.outputs.pr_url
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.bump.outputs.version }}"
+          PR_URL="${{ steps.pr.outputs.pr_url }}"
+          TAG="v${VERSION}"
+          # Poll until the PR merges (direct, or auto-merge after checks pass).
+          SHA=""
+          for i in $(seq 1 30); do
+            STATE=$(gh pr view "$PR_URL" --json state --jq '.state')
+            if [ "$STATE" = "MERGED" ]; then
+              SHA=$(gh pr view "$PR_URL" --json mergeCommit --jq '.mergeCommit.oid')
+              break
+            fi
+            if [ "$STATE" = "CLOSED" ]; then
+              echo "Release PR was closed without merging - aborting." | tee -a "$GITHUB_STEP_SUMMARY"
+              exit 1
+            fi
+            echo "poll $i: PR state=$STATE, waiting for merge..."
+            sleep 30
+          done
+          if [ -z "$SHA" ]; then
+            echo "Release PR did not merge within the wait window - aborting." | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          # GITHUB_TOKEN merges / tag pushes never fire release-build.yml, so we
+          # tag the squash commit and dispatch release-build.yml explicitly.
+          git fetch origin
+          git tag -a "$TAG" -m "Release ${TAG}" "$SHA"
+          git push origin "$TAG"
+          gh workflow run release-build.yml -R "$REPO" -f tag="$TAG"
+          echo "Released ${TAG} - tag pushed, release-build.yml dispatched." >> "$GITHUB_STEP_SUMMARY"

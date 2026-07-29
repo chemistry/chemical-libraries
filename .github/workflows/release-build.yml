@@ -52,9 +52,15 @@ jobs:
 
   publish:
     needs: [create-tag]
+    # create-tag 'skipped' alone is NOT enough: on pull_request_target it skips
+    # for EVERY merged non-release PR, which used to fire a publish attempt with
+    # an empty tag. Only tag pushes, manual dispatches, and merged release/* PRs
+    # may publish.
     if: >
       always() &&
-      (needs.create-tag.result == 'success' || needs.create-tag.result == 'skipped')
+      (needs.create-tag.result == 'success' ||
+       (needs.create-tag.result == 'skipped' &&
+        (github.event_name == 'push' || github.event_name == 'workflow_dispatch')))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

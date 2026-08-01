@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.2.0] - 2026-08-01
+
+### Changes
+
+- ci: run release train on plain UTC cron, drop Prague hour gate (#63)
+- ci: publish only on tag push, dispatch, or merged release PR (#62)
+- ci: fully automatic Friday release train (#59)
+- chore(deps-dev): bump the all-dependencies group across 1 directory with 7 updates (#58)
+- chore(deps): bump actions/setup-node in the all-actions group (#57)
+
 ## [3.1.4] - 2026-04-10
 
 No significant changes

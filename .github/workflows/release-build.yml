@@ -110,13 +110,26 @@ jobs:
 
       - name: Publish packages to npm
         run: |
-          # Publish in dependency order
-          npm publish -w @chemistry/common --access public || true
-          npm publish -w @chemistry/elements --access public || true
-          npm publish -w @chemistry/space-groups --access public || true
-          npm publish -w @chemistry/math --access public || true
-          npm publish -w @chemistry/formula --access public || true
-          npm publish -w @chemistry/molecule --access public || true
+          # Publish in dependency order; tolerate ONLY already-published (idempotent
+          # re-runs), fail the job on anything else (auth, network, registry).
+          publish() {
+            local OUT
+            if OUT=$(npm publish -w "$1" --access public 2>&1); then
+              echo "$1 published"
+            elif echo "$OUT" | grep -qE "EPUBLISHCONFLICT|cannot publish over the previously published"; then
+              echo "$1 already published - ok"
+            else
+              echo "$OUT"
+              echo "::error::npm publish failed for $1"
+              exit 1
+            fi
+          }
+          publish @chemistry/common
+          publish @chemistry/elements
+          publish @chemistry/space-groups
+          publish @chemistry/math
+          publish @chemistry/formula
+          publish @chemistry/molecule
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

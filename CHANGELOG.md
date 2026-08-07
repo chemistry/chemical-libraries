@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.3.0] - 2026-08-07
+
+### Changes
+
+- chore: bump typescript to ^6.0.3 (#66)
+- fix: fail release build when npm publish errors (was silently green) (#65)
+
 ## [3.2.0] - 2026-08-01
 
 ### Changes

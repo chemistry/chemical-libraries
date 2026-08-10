@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.3.1] - 2026-08-10
+
+### Changes
+
+- ci: single-workflow Friday train (train.yml) (#70)
+- chore(deps-dev): bump the all-dependencies group across 1 directory with 5 updates (#68)
+
 ## [3.3.0] - 2026-08-07
 
 ### Changes

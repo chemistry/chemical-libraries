@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: 'weekly'
       day: 'friday'
-      time: '16:00'
+      time: '16:07'
       timezone: 'Etc/UTC'
     assignees:
       - 'vreshch'
@@ -24,7 +24,7 @@ updates:
     schedule:
       interval: 'weekly'
       day: 'friday'
-      time: '16:00'
+      time: '16:07'
       timezone: 'Etc/UTC'
     assignees:
       - 'vreshch'

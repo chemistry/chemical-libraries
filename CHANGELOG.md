@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.4.0] - 2026-08-11
+
+### Changes
+
+- fix: react-free SVG export in molecule, exportToSVG public (#74)
+- fix: ship src + LICENSE in tarballs, ES2024 emit, prebuild clean (#73)
+- ci: shift Friday schedules off minute :00 (#71)
+
 ## [3.3.1] - 2026-08-10
 
 ### Changes

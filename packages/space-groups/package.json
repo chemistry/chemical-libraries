@@ -50,6 +50,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "prepack": "rm -rf dist && tsc"
   }
 }

@@ -19,12 +19,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/chemistry/chemical-libraries.git",
+    "url": "git+https://github.com/chemistry/chemical-libraries.git",
     "directory": "packages/elements"
   },
+  "homepage": "https://github.com/chemistry/chemical-libraries/tree/master/packages/elements#readme",
+  "bugs": "https://github.com/chemistry/chemical-libraries/issues",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "private": false,
   "sideEffects": false,
@@ -33,7 +36,6 @@
     "dist",
     "src",
     "!src/**/*.test.ts",
-    "!src/**/*.test.tsx",
     "!src/**/__snapshots__",
     "README.md",
     "LICENSE"

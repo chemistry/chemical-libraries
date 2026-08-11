@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Repository:** `chemistry/chemical-libraries`
 **Default Branch:** `master`
-**Monorepo:** npm workspaces with TypeScript composite projects
+**Monorepo:** npm workspaces with an explicitly ordered build script (no TypeScript project references)
 
 ## Development Commands
 
@@ -19,7 +19,8 @@ npm test                 # Run Vitest unit tests
 npm run type-check       # TypeScript checking
 npm run lint             # ESLint
 npm run format:check     # Prettier check
-npm run verify           # Full pipeline: type-check + lint + build + test
+npm run verify:pack      # publint + attw + packed-file check + consumer fixture
+npm run verify           # Full pipeline: type-check + lint + format:check + test + build + verify:pack
 npm run clean            # Clean build artifacts
 ```
 
@@ -55,7 +56,7 @@ packages/
 
 ## Publishing
 
-All packages are published to npm under the `@chemistry` scope. **Never run `npm publish` manually** — tag `v*` and push to trigger the release pipeline.
+All packages are published to npm under the `@chemistry` scope. Releases are **not** tag-triggered: they ship via `.github/workflows/train.yml` (Friday cron, or `workflow_dispatch` with a `bump` input of `auto`/`patch`/`minor`/`major`/`none`), which bumps versions, publishes with OIDC trusted publishing, and tags the result. **Never run `npm publish` manually.**
 
 ## Standards
 

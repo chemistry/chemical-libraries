@@ -7,6 +7,7 @@ import { Formula } from '@chemistry/formula';
 import type { ChemComposition } from '@chemistry/formula';
 import { Quaternion, Vec3 } from '@chemistry/math';
 import { defaultSvgOptions, exportToSVG, Molecule, MoleculeDataFormat } from '@chemistry/molecule';
+import type { IMoleculeState } from '@chemistry/molecule';
 import { CrystalSystem, SpaceGroup } from '@chemistry/space-groups';
 import type { SpaceGroupInfo } from '@chemistry/space-groups';
 
@@ -26,7 +27,8 @@ const data: JNMol = { id: 'm1', title: 'empty', atoms: {}, bonds: {} };
 const molecule = new Molecule();
 molecule.load(data, MoleculeDataFormat.jnmol);
 const atomCount: number = molecule.getAtomCount();
-const svg: string = exportToSVG(molecule.export(MoleculeDataFormat.jnmol), defaultSvgOptions);
+const state: IMoleculeState = molecule.export(MoleculeDataFormat.jnmol);
+const svg: string = exportToSVG(state, defaultSvgOptions);
 
 const group: SpaceGroupInfo | null = SpaceGroup.getById(1);
 const system: CrystalSystem | null = group ? SpaceGroup.getCrystalSystem(group) : null;

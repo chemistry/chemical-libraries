@@ -9,6 +9,7 @@ import {
   expandGlobPattern,
   getWorkspacePackages,
   updatePackageVersion,
+  updateInternalDependencies,
 } from './bump-versions.js';
 
 function writeManifest(dir, manifest) {
@@ -131,5 +132,107 @@ describe('workspace discovery against a fixture monorepo', () => {
     expect(read('alpha')).toBe('3.5.0');
     expect(read('beta')).toBe('3.5.0');
     expect(read('legacy')).toBe('2.1.0');
+  });
+});
+
+describe('internal dependency lockstep', () => {
+  let root;
+  const internalNames = ['@fixture/alpha', '@fixture/beta'];
+
+  const readManifest = (name) =>
+    JSON.parse(readFileSync(join(root, 'packages', name, 'package.json'), 'utf-8'));
+
+  beforeEach(() => {
+    root = mkdtempSync(join(tmpdir(), 'bump-deps-'));
+    writeManifest(root, {
+      name: 'root',
+      version: '3.4.0',
+      private: true,
+      workspaces: ['packages/*'],
+    });
+    writeManifest(join(root, 'packages', 'alpha'), { name: '@fixture/alpha', version: '3.4.0' });
+    writeManifest(join(root, 'packages', 'beta'), {
+      name: '@fixture/beta',
+      version: '3.4.0',
+      dependencies: { '@fixture/alpha': '^3.0.0', redux: '^5.0.0' },
+      devDependencies: { vitest: '^4.0.0' },
+    });
+  });
+
+  afterEach(() => {
+    rmSync(root, { recursive: true, force: true });
+  });
+
+  it('rewrites internal dependency ranges to the bumped version', () => {
+    const pkgPath = join(root, 'packages', 'beta', 'package.json');
+    const changes = updateInternalDependencies(pkgPath, '3.5.0', internalNames);
+
+    expect(readManifest('beta').dependencies['@fixture/alpha']).toBe('^3.5.0');
+    expect(changes).toEqual([
+      {
+        field: 'dependencies',
+        name: '@fixture/alpha',
+        oldRange: '^3.0.0',
+        newRange: '^3.5.0',
+      },
+    ]);
+  });
+
+  it('leaves external dependency ranges untouched', () => {
+    updateInternalDependencies(join(root, 'packages', 'beta', 'package.json'), '3.5.0', [
+      ...internalNames,
+    ]);
+
+    const beta = readManifest('beta');
+    expect(beta.dependencies.redux).toBe('^5.0.0');
+    expect(beta.devDependencies.vitest).toBe('^4.0.0');
+  });
+
+  it('rewrites internal ranges across every dependency field', () => {
+    const pkgPath = join(root, 'packages', 'beta', 'package.json');
+    const beta = readManifest('beta');
+    beta.peerDependencies = { '@fixture/alpha': '^3.0.0' };
+    beta.optionalDependencies = { '@fixture/alpha': '^3.0.0' };
+    writeFileSync(pkgPath, JSON.stringify(beta, null, 2) + '\n');
+
+    updateInternalDependencies(pkgPath, '3.5.0', internalNames);
+
+    const updated = readManifest('beta');
+    expect(updated.peerDependencies['@fixture/alpha']).toBe('^3.5.0');
+    expect(updated.optionalDependencies['@fixture/alpha']).toBe('^3.5.0');
+  });
+
+  it('is a no-op when a manifest has no internal dependencies', () => {
+    const changes = updateInternalDependencies(
+      join(root, 'packages', 'alpha', 'package.json'),
+      '3.5.0',
+      internalNames
+    );
+
+    expect(changes).toEqual([]);
+    expect(readManifest('alpha')).toEqual({ name: '@fixture/alpha', version: '3.4.0' });
+  });
+
+  it('reports no changes when ranges already match the new version', () => {
+    const pkgPath = join(root, 'packages', 'beta', 'package.json');
+    updateInternalDependencies(pkgPath, '3.5.0', internalNames);
+
+    expect(updateInternalDependencies(pkgPath, '3.5.0', internalNames)).toEqual([]);
+  });
+
+  it('keeps versions and internal ranges in lockstep across a full bump', () => {
+    const packages = getWorkspacePackages(root);
+    const newVersion = bumpVersion(packages[0].version, 'minor');
+    const names = packages.filter((pkg) => !pkg.isRoot).map((pkg) => pkg.name);
+
+    for (const pkg of packages) {
+      updatePackageVersion(pkg.path, newVersion);
+      updateInternalDependencies(pkg.path, newVersion, names);
+    }
+
+    const beta = readManifest('beta');
+    expect(beta.version).toBe('3.5.0');
+    expect(beta.dependencies['@fixture/alpha']).toBe('^3.5.0');
+    expect(beta.dependencies.redux).toBe('^5.0.0');
   });
 });

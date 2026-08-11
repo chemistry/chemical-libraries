@@ -41,7 +41,9 @@ const FORBIDDEN = [
 function expandGlobPattern(pattern) {
   if (pattern.endsWith('/*')) {
     const baseDir = join(rootDir, pattern.slice(0, -2));
-    if (!existsSync(baseDir)) return [];
+    if (!existsSync(baseDir)) {
+      return [];
+    }
 
     return readdirSync(baseDir, { withFileTypes: true })
       .filter((dirent) => dirent.isDirectory())
@@ -61,10 +63,14 @@ function discoverPackages() {
 
   for (const dir of (rootManifest.workspaces || []).flatMap(expandGlobPattern)) {
     const manifestPath = join(dir, 'package.json');
-    if (!existsSync(manifestPath)) continue;
+    if (!existsSync(manifestPath)) {
+      continue;
+    }
 
     const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
-    if (manifest.private) continue;
+    if (manifest.private) {
+      continue;
+    }
     byName.set(manifest.name, dir);
   }
 
@@ -77,9 +83,13 @@ function run(command, args, cwd) {
 
 function fail(name, step, result, details = []) {
   console.error(`\n✖ ${name} — ${step} failed`);
-  for (const detail of details) console.error(`  - ${detail}`);
+  for (const detail of details) {
+    console.error(`  - ${detail}`);
+  }
   const output = [result?.stdout, result?.stderr].filter(Boolean).join('\n').trim();
-  if (output) console.error(`\n${output}`);
+  if (output) {
+    console.error(`\n${output}`);
+  }
   process.exit(1);
 }
 
@@ -88,11 +98,15 @@ function fail(name, step, result, details = []) {
  */
 function packFileList(name) {
   const result = run('npm', ['pack', '--dry-run', '--json', '-w', name], rootDir);
-  if (result.status !== 0) return { result, files: null };
+  if (result.status !== 0) {
+    return { result, files: null };
+  }
 
   const start = result.stdout.indexOf('[');
   const end = result.stdout.lastIndexOf(']');
-  if (start === -1 || end === -1) return { result, files: null };
+  if (start === -1 || end === -1) {
+    return { result, files: null };
+  }
 
   const parsed = JSON.parse(result.stdout.slice(start, end + 1));
   return { result, files: parsed[0].files.map((entry) => entry.path) };
@@ -101,12 +115,18 @@ function packFileList(name) {
 function inspectFileList(files) {
   const problems = [];
 
-  if (!files.includes('LICENSE')) problems.push('LICENSE is missing');
-  if (!files.some((path) => path.startsWith('src/'))) problems.push('no src/ entries');
+  if (!files.includes('LICENSE')) {
+    problems.push('LICENSE is missing');
+  }
+  if (!files.some((path) => path.startsWith('src/'))) {
+    problems.push('no src/ entries');
+  }
 
   for (const rule of FORBIDDEN) {
     const hits = files.filter(rule.match);
-    if (hits.length > 0) problems.push(`${rule.label} leaked: ${hits.join(', ')}`);
+    if (hits.length > 0) {
+      problems.push(`${rule.label} leaked: ${hits.join(', ')}`);
+    }
   }
 
   return problems;
@@ -115,10 +135,14 @@ function inspectFileList(files) {
 function main() {
   const packages = discoverPackages();
   const missing = PUBLISH_ORDER.filter((name) => !packages.has(name));
-  if (missing.length > 0) throw new Error(`Unknown workspace(s): ${missing.join(', ')}`);
+  if (missing.length > 0) {
+    throw new Error(`Unknown workspace(s): ${missing.join(', ')}`);
+  }
 
   const extra = [...packages.keys()].filter((name) => !PUBLISH_ORDER.includes(name));
-  if (extra.length > 0) throw new Error(`Not in PUBLISH_ORDER: ${extra.join(', ')}`);
+  if (extra.length > 0) {
+    throw new Error(`Not in PUBLISH_ORDER: ${extra.join(', ')}`);
+  }
 
   console.log(`Validating ${PUBLISH_ORDER.length} packages...\n`);
 
@@ -126,16 +150,24 @@ function main() {
     const dir = packages.get(name);
 
     const publint = run(join(binDir, 'publint'), ['run', '--strict'], dir);
-    if (publint.status !== 0) fail(name, 'publint', publint);
+    if (publint.status !== 0) {
+      fail(name, 'publint', publint);
+    }
 
     const attw = run(join(binDir, 'attw'), ['--pack', '--profile', 'esm-only', '.'], dir);
-    if (attw.status !== 0) fail(name, 'attw', attw);
+    if (attw.status !== 0) {
+      fail(name, 'attw', attw);
+    }
 
     const { result, files } = packFileList(name);
-    if (files === null) fail(name, 'npm pack', result);
+    if (files === null) {
+      fail(name, 'npm pack', result);
+    }
 
     const problems = inspectFileList(files);
-    if (problems.length > 0) fail(name, 'pack file list', null, problems);
+    if (problems.length > 0) {
+      fail(name, 'pack file list', null, problems);
+    }
 
     console.log(`✔ ${name} — publint ok · attw ok · ${files.length} packed files, no leaks`);
   }

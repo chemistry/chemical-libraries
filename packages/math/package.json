@@ -47,7 +47,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "prepack": "rm -rf dist && tsc"
   },
   "dependencies": {
     "@chemistry/common": "^3.0.0"

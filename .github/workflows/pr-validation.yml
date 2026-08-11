@@ -58,6 +58,11 @@ jobs:
         if: always() && steps.install.outcome == 'success'
         run: npm run build
 
+      - name: Package validation
+        id: verify-pack
+        if: always() && steps.install.outcome == 'success'
+        run: npm run verify:pack
+
       - name: Comment on PR
         if: always()
         uses: actions/github-script@v9
@@ -71,6 +76,7 @@ jobs:
               { name: 'Format check passed', outcome: '${{ steps.format.outcome }}' },
               { name: 'Tests passed', outcome: '${{ steps.test.outcome }}' },
               { name: 'Build successful', outcome: '${{ steps.build.outcome }}' },
+              { name: 'Package validation passed', outcome: '${{ steps.verify-pack.outcome }}' },
             ];
 
             const allPassed = checks.every(c => c.outcome === 'success');

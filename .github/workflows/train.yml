@@ -135,7 +135,7 @@ jobs:
           set -uo pipefail
           VERSION="${{ steps.bump.outputs.version }}"
           # AI changelog is best-effort; fall back to git subjects so the train never blocks on a missing key.
-          if ! CHANGELOG=$(node scripts/generate-changelog.js "$VERSION" 2>/dev/null); then
+          if ! CHANGELOG=$(node scripts/generate-changelog.js "$VERSION"); then
             CHANGELOG=""
           fi
           if [ -z "$CHANGELOG" ] || [ "$CHANGELOG" = "No significant changes" ]; then

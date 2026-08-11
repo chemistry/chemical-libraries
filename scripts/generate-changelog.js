@@ -15,8 +15,12 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 import { execSync } from 'child_process';
+import { pathToFileURL } from 'url';
 
-const CHANGELOG_PROMPT = `You are a changelog generator for @chemistry/* — a set of open-source cheminformatics libraries for JavaScript.
+const MODEL = 'claude-sonnet-5';
+const MAX_TOKENS = 8192;
+
+export const CHANGELOG_PROMPT = `You are a changelog generator for @chemistry/* — a set of open-source cheminformatics libraries for JavaScript.
 The monorepo contains packages: @chemistry/common, @chemistry/elements, @chemistry/formula, @chemistry/math, @chemistry/molecule, @chemistry/space-groups.
 
 Given the following git commits, generate a concise, user-friendly changelog entry.
@@ -52,9 +56,27 @@ Commits to analyze:
 `;
 
 /**
+ * Build the full prompt sent to Claude for a set of commit lines
+ */
+export function buildChangelogPrompt(commits) {
+  return CHANGELOG_PROMPT + '\n```\n' + commits + '\n```';
+}
+
+/**
+ * Join the text blocks of an API response into a single string
+ */
+export function extractTextContent(message) {
+  return message.content
+    .filter((block) => block.type === 'text')
+    .map((block) => block.text)
+    .join('\n')
+    .trim();
+}
+
+/**
  * Get commits since the last tag
  */
-function getCommitsSinceLastTag() {
+export function getCommitsSinceLastTag() {
   try {
     const lastTag = execSync('git describe --tags --abbrev=0 2>/dev/null || echo ""', {
       encoding: 'utf-8',
@@ -88,37 +110,31 @@ function getCommitsSinceLastTag() {
 /**
  * Generate changelog using Claude API
  */
-async function generateChangelog(commits, version) {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    throw new Error('ANTHROPIC_API_KEY environment variable is required');
-  }
-
+export async function generateChangelog(commits, client = new Anthropic()) {
   if (!commits || commits.trim() === '') {
     return 'No significant changes';
   }
 
-  const client = new Anthropic();
-
   const message = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 1024,
+    model: MODEL,
+    max_tokens: MAX_TOKENS,
     messages: [
       {
         role: 'user',
-        content: CHANGELOG_PROMPT + '\n```\n' + commits + '\n```',
+        content: buildChangelogPrompt(commits),
       },
     ],
   });
 
-  const content = message.content
-    .filter((block) => block.type === 'text')
-    .map((block) => block.text)
-    .join('\n');
-
-  return content.trim();
+  return extractTextContent(message);
 }
 
-async function main() {
+export async function main() {
+  if (!process.env.ANTHROPIC_API_KEY) {
+    console.error('ANTHROPIC_API_KEY not set - cannot generate AI changelog');
+    process.exit(1);
+  }
+
   const version = process.argv[2];
 
   if (!version) {
@@ -144,16 +160,26 @@ async function main() {
   console.error('Calling Claude API...');
 
   try {
-    const changelog = await generateChangelog(commits, version);
+    const changelog = await generateChangelog(commits);
     console.error('');
     console.error('Generated changelog:');
     console.error('---');
 
     console.log(changelog);
   } catch (error) {
-    console.error('Error generating changelog:', error.message);
+    console.error('Error generating changelog:');
+    console.error(`  name: ${error?.name ?? 'Error'}`);
+    if (error?.status !== undefined) {
+      console.error(`  status: ${error.status}`);
+    }
+    console.error(`  message: ${error?.message ?? String(error)}`);
     process.exit(1);
   }
 }
 
-main();
+const invokedDirectly =
+  process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (invokedDirectly) {
+  await main();
+}

@@ -11,7 +11,7 @@
 
 import { readFileSync, writeFileSync, existsSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, '..');
@@ -19,26 +19,30 @@ const rootDir = join(__dirname, '..');
 /**
  * Expand simple glob pattern (e.g., "packages/*") to matching directories
  */
-function expandGlobPattern(pattern) {
+export function expandGlobPattern(pattern, root = rootDir) {
   if (pattern.endsWith('/*')) {
-    const baseDir = join(rootDir, pattern.slice(0, -2));
-    if (!existsSync(baseDir)) return [];
+    const baseDir = join(root, pattern.slice(0, -2));
+    if (!existsSync(baseDir)) {
+      return [];
+    }
 
     return readdirSync(baseDir, { withFileTypes: true })
       .filter((dirent) => dirent.isDirectory())
       .map((dirent) => join(baseDir, dirent.name));
   }
 
-  const fullPath = join(rootDir, pattern);
+  const fullPath = join(root, pattern);
   return existsSync(fullPath) ? [fullPath] : [];
 }
 
 /**
  * Parse semver version string
  */
-function parseVersion(version) {
+export function parseVersion(version) {
   const match = version.match(/^(\d+)\.(\d+)\.(\d+)(-.*)?$/);
-  if (!match) throw new Error(`Invalid version: ${version}`);
+  if (!match) {
+    throw new Error(`Invalid version: ${version}`);
+  }
   return {
     major: parseInt(match[1], 10),
     minor: parseInt(match[2], 10),
@@ -50,7 +54,7 @@ function parseVersion(version) {
 /**
  * Bump version based on type
  */
-function bumpVersion(version, type) {
+export function bumpVersion(version, type) {
   const v = parseVersion(version);
   switch (type) {
     case 'major':
@@ -66,7 +70,7 @@ function bumpVersion(version, type) {
 /**
  * Check if package is in main version series (3.x.x)
  */
-function isMainVersionSeries(version) {
+export function isMainVersionSeries(version) {
   const v = parseVersion(version);
   return v.major === 3;
 }
@@ -74,8 +78,8 @@ function isMainVersionSeries(version) {
 /**
  * Get all workspace packages from root package.json
  */
-function getWorkspacePackages() {
-  const rootPkgPath = join(rootDir, 'package.json');
+export function getWorkspacePackages(root = rootDir) {
+  const rootPkgPath = join(root, 'package.json');
   const rootPkg = JSON.parse(readFileSync(rootPkgPath, 'utf-8'));
 
   const packages = [];
@@ -90,7 +94,7 @@ function getWorkspacePackages() {
   const workspaces = rootPkg.workspaces || [];
 
   for (const pattern of workspaces) {
-    const dirs = expandGlobPattern(pattern);
+    const dirs = expandGlobPattern(pattern, root);
 
     for (const dir of dirs) {
       const pkgPath = join(dir, 'package.json');
@@ -113,7 +117,7 @@ function getWorkspacePackages() {
 /**
  * Update version in package.json file
  */
-function updatePackageVersion(pkgPath, newVersion) {
+export function updatePackageVersion(pkgPath, newVersion) {
   const content = readFileSync(pkgPath, 'utf-8');
   const pkg = JSON.parse(content);
   const oldVersion = pkg.version;
@@ -124,7 +128,7 @@ function updatePackageVersion(pkgPath, newVersion) {
   return { oldVersion, newVersion };
 }
 
-function main() {
+export function main() {
   const bumpType = process.argv[2] || 'patch';
 
   if (!['patch', 'minor', 'major'].includes(bumpType)) {
@@ -177,9 +181,14 @@ function main() {
   console.log(`NEW_VERSION=${newVersion}`);
 }
 
-try {
-  main();
-} catch (err) {
-  console.error('Error:', err.message);
-  process.exit(1);
+const invokedDirectly =
+  process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (invokedDirectly) {
+  try {
+    main();
+  } catch (err) {
+    console.error('Error:', err.message);
+    process.exit(1);
+  }
 }

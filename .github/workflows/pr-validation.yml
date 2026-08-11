@@ -15,9 +15,14 @@ permissions:
 
 jobs:
   validate:
-    name: Validate Pull Request
+    name: Validate Pull Request (Node.js ${{ matrix.node }})
     runs-on: ubuntu-latest
     timeout-minutes: 10
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
 
     steps:
       - name: Checkout code
@@ -26,12 +31,23 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: '22'
+          node-version: '${{ matrix.node }}'
           cache: 'npm'
 
       - name: Install dependencies
         id: install
         run: npm ci
+
+      - name: Security audit (production dependencies)
+        id: audit-prod
+        if: always() && steps.install.outcome == 'success'
+        run: npm audit --omit=dev --audit-level=low
+
+      - name: Security audit (all dependencies, informational)
+        id: audit-all
+        if: always() && steps.install.outcome == 'success'
+        continue-on-error: true
+        run: npm audit
 
       - name: Type check
         id: type-check
@@ -64,13 +80,14 @@ jobs:
         run: npm run verify:pack
 
       - name: Comment on PR
-        if: always()
+        if: always() && matrix.node == 22
         uses: actions/github-script@v9
         with:
           script: |
             const marker = '<!-- pr-validation-bot -->';
             const checks = [
               { name: 'Dependencies installed', outcome: '${{ steps.install.outcome }}' },
+              { name: 'Production dependency audit passed', outcome: '${{ steps.audit-prod.outcome }}' },
               { name: 'Type check passed', outcome: '${{ steps.type-check.outcome }}' },
               { name: 'Linting passed', outcome: '${{ steps.lint.outcome }}' },
               { name: 'Format check passed', outcome: '${{ steps.format.outcome }}' },
@@ -88,15 +105,16 @@ jobs:
               .join('\n');
 
             const body = `${marker}
-            ${emoji} **PR Validation ${status}**
+            ${emoji} **PR Validation ${status}** (Node.js 22)
 
             **Commit:** \`${{ github.event.pull_request.head.sha }}\`
             **Branch:** \`${{ github.head_ref }}\`
+            **Node.js:** \`22\` (the Node.js 24 leg reports separately in the checks list)
 
             **Checks:**
             ${checkLines}
 
-            ${allPassed ? '**Ready to merge!** ✨' : '**Please fix the failing checks.**'}
+            ${allPassed ? '**Node.js 22 checks passed!** Confirm the Node.js 24 job before merging. ✨' : '**Please fix the failing checks.**'}
 
             ---
             🔗 [View workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})

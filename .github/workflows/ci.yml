@@ -6,19 +6,32 @@ on:
 
 jobs:
   build:
+    name: Build (Node.js ${{ matrix.node }}.x)
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
 
     steps:
       - uses: actions/checkout@v7
 
-      - name: Use Node.js 22.x
+      - name: Use Node.js ${{ matrix.node }}.x
         uses: actions/setup-node@v7
         with:
-          node-version: 22.x
+          node-version: ${{ matrix.node }}.x
           cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Security audit (production dependencies)
+        run: npm audit --omit=dev --audit-level=low
+
+      - name: Security audit (all dependencies, informational)
+        continue-on-error: true
+        run: npm audit
 
       - name: Type check
         run: npm run type-check

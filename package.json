@@ -31,7 +31,7 @@
   "scripts": {
     "prebuild": "rm -rf packages/*/dist",
     "build": "npm run build -w @chemistry/common -w @chemistry/elements -w @chemistry/space-groups && npm run build -w @chemistry/math -w @chemistry/formula && npm run build -w @chemistry/molecule",
-    "test": "vitest run",
+    "test": "vitest run --coverage",
     "lint": "eslint packages/*/src/",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

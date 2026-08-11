@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2024",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "strict": true,
@@ -12,6 +12,6 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "lib": ["ES2020", "DOM"]
+    "lib": ["ES2024", "DOM"]
   }
 }

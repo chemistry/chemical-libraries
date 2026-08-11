@@ -30,7 +30,12 @@
   "files": [
     "package.json",
     "dist",
-    "README.md"
+    "src",
+    "!src/**/*.test.ts",
+    "!src/**/*.test.tsx",
+    "!src/**/__snapshots__",
+    "README.md",
+    "LICENSE"
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

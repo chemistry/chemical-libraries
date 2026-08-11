@@ -1,3 +1,4 @@
+import { exportToSVG } from './index.js';
 import { MoleculeDataFormat } from './models.js';
 import { Molecule } from './molecule.js';
 
@@ -16,6 +17,8 @@ const ACETONE = {
     'bond:3': { atom1: 'atom:2', atom2: 'atom:4', order: 2 },
   },
 };
+
+const LABELLED_ATOM = { x: 0, y: 0, z: 0, type: 'Zz&<>"\'' };
 
 describe('Molecule', () => {
   let sut: Molecule;
@@ -85,16 +88,74 @@ describe('Molecule', () => {
   });
 
   describe('toSVG', () => {
-    it('should export ACETONE with default settings', async () => {
+    beforeEach(() => {
       sut.load(ACETONE, MoleculeDataFormat.jnmol);
-      const svg = await sut.toSVG({});
-      expect(svg).toMatchSnapshot();
     });
 
-    it('should export ACETONE and take into account color settings', async () => {
-      sut.load(ACETONE, MoleculeDataFormat.jnmol);
+    it('should export ACETONE as an svg string', async () => {
+      const svg = await sut.toSVG({});
+
+      expect(typeof svg).toBe('string');
+      expect(svg.startsWith('<svg class="c-molsvg">')).toBe(true);
+      expect(svg.endsWith('</g></svg>')).toBe(true);
+    });
+
+    it('should inline the default styles', async () => {
+      const svg = await sut.toSVG({});
+
+      expect(svg).toContain('<style>');
+      expect(svg).toContain('.c-molsvg text {');
+      expect(svg).toContain('font-size: 14;');
+      expect(svg).toContain('line-height: 14;');
+      expect(svg).toContain('font-family: Helvetica, Arial, sans-serif;');
+    });
+
+    it('should take drawing options into account', async () => {
+      const svg = await sut.toSVG({ fontSize: 22, fontFamily: 'Courier' });
+
+      expect(svg).toContain('font-size: 22;');
+      expect(svg).toContain('font-family: Courier;');
+    });
+
+    it('should render one projected text node per atom', async () => {
+      const svg = await sut.toSVG({});
+
+      expect(svg.match(/<text /g)).toHaveLength(4);
+      expect(svg).toContain(
+        '<text x="121.42" y="33.5" fill="#000000" text-anchor="middle" alignment-baseline="middle">C</text>'
+      );
+      expect(svg).toContain(
+        '<text x="150" y="83" fill="#FF0D0D" text-anchor="middle" alignment-baseline="middle">O</text>'
+      );
+    });
+
+    it('should color atoms black when colorElements is off', async () => {
       const svg = await sut.toSVG({ colorElements: false });
-      expect(svg).toMatchSnapshot();
+
+      expect(svg.match(/fill="black"/g)).toHaveLength(4);
+      expect(svg).not.toContain('#FF0D0D');
+    });
+
+    it('should xml-escape atom labels', async () => {
+      sut.load({ ...ACETONE, atoms: { 'atom:1': LABELLED_ATOM } }, MoleculeDataFormat.jnmol);
+      const svg = await sut.toSVG({});
+
+      expect(svg).toContain('>Zz&amp;&lt;&gt;&quot;&#39;</text>');
+      expect(svg).not.toContain(LABELLED_ATOM.type);
+      expect(svg).toContain('fill="black"');
+    });
+  });
+
+  describe('exportToSVG', () => {
+    it('should be exported from the package barrel', () => {
+      expect(typeof exportToSVG).toBe('function');
+    });
+
+    it('should export a molecule state without a Molecule instance', () => {
+      const svg = exportToSVG(ACETONE, { colorElements: false });
+
+      expect(svg.startsWith('<svg class="c-molsvg">')).toBe(true);
+      expect(svg.match(/fill="black"/g)).toHaveLength(4);
     });
   });
 });

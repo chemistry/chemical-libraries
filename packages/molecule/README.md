@@ -13,12 +13,18 @@ npm install @chemistry/molecule
 ## Usage
 
 ```typescript
-import { Molecule } from '@chemistry/molecule';
+import { Molecule, MoleculeDataFormat } from '@chemistry/molecule';
 
-const mol = Molecule.fromJNMol(jnmolData);
-const atoms = mol.getAtoms();
-const bonds = mol.getBonds();
+const mol = new Molecule();
+mol.load(jnmolData, MoleculeDataFormat.jnmol);
+
+const atomCount = mol.getAtomCount();
+const bondCount = mol.getBondCount();
+
+const svg = await mol.toSVG({ colorElements: true, fontSize: 14 });
 ```
+
+`toSVG` returns an SVG string — no React or DOM required.
 
 ## Features
 

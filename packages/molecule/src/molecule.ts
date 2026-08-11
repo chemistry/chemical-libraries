@@ -1,8 +1,8 @@
-import type React from 'react';
 import { legacy_createStore as createStore } from 'redux';
 import { MoleculeDataFormat } from './models.js';
 import type { SvgExportOptions } from './models.js';
 import { exportMolecule, type IMoleculeState, loadMolecule, reducer } from './store/index.js';
+import { exportToSVG } from './store/svg-export.js';
 
 export class Molecule {
   private store = createStore(reducer);
@@ -27,8 +27,7 @@ export class Molecule {
     return exportMolecule(this.state, format);
   }
 
-  public async toSVG(options: SvgExportOptions): Promise<React.JSX.Element> {
-    const { exportToSVG } = await import('./store/svg-export.js');
-    return exportToSVG(this.state, options);
+  public toSVG(options: SvgExportOptions): Promise<string> {
+    return Promise.resolve(exportToSVG(this.state, options));
   }
 }

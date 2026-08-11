@@ -1,4 +1,3 @@
-import type React from 'react';
 import { defaultSvgOptions, type SvgExportOptions } from '../models.js';
 import type { IMoleculeState } from './reducer.js';
 import {
@@ -7,10 +6,7 @@ import {
   projectMolecule,
 } from './services/index.js';
 
-export const exportToSVG = (
-  molecule: IMoleculeState,
-  drawOptions: SvgExportOptions
-): React.JSX.Element => {
+export const exportToSVG = (molecule: IMoleculeState, drawOptions: SvgExportOptions): string => {
   const options = {
     ...defaultSvgOptions,
     ...drawOptions,

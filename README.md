@@ -53,25 +53,28 @@ const sg = SpaceGroup.getById(225);
 ## Tech Stack
 
 - **Monorepo:** npm workspaces
-- **Language:** TypeScript 5.9, strict mode, ESM-only
+- **Language:** TypeScript 6, strict mode, ESM-only
 - **Testing:** Vitest, 70% coverage threshold
 - **Linting:** ESLint flat config + typescript-eslint + Prettier
 - **CI/CD:** GitHub Actions — automated weekly releases
-- **Target:** ES2024, isomorphic (Node.js 20+ & modern browsers)
+- **Target:** ES2024, isomorphic (Node.js 22+ & modern browsers)
 
 ## Development
 
 ```bash
 npm install
 npm run build
-npm run verify    # type-check + lint + format:check + test + build
+npm run verify    # type-check + lint + format:check + test + build + verify:pack
 ```
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full workflow and [SECURITY.md](./SECURITY.md) to report a vulnerability.
 
 ## Commands
 
 | Command                | Description                             |
 | ---------------------- | --------------------------------------- |
 | `npm run verify`       | Full validation pipeline                |
+| `npm run verify:pack`  | Packaging + consumer checks             |
 | `npm run build`        | Build all packages (dependency-ordered) |
 | `npm run test`         | Run unit tests                          |
 | `npm run lint`         | Lint source code                        |

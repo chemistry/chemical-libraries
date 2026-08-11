@@ -19,14 +19,17 @@
   "engines": {
     "node": ">=22.0.0"
   },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
-    "access": "public"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/chemistry/chemical-libraries.git",
+    "url": "git+https://github.com/chemistry/chemical-libraries.git",
     "directory": "packages/space-groups"
+  },
+  "homepage": "https://github.com/chemistry/chemical-libraries/tree/master/packages/space-groups#readme",
+  "bugs": "https://github.com/chemistry/chemical-libraries/issues",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public",
+    "provenance": true
   },
   "private": false,
   "sideEffects": false,
@@ -35,7 +38,6 @@
     "dist",
     "src",
     "!src/**/*.test.ts",
-    "!src/**/*.test.tsx",
     "!src/**/__snapshots__",
     "README.md",
     "LICENSE"

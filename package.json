@@ -23,8 +23,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/chemistry/chemical-libraries.git"
+    "url": "git+https://github.com/chemistry/chemical-libraries.git"
   },
+  "homepage": "https://github.com/chemistry/chemical-libraries#readme",
+  "bugs": "https://github.com/chemistry/chemical-libraries/issues",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

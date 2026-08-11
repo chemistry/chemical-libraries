@@ -128,6 +128,45 @@ export function updatePackageVersion(pkgPath, newVersion) {
   return { oldVersion, newVersion };
 }
 
+const DEPENDENCY_FIELDS = [
+  'dependencies',
+  'devDependencies',
+  'peerDependencies',
+  'optionalDependencies',
+];
+
+/**
+ * Pin internal workspace dependency ranges to the freshly bumped version.
+ * External ranges are left untouched.
+ */
+export function updateInternalDependencies(pkgPath, newVersion, internalNames) {
+  const internal = new Set(internalNames);
+  const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
+  const range = `^${newVersion}`;
+  const changed = [];
+
+  for (const field of DEPENDENCY_FIELDS) {
+    const deps = pkg[field];
+    if (!deps) {
+      continue;
+    }
+
+    for (const name of Object.keys(deps)) {
+      if (!internal.has(name) || deps[name] === range) {
+        continue;
+      }
+      changed.push({ field, name, oldRange: deps[name], newRange: range });
+      deps[name] = range;
+    }
+  }
+
+  if (changed.length > 0) {
+    writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
+  }
+
+  return changed;
+}
+
 export function main() {
   const bumpType = process.argv[2] || 'patch';
 
@@ -176,6 +215,25 @@ export function main() {
 
   console.log('');
   console.log(`Updated ${updated.length} packages to version ${newVersion}`);
+
+  // Ranges are pinned after the bump so a release never ships against a stale sibling
+  const internalNames = packages.filter((pkg) => !pkg.isRoot).map((pkg) => pkg.name);
+  const relinked = packages.flatMap((pkg) =>
+    updateInternalDependencies(pkg.path, newVersion, internalNames).map((change) => ({
+      ...change,
+      pkgName: pkg.name,
+    }))
+  );
+
+  if (relinked.length > 0) {
+    console.log('');
+    console.log('Relinking internal dependencies:');
+    for (const change of relinked) {
+      console.log(`  ${change.pkgName}: ${change.name} ${change.oldRange} -> ${change.newRange}`);
+    }
+    console.log('');
+    console.log(`Relinked ${relinked.length} internal dependency ranges to ^${newVersion}`);
+  }
 
   console.log('');
   console.log(`NEW_VERSION=${newVersion}`);

@@ -41,11 +41,11 @@
     "clean": "rm -rf packages/*/dist coverage"
   },
   "devDependencies": {
-    "@anthropic-ai/sdk": "^0.115.0",
+    "@anthropic-ai/sdk": "^0.116.0",
     "@arethetypeswrong/cli": "^0.18.5",
     "@eslint/js": "^10.0.0",
     "@vitest/coverage-v8": "^4.1.10",
-    "eslint": "^10.8.0",
+    "eslint": "^10.8.1",
     "prettier": "^3.9.6",
     "publint": "^0.3.23",
     "typescript": "^6.0.3",

@@ -13,7 +13,7 @@
 import { spawnSync } from 'child_process';
 import { readFileSync, existsSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, '..');
@@ -94,22 +94,69 @@ function fail(name, step, result, details = []) {
 }
 
 /**
- * Read the tarball file list; lifecycle script output may precede the JSON payload
+ * Extract the first parseable JSON value from pack output; npm may surround the
+ * payload with lifecycle notices, and npm >=12 emits an object instead of an array
  */
+export function extractJsonPayload(text) {
+  for (let start = 0; start < text.length; start++) {
+    if (text[start] !== '[' && text[start] !== '{') {
+      continue;
+    }
+    const candidate = balancedSlice(text, start);
+    if (candidate !== null && parses(candidate)) {
+      return JSON.parse(candidate);
+    }
+  }
+  return null;
+}
+
+function balancedSlice(text, start) {
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  for (let i = start; i < text.length; i++) {
+    const ch = text[i];
+    if (escaped) {
+      escaped = false;
+    } else if (ch === '\\') {
+      escaped = inString;
+    } else if (ch === '"') {
+      inString = !inString;
+    } else if (!inString && (ch === '[' || ch === '{')) {
+      depth++;
+    } else if (!inString && (ch === ']' || ch === '}') && --depth === 0) {
+      return text.slice(start, i + 1);
+    }
+  }
+  return null;
+}
+
+function parses(candidate) {
+  try {
+    JSON.parse(candidate);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function packFileList(name) {
-  const result = run('npm', ['pack', '--dry-run', '--json', '-w', name], rootDir);
+  const result = run(
+    'npm',
+    ['pack', '--dry-run', '--json', '--silent', '--foreground-scripts=false', '-w', name],
+    rootDir
+  );
   if (result.status !== 0) {
     return { result, files: null };
   }
 
-  const start = result.stdout.indexOf('[');
-  const end = result.stdout.lastIndexOf(']');
-  if (start === -1 || end === -1) {
+  const parsed = extractJsonPayload(result.stdout);
+  // npm <=11 emits [{...}]; npm >=12 emits {"<pkg name>": {...}}
+  const entry = Array.isArray(parsed) ? parsed[0] : parsed && Object.values(parsed)[0];
+  if (!entry || !Array.isArray(entry.files)) {
     return { result, files: null };
   }
-
-  const parsed = JSON.parse(result.stdout.slice(start, end + 1));
-  return { result, files: parsed[0].files.map((entry) => entry.path) };
+  return { result, files: entry.files.map((item) => item.path) };
 }
 
 function inspectFileList(files) {
@@ -175,4 +222,9 @@ function main() {
   console.log('\nPackage validation passed.');
 }
 
-main();
+const invokedDirectly =
+  process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (invokedDirectly) {
+  main();
+}

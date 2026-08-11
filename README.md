@@ -57,7 +57,7 @@ const sg = SpaceGroup.getById(225);
 - **Testing:** Vitest, 70% coverage threshold
 - **Linting:** ESLint flat config + typescript-eslint + Prettier
 - **CI/CD:** GitHub Actions — automated weekly releases
-- **Target:** ES2020, isomorphic (Node.js 20+ & modern browsers)
+- **Target:** ES2024, isomorphic (Node.js 20+ & modern browsers)
 
 ## Development
 

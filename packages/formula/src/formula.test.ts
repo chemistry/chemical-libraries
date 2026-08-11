@@ -37,6 +37,30 @@ describe('Formula', () => {
       const res = Formula.convertToString({ H: 2, O: 1, X: 10 });
       expect(res).toEqual('H2O');
     });
+    it('should put hydrogen first when it is not the first key', () => {
+      const res = Formula.convertToString({ O: 1, H: 2 });
+      expect(res).toEqual('H2O');
+    });
+    it('should put carbon first when it is not the first key', () => {
+      const res = Formula.convertToString({ O: 2, C: 1 });
+      expect(res).toEqual('CO2');
+    });
+    it('should order glucose in Hill notation', () => {
+      const res = Formula.convertToString({ O: 6, C: 6, H: 12 });
+      expect(res).toEqual('C6H12O6');
+    });
+    it('should order sulfuric acid as H2O4S', () => {
+      const res = Formula.convertToString({ S: 1, H: 2, O: 4 });
+      expect(res).toEqual('H2O4S');
+    });
+    it('should order carbon-free formula alphabetically', () => {
+      const res = Formula.convertToString({ O: 1, N: 2 });
+      expect(res).toEqual('N2O');
+    });
+    it('should order permanganate alphabetically', () => {
+      const res = Formula.convertToString({ K: 1, Mn: 1, O: 4 });
+      expect(res).toEqual('KMnO4');
+    });
   });
 
   describe('parse', () => {
@@ -61,6 +85,21 @@ describe('Formula', () => {
     it('should ignore unknown elements', () => {
       const res = Formula.parse('C2H5 OH X3');
       expect(res).toEqual({ C: 2, H: 6, O: 1 });
+    });
+
+    it('should parse multi-digit counts', () => {
+      const res = Formula.parse('C60');
+      expect(res).toEqual({ C: 60 });
+    });
+
+    it('should prefer two-letter elements over single-letter ones', () => {
+      const res = Formula.parse('CoO');
+      expect(res).toEqual({ Co: 1, O: 1 });
+    });
+
+    it('should sum repeated elements of CH3COOH', () => {
+      const res = Formula.parse('CH3COOH');
+      expect(res).toEqual({ C: 2, H: 4, O: 2 });
     });
   });
 });

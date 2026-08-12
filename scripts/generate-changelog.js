@@ -18,7 +18,7 @@ import { execSync } from 'child_process';
 import { pathToFileURL } from 'url';
 
 const MODEL = 'claude-sonnet-5';
-const MAX_TOKENS = 8192;
+const MAX_TOKENS = 16000;
 
 export const CHANGELOG_PROMPT = `You are a changelog generator for @chemistry/* — a set of open-source cheminformatics libraries for JavaScript.
 The monorepo contains packages: @chemistry/common, @chemistry/elements, @chemistry/formula, @chemistry/math, @chemistry/molecule, @chemistry/space-groups.
@@ -118,6 +118,8 @@ export async function generateChangelog(commits, client = new Anthropic()) {
   const message = await client.messages.create({
     model: MODEL,
     max_tokens: MAX_TOKENS,
+    // Low effort keeps adaptive thinking from consuming the text budget on this simple task
+    output_config: { effort: 'low' },
     messages: [
       {
         role: 'user',
@@ -126,7 +128,11 @@ export async function generateChangelog(commits, client = new Anthropic()) {
     ],
   });
 
-  return extractTextContent(message);
+  const text = extractTextContent(message);
+  if (!text) {
+    throw new Error(`API returned no text (stop_reason: ${message.stop_reason})`);
+  }
+  return text;
 }
 
 export async function main() {

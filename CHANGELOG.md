@@ -9,15 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.5.0] - 2026-08-11
 
-### Changes
+### Bug Fixes
 
-- fix: check-pack handles npm 12 pack --json object shape (#80)
-- chore: package metadata, lockstep internal deps, security/contributing docs (#79)
-- chore(deps-dev): bump the all-dependencies group across 1 directory with 2 updates (#72)
-- chore: lint+test release scripts, fix AI changelog silent fallback (#78)
-- ci: fail-closed prod audit, Node 22/24 matrix (#77)
-- ci: packaging validation - publint, attw, pack checks, consumer fixture (#76)
-- ci: enforce coverage thresholds, raise formula branch coverage (#75)
+- Fix packaging validation for npm 12 pack output
+
+No other user-facing changes in this release.
 
 ## [3.4.0] - 2026-08-11
 

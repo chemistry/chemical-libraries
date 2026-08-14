@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.6.0] - 2026-08-14
+
+### Bug Fixes
+
+- Fix changelog generation issue with empty text handling
+
 ## [3.5.0] - 2026-08-11
 
 ### Bug Fixes

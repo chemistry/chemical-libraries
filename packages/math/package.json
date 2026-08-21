@@ -1,6 +1,6 @@
 {
   "name": "@chemistry/math",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "description": "Math support for @chemistry project",
   "type": "module",
   "author": {
@@ -53,6 +53,6 @@
     "prepack": "rm -rf dist && tsc"
   },
   "dependencies": {
-    "@chemistry/common": "^3.6.0"
+    "@chemistry/common": "^3.6.1"
   }
 }

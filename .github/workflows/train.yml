@@ -4,7 +4,7 @@ name: Train
 # Red run = the only alarm; there are no silent-skip states.
 on:
   schedule:
-    - cron: '7 19 * * 5'
+    - cron: '41 4 * * 6'
   workflow_dispatch:
     inputs:
       bump:

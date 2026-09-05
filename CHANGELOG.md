@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.6.3] - 2026-09-05
+
+### Changes
+
+- chore(deps-dev): bump the all-dependencies group with 2 updates (#86)
+- chore(train): move to the Saturday 03:00-09:00 UTC window (#85)
+
 ## [3.6.2] - 2026-08-28
 
 ### Changes

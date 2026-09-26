@@ -1,6 +1,6 @@
 {
   "name": "@chemistry/formula",
-  "version": "3.6.5",
+  "version": "3.6.6",
   "description": "Chemical formula parser",
   "type": "module",
   "author": {
@@ -53,6 +53,6 @@
     "prepack": "rm -rf dist && tsc"
   },
   "dependencies": {
-    "@chemistry/elements": "^3.6.5"
+    "@chemistry/elements": "^3.6.6"
   }
 }

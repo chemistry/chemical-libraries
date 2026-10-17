@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.6.9] - 2026-10-17
+
+### Changes
+
+- chore(deps-dev): bump the all-dependencies group with 5 updates (#92)
+
 ## [3.6.8] - 2026-10-10
 
 ### Changes

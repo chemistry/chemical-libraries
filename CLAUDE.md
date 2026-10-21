@@ -56,7 +56,7 @@ packages/
 
 ## Publishing
 
-All packages are published to npm under the `@chemistry` scope. Releases are **not** tag-triggered: they ship via `.github/workflows/train.yml` (Friday cron, or `workflow_dispatch` with a `bump` input of `auto`/`patch`/`minor`/`major`/`none`), which bumps versions, publishes with OIDC trusted publishing, and tags the result. **Never run `npm publish` manually.**
+All packages are published to npm under the `@chemistry` scope. Releases are **not** tag-triggered: `.github/workflows/prepare-release.yml` (`workflow_dispatch`, `bump` = `auto`/`patch`/`minor`/`major`) opens a `chore(release)` PR with auto-merge armed, and `.github/workflows/release.yml` publishes all 6 packages on its merge via OIDC trusted publishing, then tags the result. **Never run `npm publish` manually.**
 
 ## Standards
 

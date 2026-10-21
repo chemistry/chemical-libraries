@@ -27,4 +27,4 @@ Open PRs against `master`. `npm run verify` must pass before review.
 
 ## Releases
 
-Releases ship through the Friday release train (`.github/workflows/train.yml`), which bumps versions, publishes with OIDC trusted publishing, and tags the result. **Never run `npm publish` manually.**
+Releases ship through the Friday release train: `.github/workflows/prepare-release.yml` opens a `chore(release)` PR that auto-merges when PR Validation is green, and `.github/workflows/release.yml` publishes on the merge with OIDC trusted publishing and tags the result. **Never run `npm publish` manually.**

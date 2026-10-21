@@ -1,0 +1,125 @@
+name: Prepare Release
+
+# Opens the chore(release) PR and arms auto-merge. The PR gate verifies it like
+# any PR, auto-merge lands it, release.yml publishes on the merge. The PR is
+# authored with PAT_TOKEN so pull_request workflows fire (GITHUB_TOKEN PRs fire
+# nothing). Dispatched by agentage/automation on Fridays or by hand any day.
+# No cron, no direct push. Secrets: PAT + optional ANTHROPIC_API_KEY (changelog).
+# Red run = the alarm.
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'auto = feat -> minor, fix/deps -> patch, nothing -> skip'
+        type: choice
+        options: [auto, patch, minor, major]
+        default: auto
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: prepare-release
+  cancel-in-progress: false
+
+env:
+  TAG_GLOB: 'v[0-9]*' # obsidian plugins: '[0-9]*.[0-9]*.[0-9]*' (bare tags)
+
+jobs:
+  prepare:
+    name: Open release PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT_TOKEN }}
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Skip if a release PR is already open
+        id: guard
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          OPEN=$(gh pr list --state open --json headRefName --jq '[.[] | select(.headRefName | startswith("release/"))] | length')
+          if [ "$OPEN" != "0" ]; then
+            echo "A release PR is already open - its gate is red or auto-merge is off. Fix that first." | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Decide bump
+        id: decide
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          set -euo pipefail
+          BUMP="${{ inputs.bump }}"
+          LAST_TAG=$(git tag --list "$TAG_GLOB" --sort=-v:refname | head -1)
+          RANGE=""; [ -n "$LAST_TAG" ] && RANGE="${LAST_TAG}..HEAD"
+          SUBJECTS=$(git log $RANGE --no-merges --pretty=%s)
+          FEAT=$(printf '%s\n' "$SUBJECTS" | grep -cE '^feat(\([^)]*\))?!?:' || true)
+          CODE=$(printf '%s\n' "$SUBJECTS" | grep -vE '^(docs|ci)(\([^)]*\))?!?:' | grep -vE '^chore(\([^)]*\))?!?:' | grep -c . || true)
+          DEPS=$(printf '%s\n' "$SUBJECTS" | grep -cE '^chore\(deps' || true)
+          if [ "$BUMP" = "auto" ]; then
+            if   [ "$FEAT" -gt 0 ]; then BUMP=minor
+            elif [ "$CODE" -gt 0 ] || [ "$DEPS" -gt 0 ]; then BUMP=patch
+            else BUMP=skip; fi
+          fi
+          echo "Since ${LAST_TAG:-start}: feat=$FEAT code=$CODE deps=$DEPS -> $BUMP" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "bump=$BUMP" >> "$GITHUB_OUTPUT"
+
+      - name: Bump versions (all 6 packages in lockstep)
+        id: bump
+        if: steps.decide.outputs.bump != 'skip' && steps.guard.outputs.skip != 'true'
+        run: |
+          set -euo pipefail
+          npm ci
+          OUT=$(node scripts/bump-versions.js "${{ steps.decide.outputs.bump }}")
+          echo "$OUT"
+          NEW=$(echo "$OUT" | grep '^NEW_VERSION=' | cut -d= -f2)
+          [ -n "$NEW" ] || { echo "::error::bump-versions.js printed no NEW_VERSION"; exit 1; }
+          npm install --package-lock-only
+          echo "version=$NEW" >> "$GITHUB_OUTPUT"
+
+      - name: Generate + write changelog
+        if: steps.bump.outputs.version
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -uo pipefail
+          VERSION="${{ steps.bump.outputs.version }}"
+          # AI changelog is best-effort; fall back to git subjects so a release never blocks on a missing key.
+          if ! CHANGELOG=$(node scripts/generate-changelog.js "$VERSION"); then
+            CHANGELOG=""
+          fi
+          if [ -z "$CHANGELOG" ] || [ "$CHANGELOG" = "No significant changes" ]; then
+            LAST_TAG=$(git tag --list "$TAG_GLOB" --sort=-v:refname | head -1)
+            RANGE=""; [ -n "$LAST_TAG" ] && RANGE="${LAST_TAG}..HEAD"
+            CHANGELOG="### Changes"$'\n'"$(git log $RANGE --no-merges --pretty='- %s')"
+          fi
+          printf '%s\n' "$CHANGELOG" | node scripts/update-changelog.js "$VERSION"
+          npx prettier --write CHANGELOG.md
+
+      - name: Open PR + arm auto-merge
+        if: steps.bump.outputs.version
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          set -euo pipefail
+          V="${{ steps.bump.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "release/${V}"
+          git add package.json package-lock.json CHANGELOG.md packages/*/package.json
+          git commit -m "chore(release): ${V}"
+          git push origin "release/${V}"
+          URL=$(gh pr create --base master --head "release/${V}" \
+            --title "chore(release): ${V}" \
+            --body "Release ${V} (${{ steps.decide.outputs.bump }}). Auto-merges when the gate is green; release.yml publishes on the merge.")
+          gh pr merge "$URL" --auto --squash
+          echo "Opened $URL - auto-merge armed." | tee -a "$GITHUB_STEP_SUMMARY"

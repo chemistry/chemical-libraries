@@ -1,0 +1,63 @@
+name: Release
+
+# Publishes on a chore(release) merge via OIDC trusted publishing (npmjs.com
+# publisher = this file). Idempotent: re-run to repair a stranded tag/release.
+on:
+  push:
+    branches: [master]
+    paths: ['package.json']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Gate on a release commit (dispatch always passes)
+        id: gate
+        run: |
+          [ "${{ github.event_name }}" = "workflow_dispatch" ] && { echo "go=true" >> "$GITHUB_OUTPUT"; exit 0; }
+          git log -1 --pretty=%s | grep -qE '^chore\(release\)' && echo "go=true" >> "$GITHUB_OUTPUT" || echo "Not a release commit."
+      - uses: actions/setup-node@v7
+        if: steps.gate.outputs.go == 'true'
+        with:
+          node-version: '22'
+          cache: npm
+      - if: steps.gate.outputs.go == 'true'
+        run: npm install -g npm@latest && npm ci # OIDC needs npm >= 11.5.1
+      - name: Build
+        if: steps.gate.outputs.go == 'true'
+        run: npm run build # a compile error must fail before the first of 6 publishes
+      - name: Publish (idempotent)
+        if: steps.gate.outputs.go == 'true'
+        id: publish
+        run: |
+          set -euo pipefail
+          V=$(node -p "require('./package.json').version")
+          publish() { # $1 = package name, $2 = -w flag or empty
+            local OUT
+            if npm view "$1@$V" version >/dev/null 2>&1; then echo "$1@$V already on npm"; return 0; fi
+            if OUT=$(npm publish $2 --access public --provenance 2>&1); then echo "$1@$V published"
+            elif echo "$OUT" | grep -qE "EPUBLISHCONFLICT|cannot publish over"; then echo "$1@$V already on npm"
+            else echo "$OUT"; echo "::error::publish failed $1"; exit 1; fi
+          }
+          for P in common elements space-groups math formula molecule; do publish "@chemistry/$P" "-w @chemistry/$P"; done
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+      - name: Tag + GitHub release (idempotent)
+        if: steps.publish.outputs.version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          V="${{ steps.publish.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git rev-parse -q --verify "refs/tags/v${V}" >/dev/null || { git tag -a "v${V}" -m "Release v${V}"; git push origin "v${V}"; }
+          gh release view "v${V}" >/dev/null 2>&1 || gh release create "v${V}" --generate-notes
+          echo "Shipped v${V}" >> "$GITHUB_STEP_SUMMARY"

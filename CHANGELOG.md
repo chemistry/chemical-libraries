@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.6.11] - 2026-10-24
+
+### Infrastructure
+
+- Update build and release process for improved reliability
+
+No other significant user-facing changes.
+
 ## [3.6.10] - 2026-10-24
 
 ### Infrastructure

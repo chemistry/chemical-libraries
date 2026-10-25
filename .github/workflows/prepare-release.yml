@@ -72,7 +72,8 @@ jobs:
           BUMP="${{ inputs.bump }}"
           LAST_TAG=$(git tag --list "$TAG_GLOB" --sort=-v:refname | head -1)
           RANGE=""; [ -n "$LAST_TAG" ] && RANGE="${LAST_TAG}..HEAD"
-          SUBJECTS=$(git log $RANGE --no-merges --pretty=%s)
+          # workflow-only commits (.github/**) never warrant a release
+          SUBJECTS=$(git log $RANGE --no-merges --pretty=%s -- . ':!.github')
           FEAT=$(printf '%s\n' "$SUBJECTS" | grep -cE '^feat(\([^)]*\))?!?:' || true)
           CODE=$(printf '%s\n' "$SUBJECTS" | grep -vE '^(docs|ci)(\([^)]*\))?!?:' | grep -vE '^chore(\([^)]*\))?!?:' | grep -c . || true)
           DEPS=$(printf '%s\n' "$SUBJECTS" | grep -cE '^chore\(deps' || true)

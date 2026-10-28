@@ -1,4 +1,4 @@
-import { IMoleculeState } from '../reducer.js';
+import { type IMoleculeState } from '../reducer.js';
 
 interface AtomModel {
   x: number;

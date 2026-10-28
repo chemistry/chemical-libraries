@@ -1,4 +1,4 @@
-import { ChemElementData, ChemElementInfo } from './chem-elements-data.js';
+import { ChemElementData, type ChemElementInfo } from './chem-elements-data.js';
 
 export class ChemElements {
   public static getById(id: number): ChemElementInfo | null {
@@ -23,14 +23,10 @@ export class ChemElements {
   }
 
   public static getAll(): ChemElementInfo[] {
-    return ChemElementData.filter((el) => {
-      return el.symbol !== 'Q' && el.symbol !== 'D';
-    });
+    return ChemElementData.filter((el) => el.symbol !== 'Q' && el.symbol !== 'D');
   }
 
   public static getAllSymbols(): string[] {
-    return ChemElements.getAll().map((el) => {
-      return el.symbol;
-    });
+    return ChemElements.getAll().map((el) => el.symbol);
   }
 }

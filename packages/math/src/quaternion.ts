@@ -1,4 +1,4 @@
-import { EPSILON, ICloneable, IEquatable } from '@chemistry/common';
+import { EPSILON, type ICloneable, type IEquatable } from '@chemistry/common';
 import { Matrix3x3 } from './matrix3x3.js';
 import { Vec3 } from './vec3.js';
 

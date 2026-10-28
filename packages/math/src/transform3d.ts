@@ -1,4 +1,4 @@
-import { EPSILON, ICloneable } from '@chemistry/common';
+import { EPSILON, type ICloneable } from '@chemistry/common';
 import { Quaternion } from './quaternion.js';
 import { Vec3 } from './vec3.js';
 

@@ -43,25 +43,17 @@ export class Formula {
 
   public static convertToString(formula: ChemComposition): string {
     const formulaDataArray = Object.keys(formula)
-      .filter((key) => {
-        return ELEMENTS.includes(key);
-      })
-      .map((key) => {
-        return {
-          element: key,
-          count: formula[key],
-        };
-      });
+      .filter((key) => ELEMENTS.includes(key))
+      .map((key) => ({
+        element: key,
+        count: formula[key],
+      }));
 
     // sorted formula
-    formulaDataArray.sort((a, b) => {
-      return elementCompare(a.element, b.element);
-    });
+    formulaDataArray.sort((a, b) => elementCompare(a.element, b.element));
 
     return formulaDataArray
-      .map((item) => {
-        return item.element + (item.count === 1 ? '' : item.count);
-      })
+      .map((item) => item.element + (item.count === 1 ? '' : item.count))
       .join('');
   }
 }

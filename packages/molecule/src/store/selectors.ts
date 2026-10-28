@@ -11,10 +11,6 @@ export const exportMolecule = (
   throw new Error(format + ' is not supported');
 };
 
-export const selectAtomCount = (state: IMoleculeState): number => {
-  return Object.keys(state.atoms).length;
-};
+export const selectAtomCount = (state: IMoleculeState): number => Object.keys(state.atoms).length;
 
-export const selectBondCount = (state: IMoleculeState): number => {
-  return Object.keys(state.bonds).length;
-};
+export const selectBondCount = (state: IMoleculeState): number => Object.keys(state.bonds).length;

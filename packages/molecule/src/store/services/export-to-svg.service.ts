@@ -50,6 +50,5 @@ export const exportMoleculeToSVG = ({
 }: {
   molecule: IMoleculeState;
   options: SvgExportOptions;
-}): string => {
-  return `<svg class="c-molsvg">${getSVGStyles(options)}${getAtomsSVG(molecule, options)}</svg>`;
-};
+}): string =>
+  `<svg class="c-molsvg">${getSVGStyles(options)}${getAtomsSVG(molecule, options)}</svg>`;

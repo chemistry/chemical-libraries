@@ -1,4 +1,4 @@
-import { EPSILON, ICloneable, IEquatable } from '@chemistry/common';
+import { EPSILON, type ICloneable, type IEquatable } from '@chemistry/common';
 
 export interface IVec2 {
   x: number;

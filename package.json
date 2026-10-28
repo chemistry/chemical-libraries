@@ -45,9 +45,10 @@
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.135.0",
     "@arethetypeswrong/cli": "^0.18.5",
-    "@eslint/js": "^10.0.0",
     "@vitest/coverage-v8": "^5.0.5",
     "eslint": "^10.13.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.7",
     "prettier": "^3.9.10",
     "publint": "^0.3.25",
     "typescript": "^6.0.3",

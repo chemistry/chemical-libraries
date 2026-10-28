@@ -1,32 +1,50 @@
-import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
+import prettierConfig from 'eslint-config-prettier';
+import prettierPlugin from 'eslint-plugin-prettier';
+
+const packages = ['common', 'elements', 'formula', 'math', 'molecule', 'space-groups'];
 
 export default tseslint.config(
-  eslint.configs.recommended,
-  ...tseslint.configs.strictTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
+  { ignores: ['**/dist/', '**/node_modules/', 'coverage/'] },
   {
+    files: ['packages/*/src/**/*.ts', 'scripts/**/*.js'],
+    extends: [...tseslint.configs.strictTypeChecked, ...tseslint.configs.stylisticTypeChecked],
     languageOptions: {
       parserOptions: {
-        projectService: true,
+        project: packages.map((name) => `./packages/${name}/tsconfig.eslint.json`),
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    plugins: { prettier: prettierPlugin },
     rules: {
-      'prefer-const': 'error',
-      'no-var': 'error',
-      curly: 'error',
+      ...prettierConfig.rules,
+      'prettier/prettier': 'error',
       '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
+      ],
+      'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
+      '@typescript-eslint/naming-convention': [
+        'error',
+        { selector: 'interface', format: ['PascalCase'], custom: { regex: '^[A-Z]', match: true } },
+        { selector: 'typeAlias', format: ['PascalCase'] },
+      ],
+      'prefer-const': 'error',
+      'prefer-arrow-callback': 'error',
+      'arrow-body-style': ['error', 'as-needed'],
+      'no-var': 'error',
+      curly: 'error',
       '@typescript-eslint/no-extraneous-class': 'off',
       '@typescript-eslint/restrict-plus-operands': 'off',
       '@typescript-eslint/consistent-indexed-object-style': 'off',
       '@typescript-eslint/no-unnecessary-condition': 'off',
       '@typescript-eslint/restrict-template-expressions': 'off',
-      // Disabled due to monorepo cross-package resolution limitations
+      // Cross-package imports resolve to unbuilt dist types during lint
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
@@ -34,7 +52,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['**/*.test.ts', '**/*.test.tsx', '**/*.test.ts', '**/*.test.tsx'],
+    files: ['**/*.test.ts'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
@@ -53,8 +71,5 @@ export default tseslint.config(
         URL: 'readonly',
       },
     },
-  },
-  {
-    ignores: ['dist/', 'node_modules/', 'coverage/'],
   }
 );

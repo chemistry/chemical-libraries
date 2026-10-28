@@ -1,4 +1,4 @@
-import { EPSILON, ICloneable, IEquatable } from '@chemistry/common';
+import { EPSILON, type ICloneable, type IEquatable } from '@chemistry/common';
 import { Vec3 } from './vec3.js';
 
 export class Matrix3x3 implements ICloneable<Matrix3x3>, IEquatable<Matrix3x3> {

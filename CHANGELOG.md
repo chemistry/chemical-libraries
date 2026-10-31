@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.6.12] - 2026-10-31
+
+### Changes
+
+- chore(deps-dev): bump the all-dependencies group with 2 updates (#100)
+- chore(lint): align eslint + prettier with code-style standard (#99)
+- ci(prepare-release): ignore workflow-only commits when deciding a bump (#98)
+
 ## [3.6.11] - 2026-10-24
 
 ### Infrastructure

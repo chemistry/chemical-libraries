@@ -43,10 +43,10 @@
     "clean": "rm -rf packages/*/dist coverage"
   },
   "devDependencies": {
-    "@anthropic-ai/sdk": "^1.3.0",
+    "@anthropic-ai/sdk": "^1.4.0",
     "@arethetypeswrong/cli": "^0.18.5",
-    "@vitest/coverage-v8": "^5.0.5",
-    "eslint": "^10.13.0",
+    "@vitest/coverage-v8": "^5.1.0",
+    "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.7",
     "prettier": "^3.9.10",

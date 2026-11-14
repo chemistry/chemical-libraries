@@ -1,6 +1,6 @@
 {
   "name": "@chemistry/common",
-  "version": "3.6.13",
+  "version": "3.6.14",
   "description": "Chemical data formats",
   "type": "module",
   "author": {

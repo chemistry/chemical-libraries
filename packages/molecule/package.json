@@ -1,6 +1,6 @@
 {
   "name": "@chemistry/molecule",
-  "version": "3.6.15",
+  "version": "3.6.16",
   "description": "Molecule",
   "type": "module",
   "author": {
@@ -55,9 +55,9 @@
     "prepack": "rm -rf dist && tsc"
   },
   "dependencies": {
-    "@chemistry/common": "^3.6.15",
-    "@chemistry/elements": "^3.6.15",
-    "@chemistry/math": "^3.6.15",
+    "@chemistry/common": "^3.6.16",
+    "@chemistry/elements": "^3.6.16",
+    "@chemistry/math": "^3.6.16",
     "redux": "^5.0.0"
   }
 }
